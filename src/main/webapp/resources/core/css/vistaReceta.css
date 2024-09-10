@@ -1,0 +1,39 @@
+body{
+    margin: 0;
+}
+nav{
+    /* para que el nav siempre quede fijo y ocupe toda la altura de la pantalla*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    background-color: #c4c4c4;
+    align-items: center;
+    justify-content: center;
+
+        .botones{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10%;
+        flex: 1;
+            button{
+                border:none;
+                border-radius: 1em;
+                background-color: #a6a6a6;
+                padding: 1em 2.5em;
+                font-size: 1em;
+            }
+        }
+        .logo{
+        margin-top: 20%;
+        }
+}
+main{
+    /* el margen del nav, sino se sobreponen */
+    margin-left: 20%;
+}
