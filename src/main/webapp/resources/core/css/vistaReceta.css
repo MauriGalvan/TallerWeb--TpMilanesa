@@ -58,6 +58,10 @@ main{
         background-color: #ffd5b8;
         padding: 0.4em 0.8em;
         border-radius: 2em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
         }
     }
     .recetas{
