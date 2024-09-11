@@ -1,5 +1,6 @@
 body{
     margin: 0;
+    background-color: #ffd5b8
 }
 nav{
     /* para que el nav siempre quede fijo y ocupe toda la altura de la pantalla*/
