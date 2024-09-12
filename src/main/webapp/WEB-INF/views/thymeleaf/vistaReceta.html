@@ -51,32 +51,11 @@
         </form>
     </section>
     <section class="recetas">
-        <article class="receta1">
-            <h2 class="titulo">Nombre comida</h2>
-            <p class="desc">Descripción</p>
-            <img class="foto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKG1q7YYln9dxku10Y5QopGEHjoSvCsd4ZAEW2wU_pRZpYvihrSATk0krOzK70_XZhO0&usqp=CAU">
+        <article class="receta1" th:each="receta : ${recetas}">
+            <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>
+            <p class="desc" th:text="${receta.descripcion}">Descripción</p>
+            <img class="foto" th:src="${receta.imagen}" width="300px" alt="Imagen receta">
         </article>
-        <article class="receta2">
-            <h2 class="titulo">Nombre comida</h2>
-            <p class="desc">Descripción</p>
-            <img class="foto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKG1q7YYln9dxku10Y5QopGEHjoSvCsd4ZAEW2wU_pRZpYvihrSATk0krOzK70_XZhO0&usqp=CAU">
-        </article>
-        <article class="receta3">
-            <h2 class="titulo">Nombre comida</h2>
-            <p class="desc">Descripción</p>
-            <img class="foto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKG1q7YYln9dxku10Y5QopGEHjoSvCsd4ZAEW2wU_pRZpYvihrSATk0krOzK70_XZhO0&usqp=CAU">
-        </article>
-        <article class="receta4">
-            <h2 class="titulo">Nombre comida</h2>
-            <p class="desc">Descripción</p>
-            <img class="foto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKG1q7YYln9dxku10Y5QopGEHjoSvCsd4ZAEW2wU_pRZpYvihrSATk0krOzK70_XZhO0&usqp=CAU">
-        </article>
-        <article class="receta5">
-            <h2 class="titulo">Nombre comida</h2>
-            <p class="desc">Descripción</p>
-            <img class="foto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROKG1q7YYln9dxku10Y5QopGEHjoSvCsd4ZAEW2wU_pRZpYvihrSATk0krOzK70_XZhO0&usqp=CAU">
-        </article>
-
     </section>
 </main>
 <footer>
