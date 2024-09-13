@@ -39,13 +39,4 @@ public class ControladorReceta {
         return new ModelAndView("vistaReceta", modelo);
     }
 
-    @RequestMapping(value = "/detalleReceta")
-    public ModelAndView mostrarDetalleReceta(@ModelAttribute Receta receta) {
-        ModelMap modelo = new ModelMap();
-        modelo.put("titulo", receta.getTitulo());
-        modelo.put("imagen", receta.getImagen());
-        modelo.put("ingredientes", receta.getIngredientes());
-
-        return new ModelAndView("detalleReceta", modelo);
-    }
 }

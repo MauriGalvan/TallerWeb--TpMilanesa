@@ -21,11 +21,11 @@ public class ControladorRecetaTest {
     @Test
     public void QueRetorneLaVistaDetalleRecetaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
         //Dado
-        ControladorReceta controladorReceta = new ControladorReceta();
+        ControladorDetalleReceta controladorDetalleRecetaReceta = new ControladorDetalleReceta();
         Receta receta = new Receta();
         //Cuando
 
-        ModelAndView modelAndView = controladorReceta.mostrarDetalleReceta(receta);
+        ModelAndView modelAndView = controladorDetalleRecetaReceta.mostrarDetalleReceta(receta);
         //Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("detalleReceta"));
     }
