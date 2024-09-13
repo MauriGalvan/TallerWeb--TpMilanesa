@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Detalle Receta</title>
+
+    <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+   
+
+  </head>
+
+  <body>
+  <nav>
+    <div class="logo">
+      <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
+    </div>
+    <section class="botones">
+      <button type="button" class="recetas">
+        Recetas
+      </button>
+      <button type="button" class="planificador">
+        Planificador
+      </button>
+      <button type="button" class="listaCompras">
+        Lista de compras
+      </button>
+      <button type="button" class="perfil">
+        Perfil
+      </button>
+    </section>
+  </nav>
+  <main>
+    <h1 th:text="${titulo}">Nombre de la Receta</h1>
+    <div class="contenido">
+      <div class="imagen">
+        <img th:src="${imagen}" alt="Foto de la comida">
+      </div>
+      <div class="ingredientes">
+        <h2>INGREDIENTES</h2>
+        <ul>
+          <li th:each="ingrediente : ${ingredientes}" th:text="${ingrediente}">Ingrediente</li>
+        </ul>
+      </div>
+      <div class="instructiones">
+        <h2>INSTRUCCIONES</h2>
+        <ol>
+          <li>Lavar y cortar la lechuga en trozos pequeños.</li>
+          <li>Cortar los tomates en cubos.</li>
+          <li>Escurrir el maíz si es de lata.</li>
+          <li>Pelar y cortar el aguacate en cubos.</li>
+          <li>En un bowl grande, mezclar la lechuga, tomates, maíz y aguacate.</li>
+          <li>En un recipiente aparte, mezclar el vinagre, aceite, sal y pimienta para hacer el aderezo.</li>
+          <li>Verter el aderezo sobre la ensalada y mezclar bien.</li>
+          <li>Servir inmediatamente y disfrutar.</li>
+        </ol>
+      </div>
+    </div>
+  </main>
+  </body>
+</html>

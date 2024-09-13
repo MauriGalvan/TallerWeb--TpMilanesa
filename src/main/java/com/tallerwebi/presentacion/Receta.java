@@ -11,6 +11,9 @@ public class Receta {
     private ArrayList<String> ingredientes;
     private String descripcion;
 
+    public Receta() {
+
+    }
     public Receta(String titulo, double tiempo_preparacion, String categoria, String imagen,
                   ArrayList<String> ingredientes, String descripcion){
         this.titulo = titulo;

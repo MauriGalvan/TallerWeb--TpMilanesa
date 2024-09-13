@@ -17,4 +17,16 @@ public class ControladorRecetaTest {
         //Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
     }
+
+    @Test
+    public void QueRetorneLaVistaDetalleRecetaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
+        //Dado
+        ControladorReceta controladorReceta = new ControladorReceta();
+        Receta receta = new Receta();
+        //Cuando
+
+        ModelAndView modelAndView = controladorReceta.mostrarDetalleReceta(receta);
+        //Entonces
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("detalleReceta"));
+    }
 }
