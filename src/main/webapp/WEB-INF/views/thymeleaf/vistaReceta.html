@@ -51,7 +51,7 @@
         </form>
     </section>
     <section class="recetas">
-        <article class="receta1" th:each="receta : ${recetas}">
+        <article th:each="receta : ${recetas}">
             <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta1">
                 <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>
                 <p class="desc" th:text="${receta.descripcion}">Descripción</p>
