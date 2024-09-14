@@ -19,7 +19,7 @@ public class ControladorReceta {
     public ModelAndView irARecetas(@RequestParam(value = "categoria", required = false) String categoria) {
         ModelMap modelo = new ModelMap();
 
-        // Crear las recetas de ejemplo
+
         ArrayList<String> ingredientes1 = new ArrayList<>(Arrays.asList
                 ("Carne", "Huevo", "Pan rallado", "Perejil", "Papas"));
         Receta receta1 = new Receta("Milanesa napolitana", 1, "almuerzo",
@@ -36,10 +36,10 @@ public class ControladorReceta {
                 "https://i.postimg.cc/90QVFGGj/cafe-tostada.jpg", ingredientes3,
                 "Esto es una descripción de prueba.");
 
-        // Lista completa de recetas
+
         List<Receta> recetas = Arrays.asList(receta1, receta2, receta3);
 
-        // Si se especifica un tipo, filtrar las recetas por ese tipo
+
         if (categoria != null && !categoria.isEmpty()) {
             recetas = recetas.stream()
                     .filter(receta -> receta.getCategoria().equalsIgnoreCase(categoria))
@@ -47,7 +47,7 @@ public class ControladorReceta {
         }
 
         modelo.put("recetas", recetas);
-        modelo.put("tipoSeleccionado", categoria); // Para reflejar el filtro en la vista
+        modelo.put("tipoSeleccionado", categoria);
 
         return new ModelAndView("vistaReceta", modelo);
     }
