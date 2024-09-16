@@ -1,10 +1,19 @@
 package com.tallerwebi.dominio;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.ArrayList;
+import java.util.Objects;
 
+@Entity
 public class Receta {
-    private String titulo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    private String titulo;
     private double tiempo_preparacion;
     private String categoria;
     private String imagen;
@@ -78,5 +87,18 @@ public class Receta {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Receta receta = (Receta) o;
+        return id == receta.id && Double.compare(tiempo_preparacion, receta.tiempo_preparacion) == 0 && Objects.equals(titulo, receta.titulo) && Objects.equals(categoria, receta.categoria) && Objects.equals(imagen, receta.imagen) && Objects.equals(ingredientes, receta.ingredientes) && Objects.equals(descripcion, receta.descripcion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);
     }
 }
