@@ -37,6 +37,11 @@ nav{
 main{
     /* el margen del nav, sino se sobreponen */
     margin-left: 16em;
+
+    .agregar-receta{
+
+    }
+
     h1{
     font-size: 3.5em;
     margin-bottom: 0.2em;
@@ -67,7 +72,6 @@ main{
     .recetas{
     display: flex;
     flex-direction: column;
-
         .receta1, .receta2, .receta3, .receta4, .receta5{
         background-color: #ffae6a;
         margin: 1em 5em 0em 5em;
@@ -80,7 +84,7 @@ main{
         align-items:center;
             .titulo{grid-column: 1/2}
             .desc{grid-column: 1/2; grid-row: 2/3; margin-top: 0em;}
-            .foto{grid-column:2/3; grid-row: 1/3; border-radius: 2em; margin-right: 5em}
+            .foto{grid-column:2/3; grid-row: 1/3; border-radius: 50em; margin-right: 5em; width: 200px; height: auto}
             }
         }
     }

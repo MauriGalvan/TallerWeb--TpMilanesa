@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>index</title>
+    <title>Vista Receta</title>
     <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
 </head>
 <body>
@@ -55,7 +55,7 @@
             <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta1">
                 <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>
                 <p class="desc" th:text="${receta.descripcion}">Descripción</p>
-                <img class="foto" th:src="${receta.imagen}" width="300px" alt="Imagen receta">
+                <img class="foto" th:src="${receta.imagen}" alt="Imagen receta">
             </a>
         </article>
     </section>

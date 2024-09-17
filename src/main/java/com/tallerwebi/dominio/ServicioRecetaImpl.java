@@ -19,4 +19,9 @@ public class ServicioRecetaImpl implements ServicioReceta {
     public List<Receta> getTodasLasRecetas() {
         return this.repositorioReceta.getRecetas();
     }
+
+    @Override
+    public void guardarReceta(Receta receta) {
+        this.repositorioReceta.guardar(receta);
+    }
 }

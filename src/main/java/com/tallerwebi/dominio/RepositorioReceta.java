@@ -7,4 +7,6 @@ public interface RepositorioReceta {
     void guardar(Receta receta);
 
     List<Receta> getRecetas();
+
+    Receta getRecetaPorId(int id);
 }
