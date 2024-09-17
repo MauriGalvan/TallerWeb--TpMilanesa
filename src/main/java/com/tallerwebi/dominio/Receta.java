@@ -17,14 +17,14 @@ public class Receta {
     private double tiempo_preparacion;
     private String categoria;
     private String imagen;
-    private ArrayList<String> ingredientes;
+    private String ingredientes;
     private String descripcion;
 
     public Receta() {
 
     }
     public Receta(String titulo, double tiempo_preparacion, String categoria, String imagen,
-                  ArrayList<String> ingredientes, String descripcion){
+                  String ingredientes, String descripcion){
         this.titulo = titulo;
         this.tiempo_preparacion = tiempo_preparacion;
         this.categoria = categoria;
@@ -73,11 +73,11 @@ public class Receta {
         this.imagen = imagen;
     }
 
-    public ArrayList<String> getIngredientes() {
+    public String getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(ArrayList<String> ingredientes) {
+    public void setIngredientes(String ingredientes) {
         this.ingredientes = ingredientes;
     }
 

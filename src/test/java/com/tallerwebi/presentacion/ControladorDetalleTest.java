@@ -50,8 +50,7 @@ public class ControladorDetalleTest {
     }
 
     private static Receta crearMilanesaNapolitana() {
-        ArrayList<String> ingredientes = new ArrayList<>(Arrays.asList
-                ("Carne", "Huevo", "Pan rallado", "Perejil", "Papas"));
+        String ingredientes = "Carne, Huevo, Pan rallado, Perejil, Papas";
 
         return      new Receta("Milanesa napolitana", 1, "almuerzo",
                 "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", ingredientes,

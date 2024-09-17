@@ -40,7 +40,7 @@ public class RepositorioRecetaImplTest {
         double tiempo_preparacion = 1.0;
         String categoria = "almuerzo";
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
-        ArrayList<String> ingredientes = new ArrayList<>(Arrays.asList("Jamón", "Queso", "Tapa pascualina", "Huevo", "Tomate"));
+        String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";
 
         Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);

@@ -6,6 +6,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
+import java.util.List;
+
 @Repository
 public class RepositorioRecetaImpl implements RepositorioReceta {
 
@@ -19,5 +22,12 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     @Override
     public void guardar(Receta receta) {
         this.sessionFactory.getCurrentSession().save(receta);
+    }
+
+    @Override
+    public List<Receta> getRecetas() {
+        String hql = "FROM Receta";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        return query.getResultList();
     }
 }
