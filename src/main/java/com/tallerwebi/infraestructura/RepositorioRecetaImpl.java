@@ -34,12 +34,11 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     @Override
     public Receta getRecetaPorId(int id) {
         List<Receta> recetas = getRecetas();
-        Receta recetaEncontrada = null;
         for (Receta receta : recetas){
             if (id == receta.getId()){
-                recetaEncontrada = receta;
+                return receta;
             }
         }
-        return recetaEncontrada;
+        return null;
     }
 }
