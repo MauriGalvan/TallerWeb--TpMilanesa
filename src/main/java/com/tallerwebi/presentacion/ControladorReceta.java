@@ -27,45 +27,8 @@ public class ControladorReceta {
         this.servicioReceta = servicioReceta;
     }
 
-//    @RequestMapping("/vista-receta")
-//    public ModelAndView irARecetas(@RequestParam(value = "categoria", required = false) String categoria) {
-//        ModelMap modelo = new ModelMap();
-//
-//
-//        ArrayList<String> ingredientes1 = new ArrayList<>(Arrays.asList
-//                ("Carne", "Huevo", "Pan rallado", "Perejil", "Papas"));
-//        Receta receta1 = new Receta("Milanesa napolitana", 1, "almuerzo",
-//                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", ingredientes1,
-//                "Esto es una descripción de mila napo.");
-//        ArrayList<String> ingredientes2 = new ArrayList<>(Arrays.asList
-//                ("Jamón", "Queso", "Tapa pascualina", "Huevo", "Tomate"));
-//        Receta receta2 = new Receta("Tarta jamón y queso", 1.5, "almuerzo",
-//                "https://i.postimg.cc/XYXRZ1Mq/tarta-jamon-queso.jpg", ingredientes2,
-//                "Esto es una descripción de tarta de jamón y queso.");
-//        ArrayList<String> ingredientes3 = new ArrayList<>(Arrays.asList
-//                ("Café", "Leche", "Pan lactal", "Mermelada"));
-//        Receta receta3 = new Receta("Café cortado con tostadas", 1, "desayuno",
-//                "https://i.postimg.cc/90QVFGGj/cafe-tostada.jpg", ingredientes3,
-//                "Esto es una descripción de prueba.");
-//
-//
-//        List<Receta> recetas = Arrays.asList(receta1, receta2, receta3);
-//
-//
-//        if (categoria != null && !categoria.isEmpty()) {
-//            recetas = recetas.stream()
-//                    .filter(receta -> receta.getCategoria().equalsIgnoreCase(categoria))
-//                    .collect(Collectors.toList());
-//        }
-//
-//        modelo.put("recetas", recetas);
-//        modelo.put("tipoSeleccionado", categoria);
-//
-//        return new ModelAndView("vistaReceta", modelo);
-//    }
-
     @RequestMapping("/vista-receta")
-    public ModelAndView irARecetas(@RequestParam(value = "categoria", required = false) String categoria) {
+    public ModelAndView irARecetas() {
         ModelMap modelo = new ModelMap();
         List<Receta> todasLasRecetas = servicioReceta.getTodasLasRecetas();
         modelo.put("todasLasRecetas", todasLasRecetas);
