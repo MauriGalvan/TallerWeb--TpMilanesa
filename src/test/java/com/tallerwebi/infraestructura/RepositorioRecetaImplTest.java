@@ -17,6 +17,7 @@ import java.util.Arrays;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateInfraestructuraTestConfig.class})
@@ -56,5 +57,118 @@ public class RepositorioRecetaImplTest {
 
     }
 
+    @Test
+    @Transactional
+    public void dadoQueExisteUnRepositorioRecetaCuandoGuardoVariasRecetasEntoncesLasEncuentroEnLaBaseDeDatos(){
+        Receta receta1 = new Receta("Tarta de jamón y queso", 1.5, "almuerzo",
+                "https://i.postimg.cc/tarta.jpg", "Jamón, Queso, Tapa pascualina, Huevo",
+                "Deliciosa tarta de jamón y queso.");
+        Receta receta2 = new Receta("Ensalada Cesar", 0.5, "cena",
+                "https://i.postimg.cc/cesar.jpg", "Lechuga, Pollo, Croutones, Queso",
+                "Fresca ensalada con aderezo cesar.");
+
+        this.repositorioReceta.guardar(receta1);
+        this.repositorioReceta.guardar(receta2);
+
+        String hql = "FROM Receta WHERE titulo IN (:titulos)";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulos", Arrays.asList("Tarta de jamón y queso", "Ensalada Cesar"));
+        ArrayList<Receta> recetas = (ArrayList<Receta>) query.getResultList();
+
+        assertThat(recetas.size(), equalTo(2));
+        assertThat(recetas.get(0), equalTo(receta1));
+        assertThat(recetas.get(1), equalTo(receta2));
+    }
+
+    @Test
+    @Transactional
+    public void dadoQueExisteUnaRecetaCuandoLaEliminoEntoncesYaNoSeEncuentraEnLaBaseDeDatos(){
+        Receta receta = new Receta("Empanadas de carne", 1.0, "almuerzo",
+                "https://i.postimg.cc/empanada.jpg", "Carne, Masa de empanada, Cebolla, Pimentón",
+                "Empanadas caseras de carne.");
+
+        this.repositorioReceta.guardar(receta);
+        this.repositorioReceta.eliminar(receta);
+
+        String hql = "FROM Receta WHERE titulo = :titulo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "Empanadas de carne");
+
+        assertThat(query.getResultList().size(), equalTo(0));
+    }
+
+    @Test
+    @Transactional
+    public void dadoQueNoExistenRecetasCuandoConsultoEntoncesObtengoUnaListaVacia(){
+        String hql = "FROM Receta";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        ArrayList<Receta> recetas = (ArrayList<Receta>) query.getResultList();
+
+        assertThat(recetas.size(), equalTo(0));
+    }
+
+    @Test
+    @Transactional
+    public void dadoQueExisteUnRepositorioRecetaCuandoConsultoPorRecetasPorCategoriaEntoncesObtengoLasRecetasCorrectas(){
+        Receta receta1 = new Receta("Bife con ensalada", 0.8, "almuerzo",
+                "https://i.postimg.cc/bife.jpg", "Bife de chorizo, Ensalada",
+                "Bife jugoso acompañado de ensalada.");
+        Receta receta2 = new Receta("Sopa de calabaza", 0.6, "cena",
+                "https://i.postimg.cc/sopa.jpg", "Calabaza, Cebolla, Ajo",
+                "Sopa cremosa de calabaza.");
+
+        this.repositorioReceta.guardar(receta1);
+        this.repositorioReceta.guardar(receta2);
+
+        String hql = "FROM Receta WHERE categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("categoria", "cena");
+        ArrayList<Receta> recetasCena = (ArrayList<Receta>) query.getResultList();
+
+        assertThat(recetasCena.size(), equalTo(1));
+        assertThat(recetasCena.get(0), equalTo(receta2));
+    }
+
+    @Test
+    @Transactional
+    public void dadoQueUnaRecetaNoExisteCuandoIntentoEliminarlaEntoncesNoSeHaceNada(){
+        Receta recetaInexistente = new Receta("Sándwich de miga", 0.2, "almuerzo",
+                "https://i.postimg.cc/sandwich.jpg", "Pan de miga, Jamón, Queso",
+                "Delicioso sándwich de miga.");
+
+        repositorioReceta.eliminar(recetaInexistente);
+
+        String hql = "FROM Receta WHERE titulo = :titulo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "Sándwich de miga");
+        assertThat(query.getResultList().size(), equalTo(0));
+    }
+
+
+    @Test
+    @Transactional
+    public void dadoQueUnaRecetaEsNullCuandoIntentoGuardarlaEntoncesSeLanzaNullPointerException(){
+        Receta recetaNula = null;
+
+        assertThrows(NullPointerException.class, () -> {
+            repositorioReceta.guardar(recetaNula);
+        });
+    }
+
+
+    @Test
+    @Transactional
+    public void dadoQueUnaRecetaNoExisteCuandoLaBuscoPorTituloEntoncesNoSeEncuentra(){
+        String tituloInexistente = "Receta inexistente";
+
+        String hql = "FROM Receta WHERE titulo = :titulo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", tituloInexistente);
+
+        assertThat(query.getResultList().size(), equalTo(0));
+    }
+
 
 }
+
+
