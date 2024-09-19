@@ -72,7 +72,7 @@ main{
     .recetas{
     display: flex;
     flex-direction: column;
-        .receta1, .receta2, .receta3, .receta4, .receta5{
+        .receta{
         background-color: #ffae6a;
         margin: 1em 5em 0em 5em;
         border-radius: 2em;

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +95,40 @@ public class ServicioRecetaTest {
         servicioReceta.guardarReceta(receta1);
 
         List<Receta> recetasFiltradas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempo_preparacion);
+
+        Mockito.verify(repositorioReceta, times(1)).getRecetas();
+
+        assertEquals(1, recetasFiltradas.size());
+    }
+
+    @Test
+    public void queSePuedaFiltrarPorCategoriaYPorTiempoYSeMuestreElAlmuerzoOCenaDe30Min(){
+        String titulo = "Milanesa napolitana";
+        String titulo1 = "Cafe con medialunas";
+        String titulo2 = "Pastel de Papa";
+        double tiempo_preparacion = 30.0;
+        double tiempo_preparacion1 = 60.0;
+        String categoria = "ALMUERZO_CENA";
+        String categoria1 = "DESAYUNO_MERIENDA";
+        String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
+        String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
+        String descripcion = "Esto es una descripción de mila napo";
+        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);
+        Receta receta1 = new Receta(titulo1, tiempo_preparacion, categoria1, imagen, ingredientes, descripcion);
+        Receta receta2 = new Receta(titulo2, tiempo_preparacion1, categoria, imagen, ingredientes, descripcion);
+
+        List<Receta> todasLasRecetas = new ArrayList<>();
+        todasLasRecetas.add(receta);
+        todasLasRecetas.add(receta1);
+        todasLasRecetas.add(receta2);
+
+        Mockito.when(repositorioReceta.getRecetas()).thenReturn(todasLasRecetas);
+
+        servicioReceta.guardarReceta(receta);
+        servicioReceta.guardarReceta(receta1);
+        servicioReceta.guardarReceta(receta2);
+
+        List<Receta> recetasFiltradas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempo_preparacion);
 
         Mockito.verify(repositorioReceta, times(1)).getRecetas();
 

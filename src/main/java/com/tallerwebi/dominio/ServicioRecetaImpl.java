@@ -50,4 +50,16 @@ public class ServicioRecetaImpl implements ServicioReceta {
         }
         return recetasFiltradas;
     }
+
+    @Override
+    public List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempoPreparacion) {
+        List<Receta> recetasFiltradas = new ArrayList<>();
+        List<Receta> todasLasRecetas = this.repositorioReceta.getRecetas();
+        for (Receta receta : todasLasRecetas) {
+            if (receta.getTiempo_preparacion() == tiempoPreparacion && receta.getCategoria().equals(categoria)) {
+                recetasFiltradas.add(receta);
+            }
+        }
+        return recetasFiltradas;
+    }
 }

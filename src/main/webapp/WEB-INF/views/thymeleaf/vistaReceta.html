@@ -29,17 +29,16 @@
 <main>
     <h1>Recetas</h1>
     <section class="filtros">
-        <form class="tiempo" method="post">
+        <form method="post">
             <label for="time">
                 Tiempo de preparación
             </label>
-            <select id="time">
-                <option value="-">-</option>
-                <option value="media-hora">30min</option>
-                <option value="una-hora">1h</option>
+            <select id="time" name="tiempo" th:value="${tiempoSeleccionado}">
+                <option value="-" th:selected="${tiempoSeleccionado == '-'}">-</option>
+                <option value="10min" th:selected="${tiempoSeleccionado == '10min'}">10min</option>
+                <option value="30min" th:selected="${tiempoSeleccionado == '30min'}">30min</option>
+                <option value="60min" th:selected="${tiempoSeleccionado == '60min'}">1h</option>
             </select>
-        </form>
-        <form class="categoria" method="post">
             <label for="categorias">
                 Categoría
             </label>
@@ -53,7 +52,7 @@
     </section>
     <section class="recetas">
         <article th:each="receta : ${todasLasRecetas}">
-            <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta1">
+            <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta">
                 <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>
                 <p class="desc" th:text="${receta.descripcion}">Descripción</p>
                 <img class="foto" th:src="${receta.imagen}" alt="Imagen receta">
