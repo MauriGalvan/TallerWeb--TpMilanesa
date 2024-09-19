@@ -74,4 +74,6 @@ public class ControladorReceta {
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/vista-receta");
     }
+
+
 }
