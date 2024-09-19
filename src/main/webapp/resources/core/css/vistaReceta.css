@@ -28,6 +28,7 @@ nav{
                 background-color: #ffd5b8;
                 padding: 1em 2.5em;
                 font-size: 1em;
+                cursor:pointer;
             }
         }
         .logo{

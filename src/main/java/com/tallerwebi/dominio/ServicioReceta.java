@@ -13,4 +13,6 @@ public interface ServicioReceta {
     List<Receta> getRecetasPorTiempoDePreparacion(double tiempoPreparacion);
 
     List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempoPreparacion);
+
+    Receta getUnaRecetaPorId(int id);
 }

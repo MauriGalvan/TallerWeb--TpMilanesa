@@ -18,18 +18,21 @@ public class Receta {
     private String imagen;
     private String ingredientes;
     private String descripcion;
+    private String pasos;
 
     public Receta() {
 
     }
     public Receta(String titulo, double tiempo_preparacion, String categoria, String imagen,
-                  String ingredientes, String descripcion){
+                  String ingredientes, String descripcion, String pasos){
         this.titulo = titulo;
         this.tiempo_preparacion = tiempo_preparacion;
         this.categoria = categoria;
         this.imagen = imagen;
         this.ingredientes = ingredientes;
         this.descripcion = descripcion;
+        this.pasos = pasos;
+
     }
 
     public String getTitulo() {
@@ -87,6 +90,10 @@ public class Receta {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public String getPasos() { return pasos; }
+
+    public void setPasos(String pasos) { this.pasos = pasos; }
 
     @Override
     public boolean equals(Object o) {

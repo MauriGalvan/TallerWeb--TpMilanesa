@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Vista Receta</title>
     <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+    <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
 </head>
 <body>
 <nav>
@@ -12,16 +13,19 @@
         <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
     </div>
     <section class="botones">
-        <button type="button" class="recetas">
-            Recetas
-        </button>
-        <button type="button" class="planificador">
+            <button type="button" class="recetas">
+                <a href="http://localhost:8080/spring/vista-receta">
+                </a>
+                Recetas
+            </button>
+        </a>
+        <button type="button" class="planificador" onclick="mostrarPopup()">
             Planificador
         </button>
-        <button type="button" class="listaCompras">
+        <button type="button" class="listaCompras" onclick="mostrarPopup()">
             Lista de compras
         </button>
-        <button type="button" class="perfil">
+        <button type="button" class="perfil" onclick="mostrarPopup()">
             Perfil
         </button>
     </section>

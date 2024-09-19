@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -41,6 +42,7 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         return query.getResultList();
     }
 
+    @Transactional
     @Override
     public Receta getRecetaPorId(int id) {
         List<Receta> recetas = getRecetas();

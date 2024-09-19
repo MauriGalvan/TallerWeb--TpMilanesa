@@ -43,8 +43,9 @@ public class RepositorioRecetaImplTest {
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
         String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";
+        String pasos = ".";
 
-        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);
+        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos);
 
         this.repositorioReceta.guardar(receta);
 
@@ -62,10 +63,10 @@ public class RepositorioRecetaImplTest {
     public void dadoQueExisteUnRepositorioRecetaCuandoGuardoVariasRecetasEntoncesLasEncuentroEnLaBaseDeDatos(){
         Receta receta1 = new Receta("Tarta de jamón y queso", 1.5, "almuerzo",
                 "https://i.postimg.cc/tarta.jpg", "Jamón, Queso, Tapa pascualina, Huevo",
-                "Deliciosa tarta de jamón y queso.");
+                "Deliciosa tarta de jamón y queso.", ".");
         Receta receta2 = new Receta("Ensalada Cesar", 0.5, "cena",
                 "https://i.postimg.cc/cesar.jpg", "Lechuga, Pollo, Croutones, Queso",
-                "Fresca ensalada con aderezo cesar.");
+                "Fresca ensalada con aderezo cesar.", ".");
 
         this.repositorioReceta.guardar(receta1);
         this.repositorioReceta.guardar(receta2);
@@ -85,7 +86,7 @@ public class RepositorioRecetaImplTest {
     public void dadoQueExisteUnaRecetaCuandoLaEliminoEntoncesYaNoSeEncuentraEnLaBaseDeDatos(){
         Receta receta = new Receta("Empanadas de carne", 1.0, "almuerzo",
                 "https://i.postimg.cc/empanada.jpg", "Carne, Masa de empanada, Cebolla, Pimentón",
-                "Empanadas caseras de carne.");
+                "Empanadas caseras de carne.", ".");
 
         this.repositorioReceta.guardar(receta);
         this.repositorioReceta.eliminar(receta);
@@ -112,10 +113,10 @@ public class RepositorioRecetaImplTest {
     public void dadoQueExisteUnRepositorioRecetaCuandoConsultoPorRecetasPorCategoriaEntoncesObtengoLasRecetasCorrectas(){
         Receta receta1 = new Receta("Bife con ensalada", 0.8, "almuerzo",
                 "https://i.postimg.cc/bife.jpg", "Bife de chorizo, Ensalada",
-                "Bife jugoso acompañado de ensalada.");
+                "Bife jugoso acompañado de ensalada.", ".");
         Receta receta2 = new Receta("Sopa de calabaza", 0.6, "cena",
                 "https://i.postimg.cc/sopa.jpg", "Calabaza, Cebolla, Ajo",
-                "Sopa cremosa de calabaza.");
+                "Sopa cremosa de calabaza.", ".");
 
         this.repositorioReceta.guardar(receta1);
         this.repositorioReceta.guardar(receta2);
@@ -134,7 +135,7 @@ public class RepositorioRecetaImplTest {
     public void dadoQueUnaRecetaNoExisteCuandoIntentoEliminarlaEntoncesNoSeHaceNada(){
         Receta recetaInexistente = new Receta("Sándwich de miga", 0.2, "almuerzo",
                 "https://i.postimg.cc/sandwich.jpg", "Pan de miga, Jamón, Queso",
-                "Delicioso sándwich de miga.");
+                "Delicioso sándwich de miga.", ".");
 
         repositorioReceta.eliminar(recetaInexistente);
 

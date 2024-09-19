@@ -32,8 +32,9 @@ public class ServicioRecetaTest {
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
         String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";
+        String pasos = ".";
 
-        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);
+        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos);
         int idBuscado = receta.getId();
 
         servicioReceta.guardarReceta(receta);
@@ -50,10 +51,11 @@ public class ServicioRecetaTest {
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
         String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";
-        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);
+        String pasos = ".";
+        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos);
         String titulo1 = "Cafe con medialunas";
         String categoria1 = "DESAYUNO_MERIENDA";
-        Receta receta1 = new Receta(titulo1, tiempo_preparacion, categoria1, imagen, ingredientes, descripcion);
+        Receta receta1 = new Receta(titulo1, tiempo_preparacion, categoria1, imagen, ingredientes, descripcion, pasos);
 
         List<Receta> todasLasRecetas = new ArrayList<>();
         todasLasRecetas.add(receta);
@@ -79,11 +81,12 @@ public class ServicioRecetaTest {
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
         String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";
-        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);
+        String pasos = ".";
+        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos);
         String titulo1 = "Cafe con medialunas";
         String categoria1 = "DESAYUNO_MERIENDA";
         double tiempo_preparacion1 = 60.0;
-        Receta receta1 = new Receta(titulo1, tiempo_preparacion1, categoria1, imagen, ingredientes, descripcion);
+        Receta receta1 = new Receta(titulo1, tiempo_preparacion1, categoria1, imagen, ingredientes, descripcion, pasos);
 
         List<Receta> todasLasRecetas = new ArrayList<>();
         todasLasRecetas.add(receta);
@@ -113,9 +116,10 @@ public class ServicioRecetaTest {
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
         String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";
-        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);
-        Receta receta1 = new Receta(titulo1, tiempo_preparacion, categoria1, imagen, ingredientes, descripcion);
-        Receta receta2 = new Receta(titulo2, tiempo_preparacion1, categoria, imagen, ingredientes, descripcion);
+        String pasos = ".";
+        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos);
+        Receta receta1 = new Receta(titulo1, tiempo_preparacion, categoria1, imagen, ingredientes, descripcion,pasos);
+        Receta receta2 = new Receta(titulo2, tiempo_preparacion1, categoria, imagen, ingredientes, descripcion, pasos);
 
         List<Receta> todasLasRecetas = new ArrayList<>();
         todasLasRecetas.add(receta);
