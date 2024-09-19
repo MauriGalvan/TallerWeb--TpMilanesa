@@ -6,6 +6,8 @@ public interface RepositorioReceta {
 
     void guardar(Receta receta);
 
+    void eliminar(Receta receta);
+
     List<Receta> getRecetas();
 
     Receta getRecetaPorId(int id);

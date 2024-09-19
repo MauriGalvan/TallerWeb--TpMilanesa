@@ -43,11 +43,12 @@
             <label for="categorias">
                 Categoría
             </label>
-            <select id="categorias">
-                <option value="todos">Todos</option>
-                <option value="desayuno">Desayuno/Merienda</option>
-                <option value="almuerzo">Almuerzo/Cena</option>
+            <select id="categorias" name="categoria" th:value="${categoriaSeleccionada}">
+                <option value="todos" th:selected="${categoriaSeleccionada == 'todos'}">Todos</option>
+                <option value="desayuno" th:selected="${categoriaSeleccionada == 'desayuno'}">Desayuno/Merienda</option>
+                <option value="almuerzo" th:selected="${categoriaSeleccionada == 'almuerzo'}">Almuerzo/Cena</option>
             </select>
+            <button type="submit">Filtrar</button>
         </form>
     </section>
     <section class="recetas">

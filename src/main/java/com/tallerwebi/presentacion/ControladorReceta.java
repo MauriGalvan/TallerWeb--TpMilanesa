@@ -27,11 +27,29 @@ public class ControladorReceta {
         this.servicioReceta = servicioReceta;
     }
 
+//    @RequestMapping("/vista-receta")
+//    public ModelAndView irARecetas() {
+//        ModelMap modelo = new ModelMap();
+//        List<Receta> todasLasRecetas = servicioReceta.getTodasLasRecetas();
+//        modelo.put("todasLasRecetas", todasLasRecetas);
+//        return new ModelAndView("vistaReceta", modelo);
+//    }
+
     @RequestMapping("/vista-receta")
-    public ModelAndView irARecetas() {
+    public ModelAndView irARecetas(@RequestParam(value = "categoria", required = false) String categoria) {
         ModelMap modelo = new ModelMap();
-        List<Receta> todasLasRecetas = servicioReceta.getTodasLasRecetas();
-        modelo.put("todasLasRecetas", todasLasRecetas);
+
+        List<Receta> recetas;
+
+        if (categoria != null && !categoria.equals("todos")) {
+            recetas = servicioReceta.getRecetasPorCategoria(categoria);
+        } else {
+            recetas = servicioReceta.getTodasLasRecetas();
+        }
+
+        modelo.put("todasLasRecetas", recetas);
+        modelo.put("categoriaSeleccionada", categoria); // Para mantener el estado del filtro en la vista
+
         return new ModelAndView("vistaReceta", modelo);
     }
 

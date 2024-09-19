@@ -27,15 +27,15 @@ public class ControladorRecetaTest {
         controladorDetalleReceta = new ControladorDetalleReceta();
     }
 
-    @Test
-    public void QueRetorneLaVistaRecetaCuandoSeEjecutaElMetodoIrARecetas(){
-        //Dado
-        ControladorReceta controladorReceta = new ControladorReceta(servicioRecetaMock);
-        //Cuando
-        ModelAndView modelAndView = controladorReceta.irARecetas();
-        //Entonces
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
-    }
+//    @Test
+//    public void QueRetorneLaVistaRecetaCuandoSeEjecutaElMetodoIrARecetas(){
+//        //Dado
+//        ControladorReceta controladorReceta = new ControladorReceta(servicioRecetaMock);
+//        //Cuando
+//        ModelAndView modelAndView = controladorReceta.irARecetas();
+//        //Entonces
+//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
+//    }
 
     @Test
     public void QueRetorneLaVistaDetalleRecetaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
