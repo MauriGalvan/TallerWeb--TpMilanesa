@@ -50,6 +50,9 @@ main{
     h2, p{
     color: black;
     }
+    h2:hover{
+    color: #ffd971;
+    }
 
     .filtros{
     display: flex;
@@ -92,11 +95,5 @@ main{
         }
     a{
     text-decoration: none;
-    }
-    a:focus, a:active, h2:focus, h2:active, p:focus, p:active {
-        outline: none;
-        box-shadow: none;
-        background-color: initial;
-        color: inherit;
     }
 }
