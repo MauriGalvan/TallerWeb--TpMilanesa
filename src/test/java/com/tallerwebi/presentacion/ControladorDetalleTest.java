@@ -1,6 +1,8 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Receta;
+import com.tallerwebi.dominio.ServicioReceta;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -9,52 +11,43 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ControladorDetalleTest {
-/*
-    @Test
-    public void DebeRetornarLaVistaDetalleRecetaYSolamenteElNombreDeEsaComidaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
-        //DADO
-        ControladorDetalleReceta controladorDetalleRecetaReceta = new ControladorDetalleReceta();
-        Receta receta = crearMilanesaNapolitana();
-        //CUANDO
-        ModelAndView modelAndView = controladorDetalleRecetaReceta.mostrarDetalleReceta(receta);
-        //ENTONCES
-        assertThat(modelAndView.getModel().get("titulo"), equalTo("Milanesa napolitana"));
+
+    private ControladorDetalleReceta controlador;
+    private ServicioReceta servicioRecetaMock;
+
+    @BeforeEach
+    public void setup(){
+        servicioRecetaMock = mock(ServicioReceta.class);
+        controlador = new ControladorDetalleReceta(servicioRecetaMock);
     }
 
     @Test
-    public void DebeRetornarLaVistaDetalleRecetaYSolamenteElNombreYLaImagenDeEsaComidaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
+    public void DebeRetornarVistaConTituloImagenIngredientesYPasosCuandoSeMuestraDetalleReceta(){
         //DADO
-        ControladorDetalleReceta controladorDetalleRecetaReceta = new ControladorDetalleReceta();
-        Receta receta = crearMilanesaNapolitana();
-        //CUANDO
-        ModelAndView modelAndView = controladorDetalleRecetaReceta.mostrarDetalleReceta(receta);
-        //ENTONCES
-        assertThat(modelAndView.getModel().get("imagen"), equalTo("https://i.postimg.cc/7hbGvN2c/mila-napo.webp"));
-    }
+        int id = 1;
+        String titulo = "Milanesa napolitana";
+        double tiempo_preparacion = 1.0;
+        String categoria = "almuerzo";
+        String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
+        String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
+        String descripcion = "Esto es una descripción de mila napo";
+        String pasos = "Aplasta la carne y condimenta con sal y pimienta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe en aceite caliente hasta dorar. Acompaña con papas fritas o hervidas y añade salsa de tomate, jamón y queso.";
 
-
-    @Test
-    public void DebeRetornarLaVistaDetalleRecetaYSolamenteElNombreLaImagenYlosIngredientesDeEsaComidaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
-        //DADO
-        ControladorDetalleReceta controladorDetalleRecetaReceta = new ControladorDetalleReceta();
-        Receta receta = crearMilanesaNapolitana();
+        Receta recetaMock = new Receta(titulo,tiempo_preparacion,categoria,imagen,ingredientes,descripcion,pasos);
+        recetaMock.setId(id);
 
         //CUANDO
-
-        ModelAndView modelAndView = controladorDetalleRecetaReceta.mostrarDetalleReceta(receta);
+        when(servicioRecetaMock.getUnaRecetaPorId(id)).thenReturn(recetaMock);
+        ModelAndView modelAndView = controlador.mostrarDetalleReceta(recetaMock.getId());
         //ENTONCES
-
-        assertThat(modelAndView.getModel().get("ingredientes"), equalTo(receta.getIngredientes()));
+        Receta recetaDelModelo = (Receta) modelAndView.getModel().get("unaReceta");
+        assertThat(recetaDelModelo.getTitulo(), equalTo(titulo));
+        assertThat(recetaDelModelo.getImagen(), equalTo(imagen));
+        assertThat(recetaDelModelo.getPasos(), equalTo(pasos));
     }
 
-    private static Receta crearMilanesaNapolitana() {
-        String ingredientes = "Carne, Huevo, Pan rallado, Perejil, Papas";
-
-        return      new Receta("Milanesa napolitana", 1, "almuerzo",
-                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", ingredientes,
-                "Esto es una descripción de mila napo.", ".");
-    }
-*/
 }
