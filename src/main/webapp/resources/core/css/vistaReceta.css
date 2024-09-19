@@ -98,3 +98,15 @@ main{
     text-decoration: none;
     }
 }
+    .link-receta {
+        text-decoration: none;
+        color: black;
+    }
+
+    .link-receta:visited {
+        color: black;
+    }
+
+    .link-receta:hover {
+        color: black;
+    }
