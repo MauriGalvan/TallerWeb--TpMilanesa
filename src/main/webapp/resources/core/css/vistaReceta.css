@@ -50,7 +50,7 @@ main{
     h2, p{
     color: black;
     }
-    h2:hover{
+    .titulo:hover{
     color: #ffd971;
     }
 
