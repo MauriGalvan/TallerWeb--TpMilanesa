@@ -14,6 +14,12 @@ VALUES
 
 ('Empanadas de Carne', 60.0, 'almuerzo', 'https://i.postimg.cc/jSPZ3ddj/empandas-de-carne.jpg', 'Masa para empanadas, Carne molida, Cebolla, Huevo, Especias', 'Clásico platillo argentino, perfectas para cualquier ocasión.', 'Cocina la carne con cebolla y especias. Deja enfriar. Rellena las masas con la mezcla y un poco de huevo duro. Cierra las empanadas y hornéalas a 180°C por 20-25 minutos.'),
 
-('Ensalada de Quinoa', 25.0, 'almuerzo', 'https://i.postimg.cc/X7Sbrqhj/ensalada-quinoa-y-verduras.jpg', 'Quinoa, Pimiento, Pepino, Tomate, Cebolla, Limón, Aceite de oliva, Sal', 'Nutritiva y fresca, ideal para el almuerzo.', 'Cocina la quinoa y deja enfriar. Pica las verduras y mezcla en un bol. Aliña con limón, aceite, sal y mezcla bien. Sirve fría, perfecta para días calurosos.');
+('Ensalada de Quinoa', 25.0, 'almuerzo', 'https://i.postimg.cc/X7Sbrqhj/ensalada-quinoa-y-verduras.jpg', 'Quinoa, Pimiento, Pepino, Tomate, Cebolla, Limón, Aceite de oliva, Sal', 'Nutritiva y fresca, ideal para el almuerzo.', 'Cocina la quinoa y deja enfriar. Pica las verduras y mezcla en un bol. Aliña con limón, aceite, sal y mezcla bien. Sirve fría, perfecta para días calurosos.'),
+
+('Tarta de Verduras', 60.0, 'cena', 'https://i.postimg.cc/XqVb6XKw/tarta-verdura.png', 'Masa de tarta, Espinaca, Cebolla, Huevos, Queso, Sal', 'Una opción saludable y deliciosa, llena de sabor.', 'Saltea la cebolla y la espinaca. Mezcla con huevos y queso. Rellena la masa de tarta y hornea a 180°C por 30-35 minutos hasta dorar.'),
+
+('Ensalada César', 20.0, 'cena', 'https://i.postimg.cc/gkMXtNn4/Ensalada-cesar.jpg', 'Lechuga romana, Pollo, Crutones, Queso parmesano, Aderezo César, Limón', 'Clásica y deliciosa, perfecta para una cena ligera.', 'Cocina el pollo a la parrilla y corta en tiras. Lava y corta la lechuga. Mezcla en un bol con el pollo, crutones y queso parmesano. Aliña con aderezo César y un chorrito de limón antes de servir.'),
+
+('Hamburguesas de Lentejas', 40.0, 'cena', 'https://i.postimg.cc/GpF91CcP/hamburguesa-de-lentejas.jpg', 'Lentejas, Ajo, Cebolla, Pan rallado, Especias, Lechuga, Tomate, Pan de hamburguesa', 'Sabrosas y llenas de proteínas, perfectas para una cena sustanciosa.', 'Cocina las lentejas y aplástalas. Mezcla con ajo, cebolla picada, pan rallado y especias. Forma hamburguesas y cocina en una sartén hasta dorar. Sirve en pan con lechuga y tomate.');
 
 
