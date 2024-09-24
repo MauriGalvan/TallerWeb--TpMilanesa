@@ -53,4 +53,29 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         }
         return null;
     }
+
+    @Override
+    public List<Receta> getRecetasPorCategoria(String categoria){
+        String hql = "FROM Receta r WHERE r.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Receta> getRecetasPorTiempoDePreparacion(double tiempo) {
+        String hql = "FROM Receta r WHERE r.tiempo_preparacion = :tiempo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("tiempo", tiempo);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempo) {
+        String hql = "FROM Receta r WHERE r.tiempo_preparacion = :tiempo AND r.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("tiempo", tiempo);
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
 }

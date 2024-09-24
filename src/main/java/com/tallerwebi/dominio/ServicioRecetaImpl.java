@@ -29,38 +29,17 @@ public class ServicioRecetaImpl implements ServicioReceta {
 
     @Override
     public List<Receta> getRecetasPorCategoria(String categoria) {
-        List<Receta> recetasFiltradas = new ArrayList<>();
-        List<Receta> todasLasRecetas = this.repositorioReceta.getRecetas();
-        for (Receta receta : todasLasRecetas) {
-            if (receta.getCategoria().equals(categoria)) {
-                recetasFiltradas.add(receta);
-            }
-        }
-        return recetasFiltradas;
+        return this.repositorioReceta.getRecetasPorCategoria(categoria);
     }
 
     @Override
     public List<Receta> getRecetasPorTiempoDePreparacion(double tiempoPreparacion) {
-        List<Receta> recetasFiltradas = new ArrayList<>();
-        List<Receta> todasLasRecetas = this.repositorioReceta.getRecetas();
-        for (Receta receta : todasLasRecetas) {
-            if (receta.getTiempo_preparacion() == tiempoPreparacion) {
-                recetasFiltradas.add(receta);
-            }
-        }
-        return recetasFiltradas;
+        return this.repositorioReceta.getRecetasPorTiempoDePreparacion(tiempoPreparacion);
     }
 
     @Override
     public List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempoPreparacion) {
-        List<Receta> recetasFiltradas = new ArrayList<>();
-        List<Receta> todasLasRecetas = this.repositorioReceta.getRecetas();
-        for (Receta receta : todasLasRecetas) {
-            if (receta.getTiempo_preparacion() == tiempoPreparacion && receta.getCategoria().equals(categoria)) {
-                recetasFiltradas.add(receta);
-            }
-        }
-        return recetasFiltradas;
+        return this.repositorioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempoPreparacion);
     }
 
     @Override
