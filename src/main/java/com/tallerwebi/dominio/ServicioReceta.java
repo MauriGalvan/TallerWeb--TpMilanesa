@@ -15,4 +15,6 @@ public interface ServicioReceta {
     List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempoPreparacion);
 
     Receta getUnaRecetaPorId(int id);
+
+    List<Receta> buscarRecetasPorTitulo(String titulo);
 }

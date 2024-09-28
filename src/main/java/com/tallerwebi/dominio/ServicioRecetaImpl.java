@@ -46,4 +46,10 @@ public class ServicioRecetaImpl implements ServicioReceta {
     public Receta getUnaRecetaPorId(int id) {
         return this.repositorioReceta.getRecetaPorId(id);
     }
+
+    @Override
+    public List<Receta> buscarRecetasPorTitulo(String titulo) {
+        return repositorioReceta.buscarRecetasPorTitulo(titulo);
+    }
+
 }

@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @Transactional
@@ -27,18 +24,40 @@ public class ControladorReceta {
         this.servicioReceta = servicioReceta;
     }
 
-    @RequestMapping("/vista-receta")
-    public ModelAndView irARecetas(
-            @RequestParam(value = "categoria", required = false) String categoria,
-            @RequestParam(value = "tiempo", required = false) String tiempo){
+    @RequestMapping("/buscar-receta-titulo")
+    public ModelAndView buscarRecetasPorTitulo(
+            @RequestParam(value = "titulo", required = false) String titulo) {
 
         ModelMap modelo = new ModelMap();
         List<Receta> recetas;
 
+        if (titulo != null && !titulo.isEmpty()) {
+            recetas = servicioReceta.buscarRecetasPorTitulo(titulo);
+            if (recetas.isEmpty()) {
+                modelo.put("mensajeError", "No se encontró ninguna receta con esa referencia");
+            }
+        } else {
+            recetas = servicioReceta.getTodasLasRecetas();
+        }
+
+        modelo.put("todasLasRecetas", recetas);
+        modelo.put("tituloBuscado", titulo);
+
+        return new ModelAndView("vistaReceta", modelo);
+    }
+
+
+    @RequestMapping("/vista-receta")
+    public ModelAndView irARecetas(
+            @RequestParam(value = "categoria", required = false) String categoria,
+            @RequestParam(value = "tiempo", required = false) String tiempo) {
+
+        ModelMap modelo = new ModelMap();
+        List<Receta> recetas;
         double tiempoDouble = 0.0;
 
-        if (tiempo != null && !tiempo.equals("-")){
-            switch(tiempo){
+        if (tiempo != null && !tiempo.equals("-")) {
+            switch (tiempo) {
                 case "10min":
                     tiempoDouble = 10.0;
                     break;
@@ -52,12 +71,12 @@ public class ControladorReceta {
         }
 
         if (categoria != null && !categoria.equals("todos")) {
-            if (tiempoDouble > 0.0){
+            if (tiempoDouble > 0.0) {
                 recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempoDouble);
-            } else{
+            } else {
                 recetas = servicioReceta.getRecetasPorCategoria(categoria);
             }
-        } else if (tiempoDouble > 0.0){
+        } else if (tiempoDouble > 0.0) {
             recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoDouble);
         } else {
             recetas = servicioReceta.getTodasLasRecetas();
@@ -74,6 +93,4 @@ public class ControladorReceta {
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/vista-receta");
     }
-
-
 }
