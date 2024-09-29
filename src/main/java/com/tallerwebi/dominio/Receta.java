@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -12,9 +9,13 @@ public class Receta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Enumerated(EnumType.STRING)
+    private TiempoDePreparacion tiempo_preparacion;
+
+    @Enumerated(EnumType.STRING)
+    private Categoria categoria;
+
     private String titulo;
-    private double tiempo_preparacion;
-    private String categoria;
     private String imagen;
     private String ingredientes;
     private String descripcion;
@@ -23,7 +24,7 @@ public class Receta {
     public Receta() {
 
     }
-    public Receta(String titulo, double tiempo_preparacion, String categoria, String imagen,
+    public Receta(String titulo, TiempoDePreparacion tiempo_preparacion, Categoria categoria, String imagen,
                   String ingredientes, String descripcion, String pasos){
         this.titulo = titulo;
         this.tiempo_preparacion = tiempo_preparacion;
@@ -51,19 +52,19 @@ public class Receta {
         this.id = id;
     }
 
-    public double getTiempo_preparacion() {
+    public TiempoDePreparacion getTiempo_preparacion() {
         return tiempo_preparacion;
     }
 
-    public void setTiempo_preparacion(double tiempo_preparacion) {
+    public void setTiempo_preparacion(TiempoDePreparacion TiempoDePreparacion) {
         this.tiempo_preparacion = tiempo_preparacion;
     }
 
-    public String getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
@@ -100,11 +101,11 @@ public class Receta {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Receta receta = (Receta) o;
-        return id == receta.id && Double.compare(tiempo_preparacion, receta.tiempo_preparacion) == 0 && Objects.equals(titulo, receta.titulo) && Objects.equals(categoria, receta.categoria) && Objects.equals(imagen, receta.imagen) && Objects.equals(ingredientes, receta.ingredientes) && Objects.equals(descripcion, receta.descripcion);
+        return id == receta.id && Objects.equals(titulo, receta.titulo) && tiempo_preparacion == receta.tiempo_preparacion && categoria == receta.categoria && Objects.equals(imagen, receta.imagen) && Objects.equals(ingredientes, receta.ingredientes) && Objects.equals(descripcion, receta.descripcion) && Objects.equals(pasos, receta.pasos);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion);
+        return Objects.hash(id, titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos);
     }
 }

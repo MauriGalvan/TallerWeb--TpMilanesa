@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Categoria;
 import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.ServicioReceta;
+import com.tallerwebi.dominio.TiempoDePreparacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,30 +37,56 @@ public class ControladorReceta {
         ModelMap modelo = new ModelMap();
         List<Receta> recetas;
 
-        double tiempoDouble = 0.0;
+//        double tiempoDouble = 0.0;
 
-        if (tiempo != null && !tiempo.equals("-")){
-            switch(tiempo){
-                case "10min":
-                    tiempoDouble = 10.0;
-                    break;
-                case "30min":
-                    tiempoDouble = 30.0;
-                    break;
-                case "60min":
-                    tiempoDouble = 60.0;
-                    break;
-            }
-        }
+//        if (tiempo != null && !tiempo.equals("-")){
+//            switch(tiempo){
+//                case "10min":
+//                    tiempoDouble = 10.0;
+//                    break;
+//                case "20min":
+//                    tiempoDouble = 20.0;
+//                    break;
+//                case "30min":
+//                    tiempoDouble = 30.0;
+//                    break;
+//                case "60min":
+//                    tiempoDouble = 60.0;
+//                    break;
+//            }
+//        }
+
+        Categoria categoriaEnum = null;
+        TiempoDePreparacion tiempoEnum = null;
 
         if (categoria != null && !categoria.equals("todos")) {
-            if (tiempoDouble > 0.0){
-                recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempoDouble);
-            } else{
-                recetas = servicioReceta.getRecetasPorCategoria(categoria);
+            categoriaEnum = Categoria.valueOf(categoria);
+        }
+
+        if (tiempo != null && !tiempo.equals("-")) {
+            tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
+        }
+
+//        if (categoria != null && !categoria.equals("todos")) {
+//            if (tiempoDouble > 0.0){
+//                recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempoDouble);
+//            } else{
+//                recetas = servicioReceta.getRecetasPorCategoria(categoria);
+//            }
+//        } else if (tiempoDouble > 0.0){
+//            recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoDouble);
+//        } else {
+//            recetas = servicioReceta.getTodasLasRecetas();
+//        }
+
+        if (categoriaEnum != null){
+            if (tiempoEnum != null){
+                recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoriaEnum, tiempoEnum);
+            } else {
+                recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
             }
-        } else if (tiempoDouble > 0.0){
-            recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoDouble);
+        } else if (tiempoEnum != null){
+            recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoEnum);
         } else {
             recetas = servicioReceta.getTodasLasRecetas();
         }

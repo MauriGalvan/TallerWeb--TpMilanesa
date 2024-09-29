@@ -12,9 +12,9 @@ public interface RepositorioReceta {
 
     Receta getRecetaPorId(int id);
 
-    List<Receta> getRecetasPorCategoria(String categoria);
+    List<Receta> getRecetasPorCategoria(Categoria categoria);
 
-    List<Receta> getRecetasPorTiempoDePreparacion(double tiempo);
+    List<Receta> getRecetasPorTiempoDePreparacion(TiempoDePreparacion tiempo);
 
-    List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempo);
+    List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(Categoria categoria, TiempoDePreparacion tiempo);
 }

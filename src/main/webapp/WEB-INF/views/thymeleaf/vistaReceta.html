@@ -39,17 +39,18 @@
             </label>
             <select id="time" name="tiempo" th:value="${tiempoSeleccionado}">
                 <option value="-" th:selected="${tiempoSeleccionado == '-'}">-</option>
-                <option value="10min" th:selected="${tiempoSeleccionado == '10min'}">10min</option>
-                <option value="30min" th:selected="${tiempoSeleccionado == '30min'}">30min</option>
-                <option value="60min" th:selected="${tiempoSeleccionado == '60min'}">1h</option>
+                <option value="DIEZ_MIN" th:selected="${tiempoSeleccionado == 'DIEZ_MIN'}">10min</option>
+                <option value="VEINTE_MIN" th:selected="${tiempoSeleccionado == 'VEINTE_MIN'}">20min</option>
+                <option value="TREINTA_MIN" th:selected="${tiempoSeleccionado == 'TREINTA_MIN'}">30min</option>
+                <option value="UNA_HORA" th:selected="${tiempoSeleccionado == 'UNA_HORA'}">1h</option>
             </select>
             <label for="categorias">
                 Categoría
             </label>
             <select id="categorias" name="categoria" th:value="${categoriaSeleccionada}">
                 <option value="todos" th:selected="${categoriaSeleccionada == 'todos'}">Todos</option>
-                <option value="desayuno" th:selected="${categoriaSeleccionada == 'desayuno'}">Desayuno/Merienda</option>
-                <option value="almuerzo" th:selected="${categoriaSeleccionada == 'almuerzo'}">Almuerzo/Cena</option>
+                <option value="DESAYUNO_MERIENDA" th:selected="${categoriaSeleccionada == 'DESAYUNO_MERIENDA'}">Desayuno/Merienda</option>
+                <option value="ALMUERZO_CENA" th:selected="${categoriaSeleccionada == 'ALMUERZO_CENA'}">Almuerzo/Cena</option>
             </select>
             <button type="submit">Filtrar</button>
         </form>

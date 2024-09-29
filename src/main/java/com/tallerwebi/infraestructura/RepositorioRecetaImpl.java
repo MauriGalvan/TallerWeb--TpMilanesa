@@ -1,7 +1,9 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.Categoria;
 import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.RepositorioReceta;
+import com.tallerwebi.dominio.TiempoDePreparacion;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -55,7 +57,7 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     }
 
     @Override
-    public List<Receta> getRecetasPorCategoria(String categoria){
+    public List<Receta> getRecetasPorCategoria(Categoria categoria){
         String hql = "FROM Receta r WHERE r.categoria = :categoria";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("categoria", categoria);
@@ -63,7 +65,7 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     }
 
     @Override
-    public List<Receta> getRecetasPorTiempoDePreparacion(double tiempo) {
+    public List<Receta> getRecetasPorTiempoDePreparacion(TiempoDePreparacion tiempo) {
         String hql = "FROM Receta r WHERE r.tiempo_preparacion = :tiempo";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("tiempo", tiempo);
@@ -71,7 +73,7 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     }
 
     @Override
-    public List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempo) {
+    public List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(Categoria categoria, TiempoDePreparacion tiempo) {
         String hql = "FROM Receta r WHERE r.tiempo_preparacion = :tiempo AND r.categoria = :categoria";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("tiempo", tiempo);
