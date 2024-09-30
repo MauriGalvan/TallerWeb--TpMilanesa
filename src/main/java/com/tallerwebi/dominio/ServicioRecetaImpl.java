@@ -28,17 +28,17 @@ public class ServicioRecetaImpl implements ServicioReceta {
     }
 
     @Override
-    public List<Receta> getRecetasPorCategoria(String categoria) {
+    public List<Receta> getRecetasPorCategoria(Categoria categoria) {
         return this.repositorioReceta.getRecetasPorCategoria(categoria);
     }
 
     @Override
-    public List<Receta> getRecetasPorTiempoDePreparacion(double tiempoPreparacion) {
+    public List<Receta> getRecetasPorTiempoDePreparacion(TiempoDePreparacion tiempoPreparacion) {
         return this.repositorioReceta.getRecetasPorTiempoDePreparacion(tiempoPreparacion);
     }
 
     @Override
-    public List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempoPreparacion) {
+    public List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(Categoria categoria, TiempoDePreparacion tiempoPreparacion) {
         return this.repositorioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempoPreparacion);
     }
 

@@ -1,7 +1,9 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.Categoria;
 import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.RepositorioReceta;
+import com.tallerwebi.dominio.TiempoDePreparacion;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,8 +44,8 @@ public class RepositorioRecetaImplTest {
     @Transactional
     public void dadoQueExisteUnRepositorioRecetaCuandoGuardoUnaRecetaEntoncesLoEncuentroEnLaBaseDeDatos(){
         String titulo = "Milanesa napolitana";
-        double tiempo_preparacion = 1.0;
-        String categoria = "almuerzo";
+        TiempoDePreparacion tiempo_preparacion = TiempoDePreparacion.TREINTA_MIN;
+        Categoria categoria = Categoria.ALMUERZO_CENA;
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
         String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";
@@ -64,10 +66,10 @@ public class RepositorioRecetaImplTest {
     @Test
     @Transactional
     public void dadoQueExisteUnRepositorioRecetaCuandoGuardoVariasRecetasEntoncesLasEncuentroEnLaBaseDeDatos(){
-        Receta receta1 = new Receta("Tarta de jamón y queso", 1.5, "almuerzo",
+        Receta receta1 = new Receta("Tarta de jamón y queso", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
                 "https://i.postimg.cc/tarta.jpg", "Jamón, Queso, Tapa pascualina, Huevo",
                 "Deliciosa tarta de jamón y queso.", ".");
-        Receta receta2 = new Receta("Ensalada Cesar", 0.5, "cena",
+        Receta receta2 = new Receta("Ensalada Cesar", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
                 "https://i.postimg.cc/cesar.jpg", "Lechuga, Pollo, Croutones, Queso",
                 "Fresca ensalada con aderezo cesar.", ".");
 
@@ -86,7 +88,7 @@ public class RepositorioRecetaImplTest {
     @Test
     @Transactional
     public void dadoQueExisteUnaRecetaCuandoLaEliminoEntoncesYaNoSeEncuentraEnLaBaseDeDatos(){
-        Receta receta = new Receta("Empanadas de carne", 1.0, "almuerzo",
+        Receta receta = new Receta("Empanadas de carne", TiempoDePreparacion.UNA_HORA, Categoria.ALMUERZO_CENA,
                 "https://i.postimg.cc/empanada.jpg", "Carne, Masa de empanada, Cebolla, Pimentón",
                 "Empanadas caseras de carne.", ".");
 

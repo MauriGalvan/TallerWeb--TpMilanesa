@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Categoria;
 import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.ServicioReceta;
+import com.tallerwebi.dominio.TiempoDePreparacion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,8 +32,8 @@ public class ControladorDetalleTest {
         //DADO
         int id = 1;
         String titulo = "Milanesa napolitana";
-        double tiempo_preparacion = 1.0;
-        String categoria = "almuerzo";
+        TiempoDePreparacion tiempo_preparacion = TiempoDePreparacion.TREINTA_MIN;
+        Categoria categoria = Categoria.ALMUERZO_CENA;
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
         String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";

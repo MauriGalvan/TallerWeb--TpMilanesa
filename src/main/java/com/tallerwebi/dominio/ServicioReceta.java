@@ -8,11 +8,11 @@ public interface ServicioReceta {
 
     void guardarReceta(Receta receta);
 
-    List<Receta> getRecetasPorCategoria(String categoria);
+    List<Receta> getRecetasPorCategoria(Categoria categoria);
 
-    List<Receta> getRecetasPorTiempoDePreparacion(double tiempoPreparacion);
+    List<Receta> getRecetasPorTiempoDePreparacion(TiempoDePreparacion tiempoPreparacion);
 
-    List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(String categoria, double tiempoPreparacion);
+    List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(Categoria categoria, TiempoDePreparacion tiempoPreparacion);
 
     Receta getUnaRecetaPorId(int id);
 
