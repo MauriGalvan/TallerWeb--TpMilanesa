@@ -58,7 +58,7 @@
     </section>
 
     <section class="buscar-por-titulo">
-        <form method="get" th:action="@{/buscar-receta-titulo}">
+        <form method="post" th:action="@{/buscar-receta-titulo}">
             <label for="titulo">Buscar por título</label>
             <input type="text" id="titulo" name="titulo" placeholder="Buscar recetas" th:value="${tituloBuscado}"/>
             <button type="submit">Buscar</button>

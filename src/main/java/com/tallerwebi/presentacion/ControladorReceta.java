@@ -7,6 +7,7 @@ import com.tallerwebi.dominio.TiempoDePreparacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,7 @@ public class ControladorReceta {
         this.servicioReceta = servicioReceta;
     }
 
-    @RequestMapping("/buscar-receta-titulo")
+    @PostMapping("/buscar-receta-titulo")
     public ModelAndView buscarRecetasPorTitulo(
             @RequestParam(value = "titulo", required = false) String titulo) {
 
@@ -47,6 +48,7 @@ public class ControladorReceta {
 
         return new ModelAndView("vistaReceta", modelo);
     }
+
 
 
     @RequestMapping("/vista-receta")
