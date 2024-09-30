@@ -1,56 +1,72 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Detalle Receta</title>
 
-    <title>Detalle Receta</title>
+  <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+  <link rel="stylesheet" th:href="@{/css/detalleReceta.css}">
+</head>
 
-    <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
-    <link rel="stylesheet" th:href="@{/css/detalleReceta.css}">
-    <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
+<body>
+<nav>
+  <div class="logo">
+    <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
+  </div>
+  <section class="botones">
+    <button type="button" class="recetas">
+      <a th:href="@{/vista-receta}" class="link-receta">Recetas</a>
+    </button>
+    <button type="button" class="planificador" th:onclick="mostrarPopup()">
+      Planificador
+    </button>
+    <button type="button" class="listaCompras" th:onclick="mostrarPopup()">
+      Lista de compras
+    </button>
+    <button type="button" class="perfil" th:onclick="mostrarPopup()">
+      Perfil
+    </button>
+  </section>
+</nav>
 
-  </head>
+<main>
+  <h1 th:text="${unaReceta.titulo}">Nombre de la Receta</h1>
 
-  <body>
-  <nav>
-    <div class="logo">
-      <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
+  <div class="contenido">
+    <div class="imagen">
+      <img th:src="${unaReceta.imagen}" alt="Foto de la comida">
     </div>
-    <section class="botones">
-      <button type="button" class="recetas">
-        <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
-          Recetas
-        </a>
-      </button>
-      <button type="button" class="planificador" onclick="mostrarPopup()">
-        Planificador
-      </button>
-      <button type="button" class="listaCompras" onclick="mostrarPopup()">
-        Lista de compras
-      </button>
-      <button type="button" class="perfil" onclick="mostrarPopup()">
-        Perfil
-      </button>
-    </section>
-  </nav>
-  <main>
-    <h1 th:text="${unaReceta.titulo}">Nombre de la Receta</h1>
-    <div class="contenido">
-      <div class="imagen">
-        <img th:src="${unaReceta.imagen}" alt="Foto de la comida">
-      </div>
-      <div class="ingredientes">
-        <h2>INGREDIENTES</h2>
-        <ul>
-          <li th:each="ingrediente : ${unaReceta.ingredientes}" th:text="${ingrediente}">Ingrediente</li>
-        </ul>
-      </div>
-      <div class="instructiones">
-        <h2>PREPARACIÓN</h2>
-          <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
-      </div>
+    <div class="ingredientes">
+      <h2>INGREDIENTES</h2>
+      <ul>
+        <li th:each="ingrediente : ${unaReceta.ingredientes}" th:text="${ingrediente}">Ingrediente</li>
+      </ul>
     </div>
-  </main>
-  </body>
+    <div class="instrucciones">
+      <h2>PREPARACIÓN</h2>
+      <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
+    </div>
+
+    <form th:action="@{/confirmarEliminarReceta}" method="post" >
+      <input type="hidden" name="id" th:value="${unaReceta.id}" />
+      <button type="submit">Eliminar Receta</button>
+    </form>
+
+    <div th:if="${mostrarConfirmacion}">
+      <p>¿Estás seguro de que deseas eliminar esta receta?</p>
+      <form th:action="@{/eliminarReceta}" method="post" accept-charset="UTF-8">
+        <input type="hidden" name="id" th:value="${unaReceta.id}" />
+        <input type="hidden" name="titulo" th:value="${unaReceta.titulo}" />
+        <input type="hidden" name="imagen" th:value="${unaReceta.imagen}" />
+        <button type="submit">Sí, eliminar</button>
+      </form>
+      <form th:action="@{/detalleReceta}" method="get" accept-charset="UTF-8">
+        <button type="submit">Cancelar</button>
+      </form>
+    </div>
+  </div>
+</main>
+
+</body>
 </html>

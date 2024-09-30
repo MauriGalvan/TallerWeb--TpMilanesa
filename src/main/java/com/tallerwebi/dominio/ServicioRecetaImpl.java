@@ -3,6 +3,7 @@ package com.tallerwebi.dominio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,4 +47,12 @@ public class ServicioRecetaImpl implements ServicioReceta {
     public Receta getUnaRecetaPorId(int id) {
         return this.repositorioReceta.getRecetaPorId(id);
     }
+
+    @Transactional
+    @Override
+    public void eliminarReceta(Receta receta) {
+        this.repositorioReceta.eliminar(receta);
+    }
+
+
 }

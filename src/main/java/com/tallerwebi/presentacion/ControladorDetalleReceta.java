@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,11 +20,30 @@ public class ControladorDetalleReceta {
         this.servicioReceta = servicioReceta;
     }
 
+
     @RequestMapping("/detalleReceta")
     public ModelAndView mostrarDetalleReceta(int id) {
         ModelMap modelo = new ModelMap();
-        Receta r = servicioReceta.getUnaRecetaPorId(id);
-        modelo.put("unaReceta", r);
+        Receta receta = servicioReceta.getUnaRecetaPorId(id);
+        modelo.put("unaReceta", receta);
         return new ModelAndView("detalleReceta", modelo);
     }
+
+
+    @PostMapping("/confirmarEliminarReceta")
+    public ModelAndView confirmarEliminarReceta(int id) {
+        ModelMap modelo = new ModelMap();
+        Receta receta = servicioReceta.getUnaRecetaPorId(id);
+        modelo.put("unaReceta", receta);
+        modelo.put("mostrarConfirmacion", true);
+        return new ModelAndView("detalleReceta", modelo);
+    }
+
+    @PostMapping("/eliminarReceta")
+    public ModelAndView eliminarReceta(@ModelAttribute Receta receta) {
+        servicioReceta.eliminarReceta(receta);
+        return new ModelAndView("redirect:/vista-receta");
+    }
+
+
 }

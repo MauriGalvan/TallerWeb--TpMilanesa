@@ -15,4 +15,6 @@ public interface ServicioReceta {
     List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(Categoria categoria, TiempoDePreparacion tiempoPreparacion);
 
     Receta getUnaRecetaPorId(int id);
+
+    void eliminarReceta(Receta receta);
 }

@@ -80,4 +80,6 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         query.setParameter("categoria", categoria);
         return query.getResultList();
     }
+
+
 }
