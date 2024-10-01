@@ -62,9 +62,45 @@
         <button type="submit">Sí, eliminar</button>
       </form>
       <form th:action="@{/detalleReceta}" method="get" accept-charset="UTF-8">
+        <input type="hidden" name="id" th:value="${unaReceta.id}" />
         <button type="submit">Cancelar</button>
       </form>
     </div>
+
+    <button type="button" onclick="document.getElementById('modalModificar').style.display='block'">Modificar Receta</button>
+
+    <div id="modalModificar" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="document.getElementById('modalModificar').style.display='none'">&times;</span>
+
+        <h2>Modificar Receta</h2>
+        <form th:action="@{/modificarReceta}" method="post">
+          <input type="hidden" name="id" th:value="${unaReceta.id}" />
+
+          <label for="titulo">Título</label>
+          <input type="text" id="titulo" name="titulo" th:value="${unaReceta.titulo}" />
+
+          <label for="ingredientes">Ingredientes</label>
+          <textarea id="ingredientes" name="ingredientes" rows="4" th:text="${unaReceta.ingredientes}"></textarea>
+
+          <label for="pasos">Pasos</label>
+          <textarea id="pasos" name="pasos" rows="4" th:text="${unaReceta.pasos}"></textarea>
+
+          <label for="imagen">Imagen URL</label>
+          <input type="text" id="imagen" name="imagen" th:value="${unaReceta.imagen}" />
+
+          <div class="form-buttons">
+            <button type="submit">Guardar Cambios</button>
+            <button type="button" onclick="document.getElementById('modalModificar').style.display='none'">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+
+
+
   </div>
 </main>
 

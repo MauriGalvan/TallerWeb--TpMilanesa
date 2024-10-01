@@ -1,44 +1,46 @@
+/* Mantén tu estilo base del body */
 body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 20px;
-      }
-
-.recipe-card {
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        overflow: hidden;
-        max-width: 600px;
-        margin: 0 auto;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
 }
 
-      .recipe-header {
-        background-color: #c1d9a3;
-        color: white;
-        padding: 15px;
-        font-size: 24px;
-      }
+.recipe-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.recipe-header {
+    background-color: #c1d9a3;
+    color: white;
+    padding: 15px;
+    font-size: 24px;
+}
+
 .contenido {
-        padding: 20px;
-      }
+    padding: 20px;
+}
 
 .imagen {
-        text-align: center;
-        margin-bottom: 20px;
-      }
+    text-align: center;
+    margin-bottom: 20px;
+}
 
 .imagen img {
-        max-width: 100%;
-        border-radius: 5px;
-      }
+    max-width: 100%;
+    border-radius: 5px;
+}
 
 .ingredientes, .instructiones {
-        background-color: #ffae6a;
-        border-radius: 5px;
-        padding: 15px;
-        margin-bottom: 20px;
-      }
+    background-color: #ffae6a;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
 
 .confirmacion-eliminacion {
     background-color: #ffdddd;
@@ -56,20 +58,116 @@ body {
     text-align: center;
 }
 
-
 h2 {
-        color: #4a4a4a;
-        margin-top: 0;
-      }
+    color: #4a4a4a;
+    margin-top: 0;
+}
 
 ul, ol {
-        margin: 0;
-        padding-left: 20px;
-      }
+    margin: 0;
+    padding-left: 20px;
+}
 
 .footer {
-        text-align: center;
-        padding: 10px;
-        font-size: 14px;
-        color: #666;
-  }
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilo del formulario dentro del modal */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #4a4a4a;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+button[type="button"] {
+    background-color: #dc3545;
+    color: white;
+}
+
+button[type="button"]:hover {
+    background-color: #c82333;
+}

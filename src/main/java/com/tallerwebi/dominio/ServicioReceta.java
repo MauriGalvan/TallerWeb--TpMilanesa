@@ -17,4 +17,6 @@ public interface ServicioReceta {
     Receta getUnaRecetaPorId(int id);
 
     void eliminarReceta(Receta receta);
+
+    void actualizarReceta(Receta receta);
 }

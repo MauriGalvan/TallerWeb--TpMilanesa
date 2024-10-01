@@ -54,5 +54,19 @@ public class ServicioRecetaImpl implements ServicioReceta {
         this.repositorioReceta.eliminar(receta);
     }
 
+    @Transactional
+    @Override
+    public void actualizarReceta(Receta receta) {
+        Receta recetaExistente = repositorioReceta.getRecetaPorId(receta.getId());
+        if (recetaExistente != null) {
+            recetaExistente.setTitulo(receta.getTitulo());
+            recetaExistente.setIngredientes(receta.getIngredientes());
+            recetaExistente.setPasos(receta.getPasos());
+            recetaExistente.setImagen(receta.getImagen());
+            repositorioReceta.guardar(recetaExistente);
+        }
+    }
+
+
 
 }

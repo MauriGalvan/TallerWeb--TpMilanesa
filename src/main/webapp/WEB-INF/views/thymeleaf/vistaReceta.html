@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Vista Receta</title>
+    <!-- Importar fuente moderna y Font Awesome para iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
     <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
 </head>
@@ -13,20 +16,19 @@
         <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
     </div>
     <section class="botones">
-            <button type="button" class="recetas">
-                <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
-                    Recetas
-                </a>
-            </button>
-        </a>
+        <button type="button" class="recetas">
+            <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
+                <i class="fas fa-utensils"></i> Recetas
+            </a>
+        </button>
         <button type="button" class="planificador" onclick="mostrarPopup()">
-            Planificador
+            <i class="fas fa-calendar-alt"></i> Planificador
         </button>
         <button type="button" class="listaCompras" onclick="mostrarPopup()">
-            Lista de compras
+            <i class="fas fa-shopping-cart"></i> Lista de compras
         </button>
         <button type="button" class="perfil" onclick="mostrarPopup()">
-            Perfil
+            <i class="fas fa-user"></i> Perfil
         </button>
     </section>
 </nav>
@@ -65,7 +67,5 @@
         </article>
     </section>
 </main>
-<footer>
-</footer>
 </body>
 </html>
