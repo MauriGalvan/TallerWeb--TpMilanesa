@@ -18,12 +18,16 @@
                     Recetas
                 </a>
             </button>
-        </a>
-        <button type="button" class="planificador" onclick="mostrarPopup()">
-            Planificador
+
+        <button type="button" class="recetas">
+            <a href="http://localhost:8080/spring/vista-planificador" class="link-receta">
+                Planificador
+            </a>
         </button>
         <button type="button" class="listaCompras" onclick="mostrarPopup()">
-            Lista de compras
+
+                Lista de compras
+
         </button>
         <button type="button" class="perfil" onclick="mostrarPopup()">
             Perfil
@@ -56,7 +60,7 @@
     </section>
     <section class="recetas">
         <article th:each="receta : ${todasLasRecetas}">
-            <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta">
+            <a th:href="@{/detalleReceta(id=${receta.id})}" class="receta">
                 <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>
                 <p class="desc" th:text="${receta.descripcion}">Descripción</p>
                 <img class="foto" th:src="${receta.imagen}" alt="Imagen receta">

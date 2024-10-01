@@ -26,4 +26,6 @@ public class ControladorDetalleReceta {
         modelo.put("unaReceta", r);
         return new ModelAndView("detalleReceta", modelo);
     }
+
+
 }
