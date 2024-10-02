@@ -34,6 +34,7 @@
 </nav>
 <main>
     <h1>Recetas</h1>
+
     <section class="filtros">
         <form method="post">
             <label for="time">
@@ -57,7 +58,22 @@
             <button type="submit">Filtrar</button>
         </form>
     </section>
-    <section class="recetas">
+
+    <section class="buscar-por-titulo">
+        <form method="post" th:action="@{/buscar-receta-titulo}">
+            <label for="titulo">Buscar por título</label>
+            <input type="text" id="titulo" name="titulo" placeholder="Buscar recetas" th:value="${tituloBuscado}"/>
+            <button type="submit">Buscar</button>
+        </form>
+    </section>
+
+
+    <section class="mensaje-error" th:if="${mensajeError}">
+        <p th:text="${mensajeError}" style="color: red; font-weight: bold;"></p>
+    </section>
+
+
+    <section class="recetas" th:if="${todasLasRecetas != null && !#lists.isEmpty(todasLasRecetas)}">
         <article th:each="receta : ${todasLasRecetas}">
             <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta">
                 <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>

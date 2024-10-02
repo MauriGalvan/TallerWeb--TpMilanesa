@@ -19,4 +19,6 @@ public interface ServicioReceta {
     void eliminarReceta(Receta receta);
 
     void actualizarReceta(Receta receta);
+
+    List<Receta> buscarRecetasPorTitulo(String titulo);
 }

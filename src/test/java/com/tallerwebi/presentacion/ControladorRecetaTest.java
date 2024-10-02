@@ -94,4 +94,23 @@ public class ControladorRecetaTest {
         assertThat(recetas.get(0).getCategoria(), equalTo(Categoria.ALMUERZO_CENA));
         assertThat(recetas.get(1).getCategoria(), equalTo(Categoria.ALMUERZO_CENA));
     }
+
+    @Test
+    public void QueRetorneRecetasCuandoSeBuscaPorTitulo() {
+        // Dado
+        String tituloBuscado = "Milanesa";
+        List<Receta> recetasMock = new ArrayList<>();
+        recetasMock.add(new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso."));
+
+        // Cuando
+        when(servicioRecetaMock.buscarRecetasPorTitulo(tituloBuscado)).thenReturn(recetasMock);
+        ModelAndView modelAndView = controladorReceta.buscarRecetasPorTitulo(tituloBuscado);
+
+        // Entonces
+        List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
+        assertThat(recetas, hasSize(1));
+        assertThat(recetas.get(0).getTitulo(), containsString(tituloBuscado));
+    }
+
 }

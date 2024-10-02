@@ -81,5 +81,13 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         return query.getResultList();
     }
 
+    @Override
+    public List<Receta> buscarRecetasPorTitulo(String titulo) {
+        String hql = "FROM Receta r WHERE lower(r.titulo) LIKE :titulo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
+        return query.getResultList();
+    }
+
 
 }

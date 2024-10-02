@@ -35,7 +35,8 @@ body {
     border-radius: 5px;
 }
 
-.ingredientes, .instructiones {
+.ingredientes,
+.instructiones {
     background-color: #ffae6a;
     border-radius: 5px;
     padding: 15px;
@@ -77,7 +78,7 @@ ul, ol {
 
 /* Estilos para el modal */
 .modal {
-    display: none;
+    display: none; /* Oculto por defecto */
     position: fixed;
     z-index: 1;
     left: 0;
@@ -164,10 +165,61 @@ button[type="submit"]:hover {
 }
 
 button[type="button"] {
-    background-color: #dc3545;
+    background-color: #007bff;
     color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 button[type="button"]:hover {
-    background-color: #c82333;
+    background-color: #0056b3;
+}
+
+/* Estilo para el checkbox invisible que controlará el modal */
+.modal-checkbox {
+    display: none; /* Ocultar el checkbox */
+}
+
+/* Mostrar el modal si el checkbox está marcado */
+.modal-checkbox:checked + .modal {
+    display: flex;
+}
+
+/* Estilos para los botones de eliminación y modificación */
+.contenedor-botones {
+    display: flex;
+    flex-direction: column; /* Asegura que los botones estén en columnas */
+    align-items: flex-start; /* Alinea los botones al inicio */
+    gap: 10px; /* Espacio entre los botones */
+    margin-top: 20px; /* Añade un margen superior si es necesario */
+}
+
+.btn-eliminar {
+    background-color: #dc3545; /* Color rojo para eliminar */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hover del botón de eliminar */
+.btn-eliminar:hover {
+    background-color: #c82333; /* Color de hover */
+}
+
+.btn-modificar {
+    background-color: #007bff; /* Color azul para modificar */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hover del botón de modificar */
+.btn-modificar:hover {
+    background-color: #0056b3; /* Color de hover */
 }
