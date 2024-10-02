@@ -8,6 +8,8 @@ public interface RepositorioReceta {
 
     void eliminar(Receta receta);
 
+    void actualizar(Receta receta);
+
     List<Receta> getRecetas();
 
     Receta getRecetaPorId(int id);

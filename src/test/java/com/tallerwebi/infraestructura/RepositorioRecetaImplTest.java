@@ -110,6 +110,29 @@ public class RepositorioRecetaImplTest {
         assertThat(recetas.size(), equalTo(0));
     }
 
+    @Test
+    @Transactional
+    public void dadoQueExisteUnaRecetaCuandoLaModificoEntoncesLosCambiosSeReflejanEnLaBaseDeDatos() {
+        Receta receta = new Receta("Pizza Margarita", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/pizza.jpg", "Harina, Queso, Tomate, Albahaca",
+                "Pizza clásica italiana", ".");
+
+        this.repositorioReceta.guardar(receta);
+
+        receta.setTitulo("Pizza Napolitana");
+        receta.setIngredientes("Harina, Queso, Tomate, Anchoas");
+        receta.setDescripcion("Pizza napolitana con anchoas");
+
+        this.repositorioReceta.actualizar(receta);
+
+        Receta recetaModificada = this.repositorioReceta.getRecetaPorId(receta.getId());
+
+        assertThat(recetaModificada.getTitulo(), equalTo("Pizza Napolitana"));
+        assertThat(recetaModificada.getIngredientes(), equalTo("Harina, Queso, Tomate, Anchoas"));
+        assertThat(recetaModificada.getDescripcion(), equalTo("Pizza napolitana con anchoas"));
+    }
+
+
 }
 
 

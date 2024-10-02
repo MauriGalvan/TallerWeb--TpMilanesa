@@ -38,6 +38,10 @@
 <main>
   <h1 th:text="${unaReceta.titulo}">Nombre de la Receta</h1>
 
+  <div th:if="${mensajeExito}" class="mensaje-exito">
+    <p th:text="${mensajeExito}" style="color: green; font-weight: bold;"></p>
+  </div>
+
   <div class="contenido">
     <div class="imagen">
       <img th:src="${unaReceta.imagen}" alt="Foto de la comida">
@@ -94,9 +98,6 @@
         </form>
       </div>
     </div>
-
-
-
   </div>
 </main>
 

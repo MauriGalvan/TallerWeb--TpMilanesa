@@ -123,4 +123,52 @@ public class ServicioRecetaTest {
         assertEquals(1, recetasFiltradas.size());
     }
 
+    @Test
+    public void queSePuedaBuscarRecetasPorTituloYSeEncuentrenLasCorrectas() {
+        // Definir algunos títulos y recetas
+        String tituloBuscado = "Milanesa";
+        Receta receta1 = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso, Tapa pascualina, Huevo, Tomate",
+                "Esto es una descripción de mila napo", ".");
+        Receta receta2 = new Receta("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/mila-papas.jpg", "Carne, Pan rallado, Papas",
+                "Milanesa con guarnición de papas fritas", ".");
+        Receta receta3 = new Receta("Ensalada Cesar", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/cesar.jpg", "Lechuga, Pollo, Croutones, Queso",
+                "Fresca ensalada con aderezo cesar.", ".");
+
+        List<Receta> recetasFiltradas = new ArrayList<>();
+        recetasFiltradas.add(receta1);
+        recetasFiltradas.add(receta2);
+
+        Mockito.when(repositorioReceta.buscarRecetasPorTitulo(tituloBuscado)).thenReturn(recetasFiltradas);
+
+        servicioReceta.guardarReceta(receta1);
+        servicioReceta.guardarReceta(receta2);
+        servicioReceta.guardarReceta(receta3);
+
+        List<Receta> recetasEncontradas = servicioReceta.buscarRecetasPorTitulo(tituloBuscado);
+
+        Mockito.verify(repositorioReceta, times(1)).buscarRecetasPorTitulo(tituloBuscado);
+
+        assertEquals(2, recetasEncontradas.size());
+
+        assertEquals(receta1, recetasEncontradas.get(0));
+        assertEquals(receta2, recetasEncontradas.get(1));
+    }
+
+    @Test
+    public void queSePuedaBuscarRecetasPorTituloYNoSeEncuentrenCoincidencias() {
+        String tituloBuscado = "Pizza";
+
+        Mockito.when(repositorioReceta.buscarRecetasPorTitulo(tituloBuscado)).thenReturn(new ArrayList<>());
+
+        List<Receta> recetasEncontradas = servicioReceta.buscarRecetasPorTitulo(tituloBuscado);
+
+        Mockito.verify(repositorioReceta, times(1)).buscarRecetasPorTitulo(tituloBuscado);
+
+        assertEquals(0, recetasEncontradas.size());
+    }
+
+
 }

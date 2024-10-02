@@ -36,6 +36,12 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         sessionFactory.getCurrentSession().delete(receta);
     }
 
+    @Override
+    public void actualizar(Receta receta) {
+
+        sessionFactory.getCurrentSession().update(receta);
+    }
+
 
     @Override
     public List<Receta> getRecetas() {
