@@ -6,7 +6,7 @@ public interface ServicioReceta {
 
     List<Receta> getTodasLasRecetas();
 
-    void guardarReceta(Receta receta);
+   Receta guardarReceta(Receta receta);
 
     List<Receta> getRecetasPorCategoria(Categoria categoria);
 

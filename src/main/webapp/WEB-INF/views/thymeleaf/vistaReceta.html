@@ -6,6 +6,7 @@
     <title>Vista Receta</title>
     <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
     <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
+
 </head>
 <body>
 <nav>
@@ -28,6 +29,14 @@
         <button type="button" class="perfil" onclick="mostrarPopup()">
             Perfil
         </button>
+
+        <button type="button" class="btn-cargar" >
+                <a href="http://localhost:8080/spring/crear-receta" class="link-receta">
+                    Cargar nueva receta
+                </a>
+        </button>
+
+
     </section>
 </nav>
 <main>
@@ -55,6 +64,8 @@
             <button type="submit">Filtrar</button>
         </form>
     </section>
+
+
     <section class="recetas">
         <article th:each="receta : ${todasLasRecetas}">
             <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta">
@@ -65,6 +76,10 @@
         </article>
     </section>
 </main>
+
+
+
+
 <footer>
 </footer>
 </body>

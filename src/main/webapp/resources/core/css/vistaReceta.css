@@ -39,9 +39,6 @@ main{
     /* el margen del nav, sino se sobreponen */
     margin-left: 16em;
 
-    .agregar-receta{
-
-    }
 
     h1{
     font-size: 3.5em;

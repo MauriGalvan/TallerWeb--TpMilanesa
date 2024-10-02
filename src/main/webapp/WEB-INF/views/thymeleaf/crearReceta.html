@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Receta</title>
+    <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+    <link rel="stylesheet" th:href="@{/css/crearReceta.css}">
+</head>
+<body>
+<nav>
+    <div class="logo">
+        <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
+    </div>
+    <section class="botones">
+        <button type="button" class="recetas">
+            <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
+                Recetas
+            </a>
+        </button>
+        </a>
+        <button type="button" class="planificador" onclick="mostrarPopup()">
+            Planificador
+        </button>
+        <button type="button" class="listaCompras" onclick="mostrarPopup()">
+            Lista de compras
+        </button>
+        <button type="button" class="perfil" onclick="mostrarPopup()">
+            Perfil
+        </button>
+
+    </section>
+</nav>
+<main>
+    <h1>Crea tu Receta!</h1>
+    <section>
+        <form action="#" th:action="@{/guardar-receta}"  method="POST" enctype="multipart/form-data" th:object="${receta}">
+            <label for="titulo">Título:</label>
+            <input th:field="*{titulo}" type="text" id="titulo" name="titulo" required><br>
+            <label for="tiempo">Tiempo de Preparación:</label>
+            <select th:field="*{tiempo_preparacion}" id="tiempo" name="tiempo">
+                <option value="">Seleccione..</option>
+                <option  value="TREINTA_MIN">30min</option>
+                <option  value="UNA_HORA">1h</option>
+            </select>
+            <br>
+            <label for="categoria">Categoría:</label>
+            <select  th:field="*{categoria}" id="categoria" name="categoria">
+                <option value="">Seleccione..</option>
+                <option value="DESAYUNO_MERIENDA">Desayuno/Merienda</option>
+                <option value="ALMUERZO_CENA">Almuerzo/Cena</option>
+                <option value="POSTRE">Postre</option>
+            </select>
+            <br>
+            <label for="ingredientes">Ingredientes:</label>
+            <textarea th:field="*{ingredientes}" id="ingredientes" name="ingredientes" required></textarea>
+
+            <br>
+            <label for="descripcion">Descripción:</label>
+            <textarea  th:field="*{descripcion}" id="descripcion" name="descripcion" required></textarea><br>
+
+            <label for="imagen">Imagen:</label>
+            <input th:field="*{imagen}" type="text" id="imagen" name="imagen" required><br>
+
+            <button id="btn_form" type="submit">Guardar Receta</button>
+        </form>
+
+    </section>
+</main>
+
+</body>
+</html>
