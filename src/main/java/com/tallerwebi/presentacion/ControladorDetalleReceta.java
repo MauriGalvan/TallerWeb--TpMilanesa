@@ -29,7 +29,6 @@ public class ControladorDetalleReceta {
         return new ModelAndView("detalleReceta", modelo);
     }
 
-
     @PostMapping("/confirmarEliminarReceta")
     public ModelAndView confirmarEliminarReceta(int id) {
         ModelMap modelo = new ModelMap();
@@ -44,22 +43,6 @@ public class ControladorDetalleReceta {
         servicioReceta.eliminarReceta(receta);
         return new ModelAndView("redirect:/vista-receta");
     }
-
-//    @RequestMapping("/modificarReceta")
-//    public ModelAndView modificarReceta(int id) {
-//        ModelMap modelo = new ModelMap();
-//        Receta receta = servicioReceta.getUnaRecetaPorId(id);
-//        modelo.put("receta", receta);
-//        return new ModelAndView("modificarReceta", modelo);
-//    }
-//
-//    @PostMapping("/actualizarReceta")
-//    public ModelAndView actualizarReceta(@ModelAttribute Receta receta) {
-//        servicioReceta.actualizarReceta(receta);
-//        ModelMap modelo = new ModelMap();
-//        modelo.put("mensaje", "La receta fue modificada correctamente.");
-//        return new ModelAndView("detalleReceta", modelo);
-//    }
 
     @PostMapping("/modificarReceta")
     public ModelAndView modificarReceta(@ModelAttribute Receta receta) {

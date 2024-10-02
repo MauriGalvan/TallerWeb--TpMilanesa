@@ -1,8 +1,53 @@
-/* Mantén tu estilo base del body */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 16em;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f8a488;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    margin-top: 20%;
+}
+
+
+.botones1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20%;
+    flex: 1;
+}
+
+.botones1 button {
+    border: none;
+    border-radius: 30px;
+    background-color: #fff4e6;
+    padding: 0.8em 2em;
+    font-size: 1em;
+    cursor: pointer;
+    color: #4a4a4a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.botones1 button:hover {
+    background-color: #ffb573;
+    transform: translateY(-2px);
 }
 
 .recipe-card {
@@ -37,8 +82,7 @@ body {
 
 .ingredientes,
 .instructiones {
-    background-color: #ffae6a;
-    border-radius: 5px;
+    background-color: #f8a488;    border-radius: 5px;
     padding: 15px;
     margin-bottom: 20px;
 }
@@ -76,9 +120,9 @@ ul, ol {
     color: #666;
 }
 
-/* Estilos para el modal */
+
 .modal {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -116,7 +160,7 @@ ul, ol {
     cursor: pointer;
 }
 
-/* Estilo del formulario dentro del modal */
+
 form {
     display: flex;
     flex-direction: column;
@@ -165,6 +209,59 @@ button[type="submit"]:hover {
 }
 
 button[type="button"] {
+    border: none;
+    border-radius: 30px;
+    background-color: #fff4e6;
+    padding: 0.8em 2em;
+    font-size: 1em;
+    cursor: pointer;
+    color: #4a4a4a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+
+}
+
+button[type="button"]:hover {
+    background-color: #ffb573;
+    transform: translateY(-2px);
+}
+
+
+.modal-checkbox {
+    display: none;
+}
+
+
+.modal-checkbox:checked + .modal {
+    display: flex;
+}
+
+
+.contenedor-botones {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-eliminar {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-eliminar:hover {
+    background-color: #c82333;
+}
+
+.btn-modificar {
     background-color: #007bff;
     color: white;
     padding: 10px 20px;
@@ -173,53 +270,6 @@ button[type="button"] {
     cursor: pointer;
 }
 
-button[type="button"]:hover {
-    background-color: #0056b3;
-}
-
-/* Estilo para el checkbox invisible que controlará el modal */
-.modal-checkbox {
-    display: none; /* Ocultar el checkbox */
-}
-
-/* Mostrar el modal si el checkbox está marcado */
-.modal-checkbox:checked + .modal {
-    display: flex;
-}
-
-/* Estilos para los botones de eliminación y modificación */
-.contenedor-botones {
-    display: flex;
-    flex-direction: column; /* Asegura que los botones estén en columnas */
-    align-items: flex-start; /* Alinea los botones al inicio */
-    gap: 10px; /* Espacio entre los botones */
-    margin-top: 20px; /* Añade un margen superior si es necesario */
-}
-
-.btn-eliminar {
-    background-color: #dc3545; /* Color rojo para eliminar */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* Hover del botón de eliminar */
-.btn-eliminar:hover {
-    background-color: #c82333; /* Color de hover */
-}
-
-.btn-modificar {
-    background-color: #007bff; /* Color azul para modificar */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-/* Hover del botón de modificar */
 .btn-modificar:hover {
-    background-color: #0056b3; /* Color de hover */
+    background-color: #0056b3;
 }

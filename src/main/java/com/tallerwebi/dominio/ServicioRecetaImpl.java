@@ -68,8 +68,6 @@ public class ServicioRecetaImpl implements ServicioReceta {
     }
 
 
-
-
     @Override
     public List<Receta> buscarRecetasPorTitulo(String titulo) {
         return repositorioReceta.buscarRecetasPorTitulo(titulo);

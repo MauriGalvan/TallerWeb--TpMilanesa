@@ -4,9 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Detalle Receta</title>
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
   <link rel="stylesheet" th:href="@{/css/detalleReceta.css}">
+  <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
+
 </head>
 
 <body>
@@ -14,18 +17,20 @@
   <div class="logo">
     <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
   </div>
-  <section class="botones">
+  <section class="botones1">
     <button type="button" class="recetas">
-      <a th:href="@{/vista-receta}" class="link-receta">Recetas</a>
+      <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
+        <i class="fas fa-utensils"></i> Recetas
+      </a>
     </button>
-    <button type="button" class="planificador" th:onclick="mostrarPopup()">
-      Planificador
+    <button type="button" class="planificador" onclick="mostrarPopup()">
+      <i class="fas fa-calendar-alt"></i> Planificador
     </button>
-    <button type="button" class="listaCompras" th:onclick="mostrarPopup()">
-      Lista de compras
+    <button type="button" class="listaCompras" onclick="mostrarPopup()">
+      <i class="fas fa-shopping-cart"></i> Lista de compras
     </button>
-    <button type="button" class="perfil" th:onclick="mostrarPopup()">
-      Perfil
+    <button type="button" class="perfil" onclick="mostrarPopup()">
+      <i class="fas fa-user"></i> Perfil
     </button>
   </section>
 </nav>
@@ -48,68 +53,11 @@
       <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
     </div>
 
-<!--    &lt;!&ndash; Checkbox que controla el modal de eliminación &ndash;&gt;-->
-<!--    <input type="checkbox" id="modalCheckbox" style="display: none;">-->
-
-<!--    &lt;!&ndash; Botón para activar el modal &ndash;&gt;-->
-<!--    <div class="contenedor-botones">-->
-<!--      <label for="modalCheckbox" class="btn-eliminar">Eliminar Receta</label>-->
-<!--      <button type="button" onclick="document.getElementById('modalModificar').style.display='block'">Modificar Receta</button>-->
-<!--    </div>-->
-
-
-<!--    &lt;!&ndash; Modal de confirmación &ndash;&gt;-->
-<!--    <div class="modal">-->
-<!--      <div class="modal-content">-->
-<!--        <span class="close" onclick="document.getElementById('modalCheckbox').checked=false">&times;</span>-->
-<!--        <h2>¿Estás seguro de que deseas eliminar esta receta?</h2>-->
-<!--        <form th:action="@{/eliminarReceta}" method="post" accept-charset="UTF-8">-->
-<!--          <input type="hidden" name="id" th:value="${unaReceta.id}" />-->
-<!--          <button type="submit">Sí, eliminar</button>-->
-<!--        </form>-->
-<!--        <label for="modalCheckbox" class="cancelar">Cancelar</label>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Botón para modificar la receta &ndash;&gt;-->
-<!--    <button type="button" onclick="document.getElementById('modalModificar').style.display='block'">Modificar Receta</button>-->
-
-<!--    &lt;!&ndash; Modal para modificar la receta &ndash;&gt;-->
-<!--    <div id="modalModificar" class="modal">-->
-<!--      <div class="modal-content">-->
-<!--        <span class="close" onclick="document.getElementById('modalModificar').style.display='none'">&times;</span>-->
-
-<!--        <h2>Modificar Receta</h2>-->
-<!--        <form th:action="@{/modificarReceta}" method="post" accept-charset="UTF-8">-->
-<!--          <input type="hidden" name="id" th:value="${unaReceta.id}" />-->
-
-<!--          <label for="titulo">Título</label>-->
-<!--          <input type="text" id="titulo" name="titulo" th:value="${unaReceta.titulo}" />-->
-
-<!--          <label for="ingredientes">Ingredientes</label>-->
-<!--          <textarea id="ingredientes" name="ingredientes" rows="4" th:text="${unaReceta.ingredientes}"></textarea>-->
-
-<!--          <label for="pasos">Pasos</label>-->
-<!--          <textarea id="pasos" name="pasos" rows="4" th:text="${unaReceta.pasos}"></textarea>-->
-
-<!--          <label for="imagen">Imagen URL</label>-->
-<!--          <input type="text" id="imagen" name="imagen" th:value="${unaReceta.imagen}" />-->
-
-<!--          <div class="form-buttons">-->
-<!--            <button type="submit">Guardar Cambios</button>-->
-<!--            <button type="button" onclick="document.getElementById('modalModificar').style.display='none'">Cancelar</button>-->
-<!--          </div>-->
-<!--        </form>-->
-<!--      </div>-->
-<!--    </div>-->
-
-    <!-- Botones para abrir los modales -->
     <div class="contenedor-botones">
       <label for="modalEliminar" class="btn-eliminar">Eliminar Receta</label>
       <label for="modalModificar" class="btn-modificar">Modificar Receta</label>
     </div>
 
-    <!-- Checkbox para controlar el modal de eliminar receta -->
     <input type="checkbox" id="modalEliminar" class="modal-checkbox">
     <div id="eliminarRecetaModal" class="modal">
       <div class="modal-content">
@@ -124,7 +72,6 @@
       </div>
     </div>
 
-    <!-- Checkbox para controlar el modal de modificar receta -->
     <input type="checkbox" id="modalModificar" class="modal-checkbox">
     <div id="modificarRecetaModal" class="modal">
       <div class="modal-content">

@@ -70,7 +70,7 @@ h2, p {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: #ffae6a;
+    background-color: #ffb68e;
     margin: 1em 15em;
     padding: 1em 2em;
     border-radius: 2em;
@@ -137,12 +137,58 @@ h2, p {
     text-decoration: underline;
 }
 
-footer {
+.buscar-por-titulo {
     text-align: center;
-    padding: 1em 0;
-    background-color: #f8a488;
+    margin: 2em 0;
+}
+
+.buscar-form {
+    display: inline-block;
+}
+
+.buscar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.buscar-input {
+    border: none;
+    padding: 0.5em 1em;
+    outline: none;
+    font-size: 1em;
+    flex-grow: 1;
+}
+
+.buscar-boton {
+    background-color: #ffb68e;
     color: white;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+    border: none;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.buscar-boton:hover {
+    background-color: #ff4500;
+}
+
+
+.filtros button {
+    background-color: #ffb68e;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.filtros-button:hover {
+    background-color: #ff4500;
 }

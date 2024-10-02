@@ -59,25 +59,6 @@ public class ControladorReceta {
         ModelMap modelo = new ModelMap();
         List<Receta> recetas;
 
-//        double tiempoDouble = 0.0;
-
-//        if (tiempo != null && !tiempo.equals("-")){
-//            switch(tiempo){
-//                case "10min":
-//                    tiempoDouble = 10.0;
-//                    break;
-//                case "20min":
-//                    tiempoDouble = 20.0;
-//                    break;
-//                case "30min":
-//                    tiempoDouble = 30.0;
-//                    break;
-//                case "60min":
-//                    tiempoDouble = 60.0;
-//                    break;
-//            }
-//        }
-
         Categoria categoriaEnum = null;
         TiempoDePreparacion tiempoEnum = null;
 
@@ -88,18 +69,6 @@ public class ControladorReceta {
         if (tiempo != null && !tiempo.equals("-")) {
             tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
         }
-
-//        if (categoria != null && !categoria.equals("todos")) {
-//            if (tiempoDouble > 0.0){
-//                recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempoDouble);
-//            } else{
-//                recetas = servicioReceta.getRecetasPorCategoria(categoria);
-//            }
-//        } else if (tiempoDouble > 0.0){
-//            recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoDouble);
-//        } else {
-//            recetas = servicioReceta.getTodasLasRecetas();
-//        }
 
         if (categoriaEnum != null){
             if (tiempoEnum != null){
