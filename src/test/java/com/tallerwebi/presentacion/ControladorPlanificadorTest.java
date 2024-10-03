@@ -41,7 +41,7 @@ public class ControladorPlanificadorTest {
     }
 
     @Test
-    public void QueRetorneUnaListaDeRecetasCategoriaDesayunoCuandoSePresionaElIconoMasEnLaVistaModal() {
+    public void QueRetorneUnaListaDeRecetasCategoriaDesayunoCuandoSePresionaElIconoMasEnDesayunoOMerienda() {
         // Dado
         List<Receta> recetasMock = new ArrayList<>();
         Receta desayuno = new Receta();
