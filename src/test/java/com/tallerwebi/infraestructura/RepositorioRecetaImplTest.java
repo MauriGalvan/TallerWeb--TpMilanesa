@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.persistence.Query;
@@ -41,6 +42,7 @@ public class RepositorioRecetaImplTest {
     }
 
     @Test
+    @Rollback
     @Transactional
     public void dadoQueExisteUnRepositorioRecetaCuandoGuardoUnaRecetaEntoncesLoEncuentroEnLaBaseDeDatos(){
         String titulo = "Milanesa napolitana";
@@ -64,6 +66,7 @@ public class RepositorioRecetaImplTest {
     }
 
     @Test
+    @Rollback
     @Transactional
     public void dadoQueExisteUnRepositorioRecetaCuandoGuardoVariasRecetasEntoncesLasEncuentroEnLaBaseDeDatos(){
         Receta receta1 = new Receta("Tarta de jamón y queso", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
@@ -86,6 +89,7 @@ public class RepositorioRecetaImplTest {
     }
 
     @Test
+    @Rollback
     @Transactional
     public void dadoQueExisteUnaRecetaCuandoLaEliminoEntoncesYaNoSeEncuentraEnLaBaseDeDatos(){
         Receta receta = new Receta("Empanadas de carne", TiempoDePreparacion.UNA_HORA, Categoria.ALMUERZO_CENA,
@@ -101,6 +105,7 @@ public class RepositorioRecetaImplTest {
     }
 
     @Test
+    @Rollback
     @Transactional
     public void dadoQueNoExistenRecetasCuandoConsultoEntoncesObtengoUnaListaVacia(){
         String hql = "FROM Receta";
@@ -111,6 +116,7 @@ public class RepositorioRecetaImplTest {
     }
 
     @Test
+    @Rollback
     @Transactional
     public void dadoQueExisteUnaRecetaCuandoLaModificoEntoncesLosCambiosSeReflejanEnLaBaseDeDatos() {
         Receta receta = new Receta("Pizza Margarita", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
@@ -132,6 +138,85 @@ public class RepositorioRecetaImplTest {
         assertThat(recetaModificada.getDescripcion(), equalTo("Pizza napolitana con anchoas"));
     }
 
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenDosRecetasCuandoBuscoPorCategoriaEntoncesObtengoSoloLasRecetasDeEsaCategoria() {
+        Receta receta1 = new Receta("Pasta Carbonara", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/pasta.jpg", "Pasta, Huevo, Queso", "Deliciosa pasta carbonara.", ".");
+        Receta receta2 = new Receta("Tarta de frutilla", TiempoDePreparacion.TREINTA_MIN, Categoria.DESAYUNO_MERIENDA,
+                "https://i.postimg.cc/tarta-frutilla.jpg", "Frutilla, Masa, Crema", "Tarta de frutilla casera.", ".");
+
+        this.repositorioReceta.guardar(receta1);
+        this.repositorioReceta.guardar(receta2);
+
+        List<Receta> recetas = this.repositorioReceta.getRecetasPorCategoria(Categoria.ALMUERZO_CENA);
+
+        assertThat(recetas.size(), equalTo(1));
+        assertThat(recetas.get(0), equalTo(receta1));
+        assertThat(recetas.get(0).getCategoria(), equalTo(Categoria.ALMUERZO_CENA));
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenDosRecetasCuandoBuscoPorTiempoDePreparacionEntoncesObtengoSoloLasQueCoincidenConElTiempo() {
+        Receta receta1 = new Receta("Sopa de verduras", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/sopa.jpg", "Zanahoria, Papa, Apio", "Sopa saludable.", ".");
+        Receta receta2 = new Receta("Budín de vainilla", TiempoDePreparacion.UNA_HORA, Categoria.DESAYUNO_MERIENDA,
+                "https://i.postimg.cc/budin.jpg", "Harina, Azúcar, Huevo", "Budín casero.", ".");
+
+        this.repositorioReceta.guardar(receta1);
+        this.repositorioReceta.guardar(receta2);
+
+        List<Receta> recetas = this.repositorioReceta.getRecetasPorTiempoDePreparacion(TiempoDePreparacion.VEINTE_MIN);
+
+        assertThat(recetas.size(), equalTo(1));
+        assertThat(recetas.get(0), equalTo(receta1));
+        assertThat(recetas.get(0).getTiempo_preparacion(), equalTo(TiempoDePreparacion.VEINTE_MIN));
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenRecetasCuandoBuscoPorCategoriaYTiempoDePreparacionEntoncesObtengoSoloLasCoincidentes() {
+        Receta receta1 = new Receta("Tortilla de papa", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/tortilla.jpg", "Papa, Huevo, Cebolla", "Clásica tortilla de papa.", ".");
+        Receta receta2 = new Receta("Helado de chocolate", TiempoDePreparacion.TREINTA_MIN, Categoria.DESAYUNO_MERIENDA,
+                "https://i.postimg.cc/helado.jpg", "Chocolate, Crema, Azúcar", "Helado casero.", ".");
+
+        this.repositorioReceta.guardar(receta1);
+        this.repositorioReceta.guardar(receta2);
+
+        List<Receta> recetas = this.repositorioReceta.getRecetasPorCategoriaYTiempoDePreparacion(Categoria.ALMUERZO_CENA, TiempoDePreparacion.TREINTA_MIN);
+
+        assertThat(recetas.size(), equalTo(1));
+        assertThat(recetas.get(0), equalTo(receta1));
+        assertThat(recetas.get(0).getCategoria(), equalTo(Categoria.ALMUERZO_CENA));
+        assertThat(recetas.get(0).getTiempo_preparacion(), equalTo(TiempoDePreparacion.TREINTA_MIN));
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenRecetasCuandoBuscoPorTituloEntoncesObtengoRecetasCuyoTituloCoincideParcialmente() {
+        Receta receta1 = new Receta("Tarta de manzana", TiempoDePreparacion.TREINTA_MIN, Categoria.DESAYUNO_MERIENDA,
+                "https://i.postimg.cc/tarta-manzana.jpg", "Manzana, Harina, Azúcar", "Tarta clásica de manzana.", ".");
+        Receta receta2 = new Receta("Carne al horno con papas", TiempoDePreparacion.UNA_HORA, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/carne-papas.jpg", "Carne, Papas, Cebolla", "Condimentalo como vos quieras", ".");
+        Receta receta3 = new Receta("Tarta de frutilla", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
+                "https://i.postimg.cc/tarta-frutilla.jpg", "Frutilla, Harina, Crema", "Tarta casera de frutilla.", ".");
+
+        this.repositorioReceta.guardar(receta1);
+        this.repositorioReceta.guardar(receta2);
+        this.repositorioReceta.guardar(receta3);
+
+        List<Receta> recetas = this.repositorioReceta.buscarRecetasPorTitulo("tarta");
+
+        assertThat(recetas.size(), equalTo(2));
+        assertThat(recetas.get(0).getTitulo().toLowerCase(), equalTo("tarta de manzana"));
+        assertThat(recetas.get(1).getTitulo().toLowerCase(), equalTo("tarta de frutilla"));
+    }
 
 }
 

@@ -33,6 +33,7 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
 
     @Override
     public void eliminar(Receta receta) {
+        
         sessionFactory.getCurrentSession().delete(receta);
     }
 
