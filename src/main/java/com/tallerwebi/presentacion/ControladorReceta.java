@@ -98,6 +98,24 @@ public class ControladorReceta {
         return new ModelAndView("vistaReceta", modelo);
     }
 
+    @RequestMapping(value = "/guardarReceta", method = RequestMethod.POST)
+    public ModelAndView guardarReceta(
+            @RequestParam("titulo") String titulo,
+            @RequestParam("pasos") String pasos,
+            @RequestParam("tiempoPreparacion") TiempoDePreparacion tiempoPreparacion,
+            @RequestParam("categoria") Categoria categoria,
+            @RequestParam("ingredientes") String ingredientes,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("imagen") String imagen) {
+
+        System.out.println("Título recibido: " + titulo);
+
+        Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen, ingredientes, descripcion, pasos);
+        servicioReceta.guardarReceta(nuevaReceta);
+
+        return new ModelAndView("redirect:/vista-receta");
+    }
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/vista-receta");

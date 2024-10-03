@@ -5,7 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Vista Receta</title>
     <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
-    <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
+    <script>
+        function mostrarPopup() {alert("Funcionalidad en desarrollo!");}
+        function mostrarModal() {
+            document.getElementById('modalReceta').style.display = 'block';
+        }
+        function cerrarModal() {
+            document.getElementById('modalReceta').style.display = 'none';
+        }
+    </script>
+    <style>
+        /* Estilos básicos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <nav>
@@ -53,8 +95,49 @@
                 <option value="ALMUERZO_CENA" th:selected="${categoriaSeleccionada == 'ALMUERZO_CENA'}">Almuerzo/Cena</option>
             </select>
             <button type="submit">Filtrar</button>
+            <button type="button" onclick="mostrarModal()">Cargar receta</button>
         </form>
     </section>
+
+    <div id="modalReceta" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2>Cargar nueva receta</h2>
+            <form th:action="@{/guardarReceta}" method="post" accept-charset="UTF-8">
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" required><br>
+
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required></textarea><br>
+
+                <label for="tiempoPreparacion">Tiempo de preparación:</label>
+                <select id="tiempoPreparacion" name="tiempoPreparacion" required>
+                    <option value="DIEZ_MIN">10min</option>
+                    <option value="VEINTE_MIN">20min</option>
+                    <option value="TREINTA_MIN">30min</option>
+                    <option value="UNA_HORA">1h</option>
+                </select><br>
+
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" name="categoria" required>
+                    <option value="DESAYUNO_MERIENDA">Desayuno/Merienda</option>
+                    <option value="ALMUERZO_CENA">Almuerzo/Cena</option>
+                </select><br>
+
+                <label for="ingredientes">Ingredientes:</label>
+                <textarea id="ingredientes" name="ingredientes" required></textarea><br>
+
+                <label for="pasos">Instrucciones</label>
+                <textarea id="pasos" name="pasos"></textarea>
+
+                <label for="imagen">URL de la imagen:</label>
+                <input type="text" id="imagen" name="imagen" required><br>
+
+                <button type="submit">Aceptar</button>
+            </form>
+        </div>
+    </div>
+
     <section class="recetas">
         <article th:each="receta : ${todasLasRecetas}">
             <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta">
