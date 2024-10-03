@@ -13,8 +13,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ControladorDetalleTest {
 
@@ -50,6 +49,38 @@ public class ControladorDetalleTest {
         assertThat(recetaDelModelo.getTitulo(), equalTo(titulo));
         assertThat(recetaDelModelo.getImagen(), equalTo(imagen));
         assertThat(recetaDelModelo.getPasos(), equalTo(pasos));
+    }
+
+    @Test
+    public void DebeModificarRecetaYRetornarVistaConMensajeDeExito() {
+        //DADO
+        Receta recetaMock = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
+        recetaMock.setId(1);
+
+        //CUANDO
+        ModelAndView modelAndView = controlador.modificarReceta(recetaMock);
+
+        //ENTONCES
+        verify(servicioRecetaMock, times(1)).actualizarReceta(recetaMock);
+        assertThat(modelAndView.getViewName(), equalTo("detalleReceta"));
+        assertThat(modelAndView.getModel().get("unaReceta"), equalTo(recetaMock));
+        assertThat(modelAndView.getModel().get("mensajeExito"), equalTo("La receta fue modificada correctamente."));
+    }
+
+    @Test
+    public void DebeEliminarRecetaYRedirigirAVistaCorrecta() {
+        //DADO
+        Receta recetaMock = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
+        recetaMock.setId(1);
+
+        //CUANDO
+        ModelAndView modelAndView = controlador.eliminarReceta(recetaMock);
+
+        //ENTONCES
+        verify(servicioRecetaMock, times(1)).eliminarReceta(recetaMock);
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/vista-receta"));
     }
 
 }

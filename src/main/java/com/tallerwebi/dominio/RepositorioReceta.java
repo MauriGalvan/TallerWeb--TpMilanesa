@@ -8,6 +8,8 @@ public interface RepositorioReceta {
 
     void eliminar(Receta receta);
 
+    void actualizar(Receta receta);
+
     List<Receta> getRecetas();
 
     Receta getRecetaPorId(int id);
@@ -17,4 +19,6 @@ public interface RepositorioReceta {
     List<Receta> getRecetasPorTiempoDePreparacion(TiempoDePreparacion tiempo);
 
     List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(Categoria categoria, TiempoDePreparacion tiempo);
+
+    List<Receta> buscarRecetasPorTitulo(String titulo);
 }

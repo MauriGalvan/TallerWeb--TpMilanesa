@@ -1,112 +1,194 @@
-body{
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
     margin: 0;
-    background-color: #ffd5b8
+    background-color: #f9f4ef;
 }
-nav{
-    /* para que el nav siempre quede fijo y ocupe toda la altura de la pantalla*/
+
+nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 16em;
     height: 100vh;
-
     display: flex;
     flex-direction: column;
-    background-color: #ffae6a;
+    background-color: #f8a488;
     align-items: center;
     justify-content: center;
-
-        .botones{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 10%;
-        flex: 1;
-            button{
-                border:none;
-                border-radius: 2em;
-                background-color: #ffd5b8;
-                padding: 1em 2.5em;
-                font-size: 1em;
-                cursor:pointer;
-            }
-        }
-        .logo{
-        margin-top: 20%;
-        }
 }
-main{
-    /* el margen del nav, sino se sobreponen */
+
+.logo {
+    margin-top: 20%;
+}
+
+.botones {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20%;
+    flex: 1;
+}
+
+.botones button {
+    border: none;
+    border-radius: 30px;
+    background-color: #fff4e6;
+    padding: 0.8em 2em;
+    font-size: 1em;
+    cursor: pointer;
+    color: #4a4a4a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.botones button:hover {
+    background-color: #ffb573;
+    transform: translateY(-2px);
+}
+
+main {
     margin-left: 16em;
+    padding: 2em;
+}
 
-    .agregar-receta{
-
-    }
-
-    h1{
+h1 {
     font-size: 3.5em;
     margin-bottom: 0.2em;
     text-align: center;
-    }
-    h2, p{
-    color: black;
-    }
-    .titulo:hover{
-    color: #ffd971;
-    }
+}
 
-    .filtros{
+h2, p {
+    color: black;
+}
+
+.filtros {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    background-color: #ffae6a;
-    margin: 0em 20em;
-    padding: 1em;
-    border-radius:2em;
-        .categoria{
-        margin-left: 2em;
-        }
-        .categoria, .tiempo{
-        background-color: #ffd5b8;
-        padding: 0.4em 0.8em;
-        border-radius: 2em;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        text-align: center;
-        }
-    }
-    .recetas{
+    background-color: #ffb68e;
+    margin: 1em 15em;
+    padding: 1em 2em;
+    border-radius: 2em;
+}
+
+.filtros select {
+    margin-left: 10px;
+    padding: 0.4em 0.8em;
+    border-radius: 2em;
+    background-color: #ffd5b8;
+}
+
+.recetas {
     display: flex;
     flex-direction: column;
-        .receta{
-        background-color: #ffae6a;
-        margin: 1em 5em 0em 5em;
-        border-radius: 2em;
-        padding-left: 5em;
-        text-align: left;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: auto auto;
-        align-items:center;
-            .titulo{grid-column: 1/2}
-            .desc{grid-column: 1/2; grid-row: 2/3; margin-top: 0em;}
-            .foto{grid-column:2/3; grid-row: 1/3; border-radius: 50em; margin-right: 5em; width: 200px; height: auto}
-            }
-        }
-    a{
-    text-decoration: none;
-    }
 }
-    .link-receta {
-        text-decoration: none;
-        color: black;
-    }
 
-    .link-receta:visited {
-        color: black;
-    }
+.receta {
+    background-color: #ffb68e;
+    margin: 1em 5em 0em 5em;
+    border-radius: 1.5em;
+    padding-left: 5em;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
 
-    .link-receta:hover {
-        color: black;
-    }
+.receta:hover {
+    transform: translateY(-5px);
+}
+
+.receta .titulo {
+    grid-column: 1/2;
+    font-weight: 600;
+    font-size: 1.5em;
+}
+
+.receta .desc {
+    grid-column: 1/2;
+    grid-row: 2/3;
+    margin-top: 0em;
+}
+
+.receta .foto {
+    grid-column: 2/3;
+    grid-row: 1/3;
+    border-radius: 50em;
+    margin-right: 5em;
+    width: 200px;
+    height: auto;
+}
+
+.link-receta {
+    text-decoration: none;
+    color: black;
+}
+
+.link-receta:hover {
+    color: #ff6347;
+    text-decoration: underline;
+}
+
+.buscar-por-titulo {
+    text-align: center;
+    margin: 2em 0;
+}
+
+.buscar-form {
+    display: inline-block;
+}
+
+.buscar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.buscar-input {
+    border: none;
+    padding: 0.5em 1em;
+    outline: none;
+    font-size: 1em;
+    flex-grow: 1;
+}
+
+.buscar-boton {
+    background-color: #ffb68e;
+    color: white;
+    border: none;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.buscar-boton:hover {
+    background-color: #ff4500;
+}
+
+
+.filtros button {
+    background-color: #ffb68e;
+    color: white;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.filtros-button:hover {
+    background-color: #ff4500;
+}

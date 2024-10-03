@@ -1,56 +1,107 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Detalle Receta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+  <link rel="stylesheet" th:href="@{/css/detalleReceta.css}">
+  <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
 
-    <title>Detalle Receta</title>
+</head>
 
-    <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
-    <link rel="stylesheet" th:href="@{/css/detalleReceta.css}">
-    <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
+<body>
+<nav>
+  <div class="logo">
+    <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
+  </div>
+  <section class="botones1">
+    <button type="button" class="recetas">
+      <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
+        <i class="fas fa-utensils"></i> Recetas
+      </a>
+    </button>
+    <button type="button" class="planificador" onclick="mostrarPopup()">
+      <a href="http://localhost:8080/spring/vista-planificador" class="link-receta">
+      </a>
+      <i class="fas fa-calendar-alt"></i> Planificador
+    </button>
+    <button type="button" class="listaCompras" onclick="mostrarPopup()">
+      <i class="fas fa-shopping-cart"></i> Lista de compras
+    </button>
+    <button type="button" class="perfil" onclick="mostrarPopup()">
+      <i class="fas fa-user"></i> Perfil
+    </button>
+  </section>
+</nav>
 
-  </head>
+<main>
+  <h1 th:text="${unaReceta.titulo}">Nombre de la Receta</h1>
 
-  <body>
-  <nav>
-    <div class="logo">
-      <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
+  <div th:if="${mensajeExito}" class="mensaje-exito">
+    <p th:text="${mensajeExito}" style="color: green; font-weight: bold;"></p>
+  </div>
+
+  <div class="contenido">
+    <div class="imagen">
+      <img th:src="${unaReceta.imagen}" alt="Foto de la comida">
     </div>
-    <section class="botones">
-      <button type="button" class="recetas">
-        <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
-          Recetas
-        </a>
-      </button>
-      <button type="button" class="planificador" onclick="mostrarPopup()">
-        Planificador
-      </button>
-      <button type="button" class="listaCompras" onclick="mostrarPopup()">
-        Lista de compras
-      </button>
-      <button type="button" class="perfil" onclick="mostrarPopup()">
-        Perfil
-      </button>
-    </section>
-  </nav>
-  <main>
-    <h1 th:text="${unaReceta.titulo}">Nombre de la Receta</h1>
-    <div class="contenido">
-      <div class="imagen">
-        <img th:src="${unaReceta.imagen}" alt="Foto de la comida">
-      </div>
-      <div class="ingredientes">
-        <h2>INGREDIENTES</h2>
-        <ul>
-          <li th:each="ingrediente : ${unaReceta.ingredientes}" th:text="${ingrediente}">Ingrediente</li>
-        </ul>
-      </div>
-      <div class="instructiones">
-        <h2>PREPARACIÓN</h2>
-          <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
+    <div class="ingredientes">
+      <h2>INGREDIENTES</h2>
+      <ul>
+        <li th:each="ingrediente : ${unaReceta.ingredientes}" th:text="${ingrediente}">Ingrediente</li>
+      </ul>
+    </div>
+    <div class="instrucciones">
+      <h2>PREPARACIÓN</h2>
+      <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
+    </div>
+
+    <div class="contenedor-botones">
+      <label for="modalEliminar" class="btn-eliminar">Eliminar Receta</label>
+      <label for="modalModificar" class="btn-modificar">Modificar Receta</label>
+    </div>
+
+    <input type="checkbox" id="modalEliminar" class="modal-checkbox">
+    <div id="eliminarRecetaModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="document.getElementById('modalEliminar').checked=false;">&times;</span>
+        <h2>Eliminar Receta</h2>
+        <p>¿Estás seguro que deseas eliminar esta receta?</p>
+        <form th:action="@{/eliminarReceta}" method="post" accept-charset="UTF-8">
+          <input type="hidden" name="id" th:value="${unaReceta.id}" />
+          <button type="submit">Sí, eliminar</button>
+        </form>
+        <button onclick="document.getElementById('modalEliminar').checked=false;">Cancelar</button>
       </div>
     </div>
-  </main>
-  </body>
+
+    <input type="checkbox" id="modalModificar" class="modal-checkbox">
+    <div id="modificarRecetaModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="document.getElementById('modalModificar').checked=false;">&times;</span>
+        <h2>Modificar Receta</h2>
+        <form th:action="@{/modificarReceta}" method="post" accept-charset="UTF-8">
+          <input type="hidden" name="id" th:value="${unaReceta.id}" />
+          <label for="titulo">Título</label>
+          <input type="text" id="titulo" name="titulo" th:value="${unaReceta.titulo}" />
+          <label for="ingredientes">Ingredientes</label>
+          <textarea id="ingredientes" name="ingredientes" rows="4" th:text="${unaReceta.ingredientes}"></textarea>
+          <label for="pasos">Pasos</label>
+          <textarea id="pasos" name="pasos" rows="4" th:text="${unaReceta.pasos}"></textarea>
+          <label for="imagen">Imagen URL</label>
+          <input type="text" id="imagen" name="imagen" th:value="${unaReceta.imagen}" />
+          <div class="form-buttons">
+            <button type="submit">Guardar Cambios</button>
+            <button onclick="document.getElementById('modalModificar').checked=false;">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
 </html>

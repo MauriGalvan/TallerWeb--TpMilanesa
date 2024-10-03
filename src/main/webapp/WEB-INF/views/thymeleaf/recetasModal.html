@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+      <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Recetas Modal</title>
+      <link rel="stylesheet" th:href="@{/css/planificador.css}">
+    </head>
+
+    <body>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div th:each="receta : ${recetas}" class="col">
+                <div class="card h-100 receta-card" th:data-receta-id="${receta.id}">
+                    <img th:src="@{${receta.imagen}}" class="card-img-top imagen-receta-modal" alt="Imagen de la receta">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="card-title text-center titulo-receta-modal"  th:text="${receta.titulo}"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>
+

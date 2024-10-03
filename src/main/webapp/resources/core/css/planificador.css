@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/*Para titulos*/
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+/*font-family: "Playfair Display", serif;*/
+
+body{
+    font-family: "Open Sans", sans-serif;
+    background-color: #ffd5b8;
+}
+
+.nav-personalizado {
+    width: 250px;
+    height: 100vh;
+    background-color:  #ffae6a;
+}
+
+.logo-container {
+     padding: 10px 0;
+     margin: 50px 0px;
+}
+
+.logo {
+    max-width: 70%;
+    height: auto;
+}
+
+.nav-link {
+    color: black;
+    border-radius: 2em;
+    border: none;
+    background-color: #ffd5b8;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #ff8c00;
+    color: #fff;
+}
+
+.planificador {
+    margin: 25px 250px;
+
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+div.encabezado {
+    font-weight: bolder;
+}
+
+.caja-titulo-receta {
+    min-height: 80px;
+    max-height: 80px;
+    overflow: hidden;
+    margin: 2px 4px;
+}
+
+/* Estilos para resaltar la receta seleccionada */
+.receta-card {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+ }
+
+.receta-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.receta-card.selected {
+    border: 2px solid #007bff;
+    box-shadow: 0px 4px 8px rgba(0, 123, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.imagen-receta-modal {
+    height: 150px;
+    object-fit: cover;
+}
+
+.titulo-receta-modal {
+    min-height: 30px;
+}
+

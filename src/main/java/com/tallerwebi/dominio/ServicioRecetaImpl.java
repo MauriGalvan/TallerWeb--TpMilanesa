@@ -3,6 +3,7 @@ package com.tallerwebi.dominio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +29,7 @@ public class ServicioRecetaImpl implements ServicioReceta {
     }
 
     @Override
+    @Transactional
     public List<Receta> getRecetasPorCategoria(Categoria categoria) {
         return this.repositorioReceta.getRecetasPorCategoria(categoria);
     }
@@ -46,4 +48,30 @@ public class ServicioRecetaImpl implements ServicioReceta {
     public Receta getUnaRecetaPorId(int id) {
         return this.repositorioReceta.getRecetaPorId(id);
     }
+
+    @Transactional
+    @Override
+    public void eliminarReceta(Receta receta) {
+        this.repositorioReceta.eliminar(receta);
+    }
+
+    @Transactional
+    @Override
+    public void actualizarReceta(Receta receta) {
+        Receta recetaExistente = repositorioReceta.getRecetaPorId(receta.getId());
+        if (recetaExistente != null) {
+            recetaExistente.setTitulo(receta.getTitulo());
+            recetaExistente.setIngredientes(receta.getIngredientes());
+            recetaExistente.setPasos(receta.getPasos());
+            recetaExistente.setImagen(receta.getImagen());
+            repositorioReceta.guardar(recetaExistente);
+        }
+    }
+
+
+    @Override
+    public List<Receta> buscarRecetasPorTitulo(String titulo) {
+        return repositorioReceta.buscarRecetasPorTitulo(titulo);
+    }
+
 }
