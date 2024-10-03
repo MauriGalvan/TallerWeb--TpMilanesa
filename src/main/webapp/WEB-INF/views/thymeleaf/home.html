@@ -3,33 +3,80 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <title>Taller Web I</title>
-
+  <title>Home</title>
   <!-- Boostrap core css -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
 
-  <!-- custom style -->
-  <link rel="stylesheet" th:href="@{/css/main.css}"/>
+  <link rel="stylesheet" th:href="@{/css/home.css}">
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">UNLAM</a>
+<nav >
+  <div class="logo">
+    <a href="http://localhost:8080/spring/home">
+    <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
+    </a>
+  </div>
+  <section class="botones">
+    <button type="button" class="recetas">
+      <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
+        Recetas
+      </a>
+    </button>
+    </a>
+    <button type="button" class="planificador" onclick="mostrarPopup()">
+      Planificador
+    </button>
+    <button type="button" class="listaCompras" onclick="mostrarPopup()">
+      Lista de compras
+    </button>
+    <button type="button" class="perfil" onclick="mostrarPopup()">
+      Perfil
+    </button>
+
+    <button type="button" class="btn-cargar" >
+      <a href="http://localhost:8080/spring/crear-receta" class="link-receta">
+        Cargar nueva receta
+      </a>
+    </button>
+    </section>
 </nav>
 
 <main role="main" class="container">
   <div class = "container">
     <h1>Bienvenidos a Taller Web 1</h1>
 
-    <a href="login.html" class="btn btn-lg btn-primary btn-block">Volver</a>
+    <a href="login.html" class="">Volver</a>
   </div>
+
+  <section class="image-container">
+
+    <img src="https://wallpapers.com/images/hd/food-4k-1pf6px6ryqfjtnyr.jpg" alt="foto de fondo" >
+
+      <div class="search-overlay">
+        <h2>Busca tu comida preferida!</h2>
+        <input type="text" placeholder="Buscar recetas..." class="search-input">
+        <button type="submit" class="search-button">Buscar</button>
+      </div>
+
+  </section>
+  <section class="categoriasRecetas">
+
+  </section>
+  <section class="mostrarRecetas">
+
+  </section>
+
+  <section class="Novedades">
+
+  </section>
 </main>
 <!-- /.container -->
 
 <!-- Boostrap core js -->
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
+
 </html>
