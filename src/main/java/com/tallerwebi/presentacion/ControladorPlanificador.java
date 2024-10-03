@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Categoria;
 import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.ServicioReceta;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,19 +35,44 @@ public class ControladorPlanificador {
         return new ModelAndView("vistaPlanificador", modelo);
     }
 
-    //Obtiene las recetas de una categoria especifica para mostrar en el modal
     @RequestMapping("/recetasModal")
     public ModelAndView obtenerRecetasPorCategoria(@RequestParam("categoria") String categoria, @RequestParam("dia") String dia) {
         ModelMap modelo = new ModelMap();
 
-        List<Receta> recetas = servicioReceta.getRecetasPorCategoria(categoria);
+        // Lógica de mapeo para convertir la categoría a un valor del enum
+        Categoria categoriaEnum;
+        switch (categoria.toUpperCase()) {
+            case "DESAYUNO":
+            case "MERIENDA":
+                categoriaEnum = Categoria.DESAYUNO_MERIENDA;
+                break;
+            case "ALMUERZO":
+            case "CENA":
+                categoriaEnum = Categoria.ALMUERZO_CENA;
+                break;
+            case "POSTRE":
+                categoriaEnum = Categoria.POSTRE;
+                break;
+            default:
+                throw new IllegalArgumentException("Categoría no válida: " + categoria);
+        }
+
+        // Obtener las recetas según la categoría mapeada
+        List<Receta> recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
 
         modelo.put("recetas", recetas);
-        modelo.put("categoriaSeleccionada", categoria);
+        modelo.put("categoriaSeleccionada", categoriaEnum);
         modelo.put("dia", dia);
 
         return new ModelAndView("recetasModal", modelo);
     }
+
+
+
+
+
+
+
 
 
 
