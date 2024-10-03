@@ -51,6 +51,8 @@ public class ControladorRecetaTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("detalleReceta"));
     }
 
+
+
     @Test
     public void QueRetorneTodasLasRecetasCuandoNoHayNingunFiltroSeleccionadoEnCategorias() {
         //Dado

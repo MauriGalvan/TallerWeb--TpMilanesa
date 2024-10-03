@@ -29,6 +29,7 @@ public class ServicioRecetaImpl implements ServicioReceta {
     }
 
     @Override
+    @Transactional
     public List<Receta> getRecetasPorCategoria(Categoria categoria) {
         return this.repositorioReceta.getRecetasPorCategoria(categoria);
     }
