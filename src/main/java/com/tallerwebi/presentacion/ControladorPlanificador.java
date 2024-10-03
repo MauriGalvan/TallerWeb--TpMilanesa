@@ -23,10 +23,8 @@ public class ControladorPlanificador {
     public ControladorPlanificador(ServicioReceta servicioReceta) {
         this.servicioReceta = servicioReceta;
     }
-    //Carga la vista principal del planificador
     @RequestMapping("/vista-planificador")
     public ModelAndView irAPlanificador() {
-        //carga inicial de dias y categorias para mostrar en el planificador mmmmm?
         List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" , "Domingo");
         List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
         ModelMap modelo = new ModelMap();
@@ -57,7 +55,6 @@ public class ControladorPlanificador {
                 throw new IllegalArgumentException("Categoría no válida: " + categoria);
         }
 
-        // Obtener las recetas según la categoría mapeada
         List<Receta> recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
 
         modelo.put("recetas", recetas);

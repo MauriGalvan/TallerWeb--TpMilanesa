@@ -81,7 +81,6 @@ public class ControladorDetalleTest {
         assertThat(modelAndView.getModel().get("mensajeError"), equalTo("La receta no fue modificada, verifique que los campos no estén vacíos."));
     }
 
-
     @Test
     public void DebeEliminarRecetaYRedirigirAVistaCorrecta() {
         //DADO

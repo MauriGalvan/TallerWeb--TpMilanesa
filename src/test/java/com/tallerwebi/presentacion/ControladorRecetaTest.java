@@ -115,4 +115,22 @@ public class ControladorRecetaTest {
         assertThat(recetas.get(0).getTitulo(), containsString(tituloBuscado));
     }
 
+    @Test
+    public void QueSePuedaCargarUnaReceta(){
+        String titulo = "Milanesa napolitana";
+        TiempoDePreparacion tiempo = TiempoDePreparacion.TREINTA_MIN;
+        Categoria categoria = Categoria.ALMUERZO_CENA;
+        String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
+        String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
+        String descripcion = "Esto es una descripción de mila napo";
+        String pasos = ".";
+
+        ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, ingredientes, descripcion, imagen);
+
+        Receta recetaEsperada = new Receta(titulo, tiempo, categoria, imagen, ingredientes, descripcion, pasos);
+        verify(servicioRecetaMock, times(1)).guardarReceta(recetaEsperada);
+
+        assertEquals("redirect:/vista-receta", modelAndView.getViewName());
+    }
+
 }

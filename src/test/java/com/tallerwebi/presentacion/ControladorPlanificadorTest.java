@@ -34,8 +34,6 @@ public class ControladorPlanificadorTest {
 
     @Test
     public void QueRetorneLaVistaPlanificadorCuandoSeEjecutaElMetodoMostrarIrAPlanificador(){
-        //Dado
-
         //Cuando
         ModelAndView modelAndView = controladorPlanificador.irAPlanificador();
         //Entonces
@@ -48,19 +46,17 @@ public class ControladorPlanificadorTest {
         List<Receta> recetasMock = new ArrayList<>();
         Receta desayuno = new Receta();
         desayuno.setTitulo("Soy un desayuno");
-        desayuno.setCategoria(Categoria.DESAYUNO_MERIENDA); // Asegúrate de usar la constante correcta
+        desayuno.setCategoria(Categoria.DESAYUNO_MERIENDA);
         recetasMock.add(desayuno);
 
         // Cuando
         when(servicioRecetaMock.getRecetasPorCategoria(Categoria.DESAYUNO_MERIENDA)).thenReturn(recetasMock);
-
-        // Asegúrate de que "DESAYUNO_MERIENDA" se pasa como argumento en lugar de "desayuno"
         ModelAndView modelAndView = controladorReceta.irARecetas("DESAYUNO_MERIENDA", null);
 
         // Entonces
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
 
-        assertThat(recetas, hasSize(1));  // Verificamos que hay 1 receta
+        assertThat(recetas, hasSize(1));
         assertThat(recetas.get(0).getTitulo(), equalTo("Soy un desayuno"));
     }
 
