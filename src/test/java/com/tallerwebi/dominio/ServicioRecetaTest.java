@@ -169,6 +169,4 @@ public class ServicioRecetaTest {
 
         assertEquals(0, recetasEncontradas.size());
     }
-
-
 }

@@ -47,11 +47,20 @@ public class ControladorDetalleReceta {
     @PostMapping("/modificarReceta")
     public ModelAndView modificarReceta(@ModelAttribute Receta receta) {
         ModelMap modelo = new ModelMap();
+
+        if (receta.getTitulo() == null || receta.getTitulo().isEmpty() ||
+                receta.getIngredientes() == null || receta.getIngredientes().isEmpty() ||
+                receta.getPasos() == null || receta.getPasos().isEmpty()) {
+
+            modelo.put("unaReceta", receta);
+            modelo.put("mensajeError", "La receta no fue modificada, verifique que los campos no estén vacíos.");
+            return new ModelAndView("detalleReceta", modelo);
+        }
+
         servicioReceta.actualizarReceta(receta);
 
         modelo.put("unaReceta", receta);
         modelo.put("mensajeExito", "La receta fue modificada correctamente.");
-
         return new ModelAndView("detalleReceta", modelo);
     }
 

@@ -69,6 +69,20 @@ public class ControladorDetalleTest {
     }
 
     @Test
+    public void QueAparezaUnMensajeDeErrorYNoSePuedaActualizarEnLaBaseDeDatosSiSeModificaElTituloYLoDejaVacio(){
+        Receta receta = new Receta(null, TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
+
+        ModelAndView modelAndView = controlador.modificarReceta(receta);
+
+        verify(servicioRecetaMock, times(0)).actualizarReceta(receta);
+        assertThat(modelAndView.getViewName(), equalTo("detalleReceta"));
+        assertThat(modelAndView.getModel().get("unaReceta"), equalTo(receta));
+        assertThat(modelAndView.getModel().get("mensajeError"), equalTo("La receta no fue modificada, verifique que los campos no estén vacíos."));
+    }
+
+
+    @Test
     public void DebeEliminarRecetaYRedirigirAVistaCorrecta() {
         //DADO
         Receta recetaMock = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,

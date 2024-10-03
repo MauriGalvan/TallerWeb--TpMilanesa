@@ -43,6 +43,9 @@
   <div th:if="${mensajeExito}" class="mensaje-exito">
     <p th:text="${mensajeExito}" style="color: green; font-weight: bold;"></p>
   </div>
+  <div th:if="${mensajeError}" class="mensaje-error">
+    <p th:text="${mensajeError}" style="color: red; font-weight: bold;"></p>
+  </div>
 
   <div class="contenido">
     <div class="imagen">
