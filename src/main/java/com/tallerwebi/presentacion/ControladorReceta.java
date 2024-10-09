@@ -99,8 +99,6 @@ public class ControladorReceta {
             @RequestParam("descripcion") String descripcion,
             @RequestParam("imagen") String imagen) {
 
-        System.out.println("Título recibido: " + titulo);
-
         Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen, ingredientes, descripcion, pasos);
         servicioReceta.guardarReceta(nuevaReceta);
 
