@@ -106,7 +106,7 @@ public class ControladorRecetaTest {
 
         // Cuando
         when(servicioRecetaMock.buscarRecetasPorTitulo(tituloBuscado)).thenReturn(recetasMock);
-        ModelAndView modelAndView = controladorReceta.buscarRecetasPorTitulo(tituloBuscado);
+        ModelAndView modelAndView = controladorReceta.buscarRecetasPorTitulo(tituloBuscado, null, null);
 
         // Entonces
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");

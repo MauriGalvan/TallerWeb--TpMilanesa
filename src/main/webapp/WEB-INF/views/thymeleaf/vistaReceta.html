@@ -77,11 +77,19 @@
 </nav>
 <main>
     <h1>Recetas</h1>
+
+
     <section class="filtros">
-        <form method="post">
-            <label for="time">
-                Tiempo de preparación
-            </label>
+        <form method="post" th:action="@{/buscar-receta-titulo}">
+            <label for="tituloBusqueda">Buscar por título</label>
+            <input type="text" id="tituloBusqueda" name="titulo" placeholder="Buscar recetas" list="listaRecetas" th:value="${tituloBuscado}" class="buscar-input"/>
+
+            <!-- Datalist para el autocompletado -->
+            <datalist id="listaRecetas">
+                <option th:each="receta : ${todasLasRecetas}" th:value="${receta.titulo}"></option>
+            </datalist>
+
+            <label for="time">Tiempo de preparación</label>
             <select id="time" name="tiempo" th:value="${tiempoSeleccionado}">
                 <option value="-" th:selected="${tiempoSeleccionado == '-'}">-</option>
                 <option value="DIEZ_MIN" th:selected="${tiempoSeleccionado == 'DIEZ_MIN'}">10min</option>
@@ -89,18 +97,20 @@
                 <option value="TREINTA_MIN" th:selected="${tiempoSeleccionado == 'TREINTA_MIN'}">30min</option>
                 <option value="UNA_HORA" th:selected="${tiempoSeleccionado == 'UNA_HORA'}">1h</option>
             </select>
-            <label for="categorias">
-                Categoría
-            </label>
+
+            <label for="categorias">Categoría</label>
             <select id="categorias" name="categoria" th:value="${categoriaSeleccionada}">
                 <option value="todos" th:selected="${categoriaSeleccionada == 'todos'}">Todos</option>
                 <option value="DESAYUNO_MERIENDA" th:selected="${categoriaSeleccionada == 'DESAYUNO_MERIENDA'}">Desayuno/Merienda</option>
                 <option value="ALMUERZO_CENA" th:selected="${categoriaSeleccionada == 'ALMUERZO_CENA'}">Almuerzo/Cena</option>
             </select>
-            <button type="submit">Filtrar</button>
+
+            <button type="submit">Buscar</button>
             <button type="button" onclick="mostrarModal()">Cargar receta</button>
         </form>
+
     </section>
+
 
     <div id="modalReceta" class="modal">
         <div class="modal-content">
@@ -141,15 +151,6 @@
         </div>
     </div>
 
-    <section class="buscar-por-titulo">
-        <form method="post" th:action="@{/buscar-receta-titulo}" class="buscar-form">
-            <label for="tituloBusqueda">Buscar por título</label>
-            <div class="buscar-container">
-                <input type="text" id="tituloBusqueda" name="titulo" placeholder="Buscar recetas" th:value="${tituloBuscado}" class="buscar-input"/>
-                <button type="submit" class="buscar-boton">Buscar</button>
-            </div>
-        </form>
-    </section>
 
 
     <section class="mensaje-error" th:if="${mensajeError}">

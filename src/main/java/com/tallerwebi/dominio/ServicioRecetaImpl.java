@@ -74,4 +74,19 @@ public class ServicioRecetaImpl implements ServicioReceta {
         return repositorioReceta.buscarRecetasPorTitulo(titulo);
     }
 
+    @Override
+    public List<Receta> buscarRecetasPorTituloCategoriaYTiempo(String titulo, Categoria categoriaEnum, TiempoDePreparacion tiempoEnum) {
+        return repositorioReceta.buscarRecetasPorTituloCategoriaYTiempo(titulo, categoriaEnum, tiempoEnum);
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYCategoria(String titulo, Categoria categoriaEnum) {
+        return repositorioReceta.buscarRecetasPorTituloYCategoria(titulo, categoriaEnum);
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempoEnum) {
+        return repositorioReceta.buscarRecetasPorTituloYTiempo(titulo, tiempoEnum);
+    }
+
 }
