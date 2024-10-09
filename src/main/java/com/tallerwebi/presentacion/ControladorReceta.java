@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -133,8 +135,6 @@ public class ControladorReceta {
             @RequestParam("ingredientes") String ingredientes,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("imagen") String imagen) {
-
-        System.out.println("Título recibido: " + titulo);
 
         Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen, ingredientes, descripcion, pasos);
         servicioReceta.guardarReceta(nuevaReceta);
