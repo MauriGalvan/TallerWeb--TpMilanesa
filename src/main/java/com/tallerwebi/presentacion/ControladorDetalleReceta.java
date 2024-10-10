@@ -27,7 +27,7 @@ public class ControladorDetalleReceta {
         Receta receta = servicioReceta.getUnaRecetaPorId(id);
 
         //cuenta las visitas
-        servicioReceta.actualizarClicksDeReceta(receta);
+        servicioReceta.actualizarVisitasDeReceta(receta);
 
         modelo.put("unaReceta", receta);
         return new ModelAndView("detalleReceta", modelo);

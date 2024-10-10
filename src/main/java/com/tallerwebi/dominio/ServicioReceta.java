@@ -22,7 +22,5 @@ public interface ServicioReceta {
 
     List<Receta> buscarRecetasPorTitulo(String titulo);
 
-//    List<Receta> ordenarPorPopularidad(List<Receta> recetas);
-
-    void actualizarClicksDeReceta(Receta receta);
+    void actualizarVisitasDeReceta(Receta receta);
 }

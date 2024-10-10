@@ -100,7 +100,7 @@ public class Receta {
 
     public int getContadorClicks() {return this.contadorClicks; }
 
-    public void incrementarClicks() { this.contadorClicks++; }
+    public void incrementarVisitas() { this.contadorClicks++; }
 
     @Override
     public boolean equals(Object o) {

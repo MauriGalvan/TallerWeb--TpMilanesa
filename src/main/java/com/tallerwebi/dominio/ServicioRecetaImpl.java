@@ -75,8 +75,8 @@ public class ServicioRecetaImpl implements ServicioReceta {
 
     @Transactional
     @Override
-    public void actualizarClicksDeReceta(Receta receta) {
-        receta.incrementarClicks();
+    public void actualizarVisitasDeReceta(Receta receta) {
+        receta.incrementarVisitas();
         repositorioReceta.actualizar(receta);
     }
 
