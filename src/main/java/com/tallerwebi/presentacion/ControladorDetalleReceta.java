@@ -48,6 +48,9 @@ public class ControladorDetalleReceta {
     public ModelAndView modificarReceta(@ModelAttribute Receta receta) {
         ModelMap modelo = new ModelMap();
 
+        System.out.println("Receta recibida: " + receta.getTitulo());
+        System.out.println("Tiempo de preparación recibido: " + receta.getTiempo_preparacion());
+
         if (receta.getTitulo() == null || receta.getTitulo().isEmpty() ||
                 receta.getIngredientes() == null || receta.getIngredientes().isEmpty() ||
                 receta.getPasos() == null || receta.getPasos().isEmpty()) {

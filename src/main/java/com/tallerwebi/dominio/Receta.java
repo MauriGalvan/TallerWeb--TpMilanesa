@@ -57,7 +57,7 @@ public class Receta {
     }
 
     public void setTiempo_preparacion(TiempoDePreparacion TiempoDePreparacion) {
-        this.tiempo_preparacion = tiempo_preparacion;
+        this.tiempo_preparacion = TiempoDePreparacion;
     }
 
     public Categoria getCategoria() {

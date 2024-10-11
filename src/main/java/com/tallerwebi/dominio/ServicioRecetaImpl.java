@@ -61,9 +61,11 @@ public class ServicioRecetaImpl implements ServicioReceta {
         Receta recetaExistente = repositorioReceta.getRecetaPorId(receta.getId());
         if (recetaExistente != null) {
             recetaExistente.setTitulo(receta.getTitulo());
+            recetaExistente.setTiempo_preparacion(receta.getTiempo_preparacion());
             recetaExistente.setIngredientes(receta.getIngredientes());
             recetaExistente.setPasos(receta.getPasos());
             recetaExistente.setImagen(receta.getImagen());
+            System.out.println("Tiempo de preparación después de actualizar: " + recetaExistente.getTiempo_preparacion());
             repositorioReceta.guardar(recetaExistente);
         }
     }

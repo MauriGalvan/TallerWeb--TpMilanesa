@@ -1,194 +1,415 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-body {
-    font-family: 'Poppins', sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
-    background-color: #f9f4ef;
+    padding: 0;
 }
 
-nav {
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F4E5C2;
+    overflow-x: hidden;
+}
+
+/*.container-fluid {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+}
+
+.row {
+    display: flex;
+    width: 100%;
+}
+*/
+.sidebar {
+    width: 280px;
+    height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
-    width: 16em;
-    height: 100vh;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-right: 2px solid #FEFAE0;
+    z-index: 1000;
+    transition: 0.3s;
+}
+
+.sidebar-content {
     display: flex;
     flex-direction: column;
-    background-color: #f8a488;
     align-items: center;
-    justify-content: center;
+    padding: 20px;
+}
+
+.logo-link {
+    margin: 40px 10px;
 }
 
 .logo {
-    margin-top: 20%;
+    max-width: 100%;
+    height: auto;
 }
 
-.botones {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20%;
-    flex: 1;
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
 }
 
-.botones button {
-    border: none;
-    border-radius: 30px;
-    background-color: #fff4e6;
-    padding: 0.8em 2em;
-    font-size: 1em;
-    cursor: pointer;
-    color: #4a4a4a;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.botones button:hover {
-    background-color: #ffb573;
-    transform: translateY(-2px);
-}
-
-main {
-    margin-left: 16em;
-    padding: 2em;
-}
-
-h1 {
-    font-size: 3.5em;
-    margin-bottom: 0.2em;
+.sidebar li {
+    width: 100%;
+    margin-bottom: 20px;
     text-align: center;
 }
 
-h2, p {
-    color: black;
+.nav-link {
+    display: block;
+    padding: 10px 15px;
+    color: #5E503F;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+    margin: 5px 0;
+    border-radius: 25px;
+    background-color: #fff4e6;
 }
 
-.filtros {
+.nav-link:hover, .nav-link:focus {
+    background-color: #5E503F;
+    color: #eb6a0f;
+    border: 2px solid #FFEFEF;
+    font-weight: bold;
+}
+
+.contenido-general {
+    flex-grow: 1;
+    margin-left: 280px;
+    padding: 20px;
+    max-width: calc(100% - 280px);
+    overflow-x: hidden;
+}
+
+.fondo-verde {
+    background-color: #7A9E7E !important;
+}
+
+header {
+    padding: 10px;
+    background-color: #FEFAE0;
+    border-bottom: 2px solid #5E503F;
+}
+
+.header-container {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    background-color: #ffb68e;
-    margin: 1em 15em;
-    padding: 1em 2em;
-    border-radius: 2em;
+    justify-content: center; /* Centra todos los elementos horizontalmente */
+    align-items: center; /* Alinea verticalmente al centro */
+    padding: 1em;
+    position: relative; /* Permite el uso de posicionamiento absoluto para el menú */
 }
 
-.filtros select {
-    margin-left: 10px;
-    padding: 0.4em 0.8em;
-    border-radius: 2em;
-    background-color: #ffd5b8;
+.titulo-header {
+    flex-grow: 1; /* El título ocupará todo el espacio disponible */
+    text-align: center; /* Centra el texto dentro de su contenedor */
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0; /* Elimina márgenes adicionales */
 }
 
+
+.user-menu {
+    position: absolute; /* Posiciona el menú  a la derecha */
+    right: 1em; /* Espacio a la derecha */
+    display: flex;
+    align-items: center; /* Alinea verticalmente al centro */
+}
+
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #5E503F;
+}
+
+.dropdown-menu {
+  /*  display: none;
+    position: absolute;
+    background-color: #fff;*/
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px 0;
+    min-width: 150px;
+}
+
+.dropdown-item {
+ /*   display: block;*/
+    padding: 5px 15px;
+    color: #5E503F;
+    text-decoration: none;
+}
+
+/*.dropdown-divider {
+    border-top: 1px solid #e9ecef;
+    margin: 5px 0;
+}*/
+
+.section{
+    background-color: #F8E4B1;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group label {
+    margin-right: 10px;
+}
+
+.filter-group select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #F7A072;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #D96C60;
+}
+
+.main-contenido {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #5E503F;
+    border-top: 1px solid #57de09;
+    color: #fefae0;
+    font-size: 0.9em;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        left: -280px;
+    }
+    .sidebar.show {
+        left: 0;
+    }
+    .contenido-general {
+        margin-left: 0;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+    }
+    .filter-group {
+        width: 100%;
+    }
+    .filter-group select {
+        width: 100%;
+        margin-top: 5px;
+    }
+    button {
+        width: 100%;
+    }
+}
+
+/* Estilo general para las recetas */
 .recetas {
     display: flex;
     flex-direction: column;
 }
 
 .receta {
-    background-color: #ffb68e;
-    margin: 1em 5em 0em 5em;
-    border-radius: 1.5em;
-    padding-left: 5em;
-    text-align: left;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+   background-color: #ffb68e;
+       width: 90%;
+       max-width: 1200px;
+       margin: 1em auto;
+       border-radius: 1.5em;
+       padding: 1em;
+       display: flex; /* Usamos flexbox */
+       flex-direction: row; /* Imagen y texto en una fila */
+       justify-content: space-between; /* Distribuir espacio entre imagen y texto */
+       align-items: center; /* Alinear verticalmente los elementos */
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       transition: transform 0.2s ease;
+       text-align: left;
 }
 
+/* Al pasar el mouse */
 .receta:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Eleva un poco la receta al pasar el mouse */
 }
 
+/* Estilo para el título */
 .receta .titulo {
-    grid-column: 1/2;
     font-weight: 600;
     font-size: 1.5em;
+    text-align: center; /* Centrar el título */
+    margin-bottom: 1em;
 }
 
+/* Estilo para la descripción */
 .receta .desc {
-    grid-column: 1/2;
-    grid-row: 2/3;
-    margin-top: 0em;
+    margin-top: 0;
+    text-align: center; /* Centrar la descripción */
+    margin-bottom: 1em;
 }
 
+/* Estilo para la imagen */
 .receta .foto {
-    grid-column: 2/3;
-    grid-row: 1/3;
-    border-radius: 50em;
-    margin-right: 5em;
-    width: 200px;
-    height: auto;
+    border-radius: 2.5em; /* Hacer la imagen circular */
+    width: 300px;
+    height: 150px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin-bottom: 1em; /* Espaciado debajo de la imagen */
 }
 
+@media (max-width: 768px) {
+    .receta {
+        flex-direction: column; /* Apila verticalmente */
+        text-align: center; /* Centra el texto */
+    }
+
+    .receta .titulo, .receta .desc {
+        margin-bottom: 1em; /* Añade espacio entre los elementos */
+    }
+
+    .receta .texto {
+        padding-right: 0; /* Elimina el espacio a la derecha del texto */
+    }
+
+    .receta .foto {
+        margin-top: 1em; /* Añade un poco de espacio sobre la imagen */
+        width: 100%; /* Ajusta la imagen al ancho disponible */
+        max-width: 300px;
+    }
+}
+
+
+/* Enlaces estilo receta */
 .link-receta {
     text-decoration: none;
     color: black;
 }
 
 .link-receta:hover {
-    color: #ff6347;
-    text-decoration: underline;
+    color: #5E503F;
+    text-decoration: none;
+    text-shadow: 1px 1px   black;
 }
 
-.buscar-por-titulo {
-    text-align: center;
-    margin: 2em 0;
+
+.mensaje-error {
+    color: red;
+    font-weight: bold;
 }
 
-.buscar-form {
-    display: inline-block;
-}
-
-.buscar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center; /
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    overflow: hidden;
-}
-
-.buscar-input {
-    border: none;
-    padding: 0.5em 1em;
-    outline: none;
-    font-size: 1em;
-    flex-grow: 1;
-}
-
-.buscar-boton {
-    background-color: #ffb68e;
-    color: white;
-    border: none;
-    padding: 0.5em 1.5em;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s;
-}
-
-.buscar-boton:hover {
+.buscar-btn:hover {
     background-color: #ff4500;
 }
 
+/* Media query para pantallas pequeñas (por ejemplo, móviles) */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column; /* Cambia a diseño vertical */
+        align-items: center; /* Centra los elementos en el eje vertical */
+        position: static; /* Quita el posicionamiento absoluto en pantallas pequeñas */
+    }
 
-.filtros button {
-    background-color: #ffb68e;
-    color: white;
-    border: 1px solid white;
-    border-radius: 10px;
-    padding: 0.5em 1.5em;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s;
+    .user-menu {
+        position: static; /* Elimina la posición absoluta para el menú en pantallas pequeñas */
+        margin-top: 10px; /* Añade un margen superior para separar el menú del título */
+    }
+
+    .titulo-header {
+        font-size: 1.5em; /* Ajusta el tamaño del título en pantallas pequeñas */
+    }
 }
 
-.filtros-button:hover {
-    background-color: #ff4500;
-}
+
+/***/
+ @media (max-width: 991.98px) {
+   .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      height: 100vh;
+      z-index: 1045;
+      transition: 0.3s;
+    }
+    .sidebar.show {
+        left: 0;
+    }
+    .contenido-general {
+         margin-left: 0;
+         max-width: 100%;
+     }
+     .btn-nav {
+          display: block;
+          position: fixed;
+          top: 10px;
+          left: 10px;
+          z-index: 1046;
+     }
+     body.sidebar-open::before {
+          content: "";
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.5);
+          z-index: 1044;
+          }
+      }
+      @media (min-width: 992px) {
+         .btn-nav {
+            display: none;
+          }
+         .sidebar {
+             position: fixed;
+             top: 0;
+              left: 0;
+         }
+      }
+      .offcanvas-backdrop {
+          display: none !important;
+      }
