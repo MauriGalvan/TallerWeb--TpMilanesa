@@ -12,17 +12,6 @@ body {
     overflow-x: hidden;
 }
 
-/*.container-fluid {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-}
-
-.row {
-    display: flex;
-    width: 100%;
-}
-*/
 .sidebar {
     width: 280px;
     height: 100vh;
@@ -138,9 +127,6 @@ header {
 }
 
 .dropdown-menu {
-  /*  display: none;
-    position: absolute;
-    background-color: #fff;*/
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     padding: 10px 0;
@@ -148,16 +134,10 @@ header {
 }
 
 .dropdown-item {
- /*   display: block;*/
     padding: 5px 15px;
     color: #5E503F;
     text-decoration: none;
 }
-
-/*.dropdown-divider {
-    border-top: 1px solid #e9ecef;
-    margin: 5px 0;
-}*/
 
 .section{
     background-color: #F8E4B1;
@@ -167,24 +147,24 @@ header {
     margin-bottom: 20px;
 }
 
-.filters {
+.filtros {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
     margin-top: 15px;
 }
 
-.filter-group {
+.filtro-grupo{
     display: flex;
     align-items: center;
     flex-wrap: wrap;
 }
 
-.filter-group label {
+.filtro-grupo label {
     margin-right: 10px;
 }
 
-.filter-group select {
+.filtro-grupo select {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ccc;
@@ -235,7 +215,7 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .filters {
+    .filtros {
         flex-direction: column;
     }
     .filter-group {
@@ -272,16 +252,14 @@ footer {
        text-align: left;
 }
 
-/* Al pasar el mouse */
 .receta:hover {
     transform: translateY(-5px); /* Eleva un poco la receta al pasar el mouse */
 }
 
-/* Estilo para el título */
 .receta .titulo {
     font-weight: 600;
     font-size: 1.5em;
-    text-align: center; /* Centrar el título */
+    text-align: center;
     margin-bottom: 1em;
 }
 
@@ -366,50 +344,56 @@ footer {
 
 
 /***/
- @media (max-width: 991.98px) {
-   .sidebar {
-      position: fixed;
-      top: 0;
-      left: -280px;
-      height: 100vh;
-      z-index: 1045;
-      transition: 0.3s;
+@media (max-width: 991.98px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px;
+         height: 100vh;
+        z-index: 1045;
+        transition: 0.3s;
     }
+
     .sidebar.show {
         left: 0;
     }
+
     .contenido-general {
          margin-left: 0;
          max-width: 100%;
-     }
-     .btn-nav {
-          display: block;
-          position: fixed;
-          top: 10px;
-          left: 10px;
-          z-index: 1046;
-     }
-     body.sidebar-open::before {
-          content: "";
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0,0,0,0.5);
-          z-index: 1044;
-          }
-      }
-      @media (min-width: 992px) {
-         .btn-nav {
-            display: none;
-          }
-         .sidebar {
-             position: fixed;
-             top: 0;
-              left: 0;
-         }
-      }
-      .offcanvas-backdrop {
-          display: none !important;
-      }
+    }
+
+    .btn-nav {
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1046;
+    }
+
+    body.sidebar-open::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1044;
+    }
+}
+
+@media (min-width: 992px) {
+    .btn-nav {
+        display: none;
+    }
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+}
+/*Al abrir el menú, no habrá fondo oscuro*/
+.offcanvas-backdrop {
+    display: none !important;
+}

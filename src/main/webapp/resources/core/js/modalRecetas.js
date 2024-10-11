@@ -19,7 +19,6 @@ document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
                     console.error('Modal no encontrado:', modalId);
                 }
             })
-            .catch(error => console.error('Error al cargar recetas:', error));
     });
 });
 
