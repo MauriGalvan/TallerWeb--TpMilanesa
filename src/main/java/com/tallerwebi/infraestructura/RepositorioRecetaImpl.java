@@ -23,10 +23,11 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     }
 
     @Override
-    public void guardar(Receta receta) {
+    public void guardar(Receta receta){
         if (receta == null) {
             throw new NullPointerException("La receta no puede ser null");
         }
+
         sessionFactory.getCurrentSession().save(receta);
     }
 

@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.ServicioReceta;
 import com.tallerwebi.dominio.TiempoDePreparacion;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -100,6 +101,11 @@ public class ControladorReceta {
             @RequestParam("imagen") String imagen) {
 
         System.out.println("Título recibido: " + titulo);
+    //valida que los campos no esten vacios o solo con espacios vacios
+        ModelAndView errorModelAndView = validarCampos(titulo, ingredientes, imagen, descripcion);
+        if (errorModelAndView != null) {
+            return errorModelAndView;
+        }
 
         Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen, ingredientes, descripcion, pasos);
         servicioReceta.guardarReceta(nuevaReceta);
@@ -113,4 +119,31 @@ public class ControladorReceta {
     }
 
 
+
+
+
+    private ModelAndView validarCampos(String titulo, String ingredientes, String imagen, String descripcion) {
+        if (titulo == null || titulo.trim().isEmpty()) {
+            return crearModeloConError("El título no puede estar vacío o contener solo espacios.");
+        }
+        if (ingredientes == null || ingredientes.trim().isEmpty()) {
+            return crearModeloConError("Los Ingredientes no pueden estar vacíos o contener solo espacios.");
+        }
+        if (imagen == null || imagen.trim().isEmpty()) {
+            return crearModeloConError("La imagen no puede estar vacía o contener solo espacios.");
+        }
+        if (descripcion == null || descripcion.trim().isEmpty()) {
+            return crearModeloConError("La descripción no puede estar vacía o contener solo espacios.");
+        }
+        return null; // Si no hay errores, retorna null
+    }
+
+    private ModelAndView crearModeloConError(String mensajeError) {
+
+        ModelAndView modelAndView = new ModelAndView("vistaReceta");
+        modelAndView.addObject("error", mensajeError);
+        return modelAndView;
+    }
 }
+
+

@@ -21,9 +21,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(SpringExtension.class)
@@ -217,7 +219,6 @@ public class RepositorioRecetaImplTest {
         assertThat(recetas.get(0).getTitulo().toLowerCase(), equalTo("tarta de manzana"));
         assertThat(recetas.get(1).getTitulo().toLowerCase(), equalTo("tarta de frutilla"));
     }
-
 }
 
 

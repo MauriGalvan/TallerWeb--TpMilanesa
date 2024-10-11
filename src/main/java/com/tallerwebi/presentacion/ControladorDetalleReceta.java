@@ -48,9 +48,9 @@ public class ControladorDetalleReceta {
     public ModelAndView modificarReceta(@ModelAttribute Receta receta) {
         ModelMap modelo = new ModelMap();
 
-        if (receta.getTitulo() == null || receta.getTitulo().isEmpty() ||
-                receta.getIngredientes() == null || receta.getIngredientes().isEmpty() ||
-                receta.getPasos() == null || receta.getPasos().isEmpty()) {
+        if (receta.getTitulo() == null || receta.getTitulo().trim().isEmpty() ||
+                receta.getIngredientes() == null || receta.getIngredientes().trim().isEmpty()||
+                receta.getPasos() == null || receta.getPasos().trim().isEmpty()) {
 
             modelo.put("unaReceta", receta);
             modelo.put("mensajeError", "La receta no fue modificada, verifique que los campos no estén vacíos.");

@@ -6,11 +6,13 @@ import com.tallerwebi.dominio.ServicioReceta;
 import com.tallerwebi.dominio.TiempoDePreparacion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.web.servlet.ModelAndView;
-
+import static org.mockito.ArgumentMatchers.any;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -132,5 +134,38 @@ public class ControladorRecetaTest {
 
         assertEquals("redirect:/vista-receta", modelAndView.getViewName());
     }
+    @Test
+    public void QueNoSePuedaCargarUnaRecetaConTituloVacioOconEspacioEnBlanco(){
+        String titulo = "  ";
+        TiempoDePreparacion tiempo = TiempoDePreparacion.UNA_HORA;
+        Categoria categoria = Categoria.ALMUERZO_CENA;
+        String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
+        String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
+        String descripcion = "Esto es una descripción de mila napo";
+        String pasos = ".";
 
+        ModelAndView modelAndView =  controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, ingredientes, descripcion, imagen);
+
+        verify(servicioRecetaMock, times(0)).guardarReceta(any(Receta.class));
+
+        // Verifica si se añadio un mensaje de error al modelo
+        assertTrue(modelAndView.getModel().containsKey("error"));
+        assertEquals("El título no puede estar vacío o contener solo espacios.", modelAndView.getModel().get("error"));
+    }
+    @Test
+    public void QueNoSePuedaCargarUnaRecetaConIngredientesVacios() {
+        String titulo = "Receta titulo";
+        String ingredientes = "   "; // Ingredientes vacíos
+        String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
+        String descripcion = "Descripción de la receta";
+        String pasos = "Paso 1, Paso 2";
+        TiempoDePreparacion tiempo = TiempoDePreparacion.TREINTA_MIN;
+        Categoria categoria = Categoria.ALMUERZO_CENA;
+
+        ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, ingredientes, descripcion, imagen);
+
+        assertTrue(modelAndView.getModel().containsKey("error"));
+        assertEquals("Los Ingredientes no pueden estar vacíos o contener solo espacios.", modelAndView.getModel().get("error"));
+        verify(servicioRecetaMock, times(0)).guardarReceta(any(Receta.class));
+    }
 }
