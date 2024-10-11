@@ -153,12 +153,12 @@ public class ServicioRecetaTest {
 
         Mockito.verify(repositorioReceta, times(2)).actualizar(receta);
         Mockito.verify(repositorioReceta, times(1)).actualizar(receta1);
-        assertEquals(receta.getContadorClicks(), 2);
-        assertEquals(receta1.getContadorClicks(), 1);
+        assertEquals(receta.getContadorVisitas(), 2);
+        assertEquals(receta1.getContadorVisitas(), 1);
     }
 
     @Test
-    public void queSePuedanBuscarTodasLasRecetasYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeClicks() {
+    public void queSePuedanBuscarTodasLasRecetasYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
         Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
@@ -174,24 +174,30 @@ public class ServicioRecetaTest {
 
         Mockito.verify(repositorioReceta, times(2)).actualizar(receta);
         Mockito.verify(repositorioReceta, times(1)).actualizar(receta1);
-        assertEquals(receta.getContadorClicks(), 2);
-        assertEquals(receta1.getContadorClicks(), 1);
+        assertEquals(receta.getContadorVisitas(), 2);
+        assertEquals(receta1.getContadorVisitas(), 1);
         //la posición
         assertEquals(receta, todasLasRecetas.get(0));
         assertEquals(receta1, todasLasRecetas.get(1));
         assertEquals(receta2, todasLasRecetas.get(2));
     }
 
-//    @Test
-//    public void queCuandoSeBusquenTodasLasRecetasYTenganLaMismaCantidadDeClicksSeOrdenenAleatoriamente(){
-//        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
-//        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
-//        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
-//        List<Receta> todasLasRecetas = new ArrayList<>();
-//        todasLasRecetas.add(receta);
-//        todasLasRecetas.add(receta1);
-//        todasLasRecetas.add(receta2);
-//
-//        Mockito.when(repositorioReceta.getRecetas()).thenReturn(todasLasRecetas);
-//    }
+    @Test
+    public void queCuandoSeBusquenTodasLasRecetasYTenganLaMismaCantidadDeVisitasNoHayaCriterioDeOrdenamiento(){
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+        List<Receta> todasLasRecetas = new ArrayList<>();
+        todasLasRecetas.add(receta);
+        todasLasRecetas.add(receta1);
+        todasLasRecetas.add(receta2);
+
+        Mockito.when(repositorioReceta.getRecetas()).thenReturn(todasLasRecetas);
+        assertEquals(receta.getContadorVisitas(), 0);
+        assertEquals(receta1.getContadorVisitas(), 0);
+        assertEquals(receta2.getContadorVisitas(), 0);
+        assertThat(todasLasRecetas, hasItem(receta));
+        assertThat(todasLasRecetas, hasItem(receta1));
+        assertThat(todasLasRecetas, hasItem(receta2));
+    }
 }

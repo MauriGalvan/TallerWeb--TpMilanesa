@@ -20,7 +20,7 @@ public class Receta {
     private String ingredientes;
     private String descripcion;
     private String pasos;
-    private int contadorClicks;
+    private int contador_visitas;
 
     public Receta() {
 
@@ -34,7 +34,7 @@ public class Receta {
         this.ingredientes = ingredientes;
         this.descripcion = descripcion;
         this.pasos = pasos;
-        this.contadorClicks = 0;
+        this.contador_visitas = 0;
 
     }
 
@@ -58,7 +58,7 @@ public class Receta {
         return tiempo_preparacion;
     }
 
-    public void setTiempo_preparacion(TiempoDePreparacion TiempoDePreparacion) {
+    public void setTiempo_preparacion(TiempoDePreparacion tiempo_preparacion) {
         this.tiempo_preparacion = tiempo_preparacion;
     }
 
@@ -98,9 +98,9 @@ public class Receta {
 
     public void setPasos(String pasos) { this.pasos = pasos; }
 
-    public int getContadorClicks() {return this.contadorClicks; }
+    public int getContadorVisitas() {return this.contador_visitas; }
 
-    public void incrementarVisitas() { this.contadorClicks++; }
+    public void incrementarVisitas() { this.contador_visitas++; }
 
     @Override
     public boolean equals(Object o) {
