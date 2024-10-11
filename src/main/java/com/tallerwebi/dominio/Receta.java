@@ -20,6 +20,7 @@ public class Receta {
     private String ingredientes;
     private String descripcion;
     private String pasos;
+    private int contadorClicks;
 
     public Receta() {
 
@@ -33,6 +34,7 @@ public class Receta {
         this.ingredientes = ingredientes;
         this.descripcion = descripcion;
         this.pasos = pasos;
+        this.contadorClicks = 0;
 
     }
 
@@ -95,6 +97,10 @@ public class Receta {
     public String getPasos() { return pasos; }
 
     public void setPasos(String pasos) { this.pasos = pasos; }
+
+    public int getContadorClicks() {return this.contadorClicks; }
+
+    public void incrementarClicks() { this.contadorClicks++; }
 
     @Override
     public boolean equals(Object o) {

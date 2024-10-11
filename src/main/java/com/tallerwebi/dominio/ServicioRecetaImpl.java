@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class ServicioRecetaImpl implements ServicioReceta {
@@ -20,7 +18,7 @@ public class ServicioRecetaImpl implements ServicioReceta {
 
     @Override
     public List<Receta> getTodasLasRecetas() {
-        return this.repositorioReceta.getRecetas();
+        return this.ordenarPorPopularidad(repositorioReceta.getRecetas());
     }
 
     @Override
@@ -31,17 +29,17 @@ public class ServicioRecetaImpl implements ServicioReceta {
     @Override
     @Transactional
     public List<Receta> getRecetasPorCategoria(Categoria categoria) {
-        return this.repositorioReceta.getRecetasPorCategoria(categoria);
+        return this.ordenarPorPopularidad(repositorioReceta.getRecetasPorCategoria(categoria));
     }
 
     @Override
     public List<Receta> getRecetasPorTiempoDePreparacion(TiempoDePreparacion tiempoPreparacion) {
-        return this.repositorioReceta.getRecetasPorTiempoDePreparacion(tiempoPreparacion);
+        return this.ordenarPorPopularidad(repositorioReceta.getRecetasPorTiempoDePreparacion(tiempoPreparacion));
     }
 
     @Override
     public List<Receta> getRecetasPorCategoriaYTiempoDePreparacion(Categoria categoria, TiempoDePreparacion tiempoPreparacion) {
-        return this.repositorioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempoPreparacion);
+        return this.ordenarPorPopularidad(repositorioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempoPreparacion));
     }
 
     @Override
@@ -65,15 +63,50 @@ public class ServicioRecetaImpl implements ServicioReceta {
             recetaExistente.setIngredientes(receta.getIngredientes());
             recetaExistente.setPasos(receta.getPasos());
             recetaExistente.setImagen(receta.getImagen());
-            System.out.println("Tiempo de preparación después de actualizar: " + recetaExistente.getTiempo_preparacion());
-            repositorioReceta.guardar(recetaExistente);
+            repositorioReceta.actualizar(recetaExistente);
         }
     }
 
 
+
     @Override
     public List<Receta> buscarRecetasPorTitulo(String titulo) {
-        return repositorioReceta.buscarRecetasPorTitulo(titulo);
+        return this.ordenarPorPopularidad(repositorioReceta.buscarRecetasPorTitulo(titulo));
+    }
+
+    @Transactional
+    @Override
+    public void actualizarClicksDeReceta(Receta receta) {
+        receta.incrementarClicks();
+        repositorioReceta.actualizar(receta);
+    }
+
+    private List<Receta> ordenarPorPopularidad(List<Receta> recetas) {
+        Collections.shuffle(recetas); //mezcla la lista en orden aleatorio
+
+        recetas.sort(Comparator.comparingInt(Receta::getContadorClicks).reversed() //ordena de mayor a menor por clicks
+                .thenComparing(this::ordenarAleatoriamenteSiCoincidenClicks)); //otro criterio de ordenamiento si coinciden
+        return recetas;
+    }
+    private int ordenarAleatoriamenteSiCoincidenClicks(Receta receta1, Receta receta2) {
+        int random1 = (int) (Math.random() * Integer.MAX_VALUE);
+        int random2 = (int) (Math.random() * Integer.MAX_VALUE);
+        return Integer.compare(random1, random2);
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloCategoriaYTiempo(String titulo, Categoria categoriaEnum, TiempoDePreparacion tiempoEnum) {
+        return repositorioReceta.buscarRecetasPorTituloCategoriaYTiempo(titulo, categoriaEnum, tiempoEnum);
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYCategoria(String titulo, Categoria categoriaEnum) {
+        return repositorioReceta.buscarRecetasPorTituloYCategoria(titulo, categoriaEnum);
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempoEnum) {
+        return repositorioReceta.buscarRecetasPorTituloYTiempo(titulo, tiempoEnum);
     }
 
 }
