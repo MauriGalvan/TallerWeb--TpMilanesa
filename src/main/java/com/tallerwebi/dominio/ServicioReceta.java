@@ -21,4 +21,6 @@ public interface ServicioReceta {
     void actualizarReceta(Receta receta);
 
     List<Receta> buscarRecetasPorTitulo(String titulo);
+
+   List<Receta> obtenerRecetasRecomendadas();
 }

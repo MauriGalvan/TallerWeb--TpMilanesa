@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,6 +73,14 @@ public class ServicioRecetaImpl implements ServicioReceta {
     @Override
     public List<Receta> buscarRecetasPorTitulo(String titulo) {
         return repositorioReceta.buscarRecetasPorTitulo(titulo);
+    }
+
+    @Transactional
+    @Override
+    public List<Receta> obtenerRecetasRecomendadas() {
+        // Definir los títulos de las recetas que deseas recomendar
+        List<String> titulosRecomendados = Arrays.asList("Milanesa napolitana", "Tortas fritas", "Panqueques");
+        return repositorioReceta.listRecetaRecomendadas(titulosRecomendados);
     }
 
 }

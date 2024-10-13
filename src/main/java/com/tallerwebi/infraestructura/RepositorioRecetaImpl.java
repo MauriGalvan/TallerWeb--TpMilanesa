@@ -96,6 +96,15 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
         return query.getResultList();
     }
+    @Transactional
+    @Override
+    public List<Receta> listRecetaRecomendadas(List<String> titulos) {
+        String hql = "FROM Receta r WHERE r.titulo IN :titulos";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulos", titulos);
+
+        return query.getResultList();
+    }
 
 
 }
