@@ -1,6 +1,6 @@
 INSERT INTO Usuario(id, email, password, rol, activo) VALUES(null, 'test@unlam.edu.ar', 'test', 'ADMIN', true);
 
-INSERT INTO Receta (titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos, contadorClicks)
+INSERT INTO Receta (titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos, contador_visitas)
 VALUES
 ('Milanesa napolitana', 'TREINTA_MIN', 'ALMUERZO_CENA', 'https://i.postimg.cc/7hbGvN2c/mila-napo.webp', 'Carne, Huevo, Pan rallado, Perejil, Papas', 'No vayas más al club de la milanesa, traelo a tu casa.', 'Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso.', 0),
 
