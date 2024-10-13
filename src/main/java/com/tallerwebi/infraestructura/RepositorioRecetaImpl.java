@@ -91,5 +91,34 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         return query.getResultList();
     }
 
+    @Override
+    public List<Receta> buscarRecetasPorTituloYCategoria(String titulo, Categoria categoria) {
+        String hql = "FROM Receta r WHERE lower(r.titulo) LIKE :titulo AND r.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempo) {
+        String hql = "FROM Receta r WHERE lower(r.titulo) LIKE :titulo AND r.tiempo_preparacion = :tiempo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
+        query.setParameter("tiempo", tiempo);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloCategoriaYTiempo(String titulo, Categoria categoria, TiempoDePreparacion tiempo) {
+        String hql = "FROM Receta r WHERE lower(r.titulo) LIKE :titulo AND r.categoria = :categoria AND r.tiempo_preparacion = :tiempo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
+        query.setParameter("categoria", categoria);
+        query.setParameter("tiempo", tiempo);
+        return query.getResultList();
+    }
+
+
 
 }

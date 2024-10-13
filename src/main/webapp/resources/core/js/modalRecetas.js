@@ -19,7 +19,6 @@ document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
                     console.error('Modal no encontrado:', modalId);
                 }
             })
-            .catch(error => console.error('Error al cargar recetas:', error));
     });
 });
 
@@ -33,12 +32,13 @@ function agregarEventListenersRecetas(modalId, categoria, dia) {
 }
 
 function seleccionarReceta(titulo, modalId, categoria, dia) {
+
     console.log('Intentando actualizar el título a:', titulo);
     const nombreRecetaSeleccionada = document.getElementById(`nombreRecetaSeleccionada${categoria}${dia}`);
     if (nombreRecetaSeleccionada) {
         nombreRecetaSeleccionada.innerText = titulo;
         console.log('Título actualizado');
-    }
+}
 
     const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
     if (modal) {
@@ -46,6 +46,9 @@ function seleccionarReceta(titulo, modalId, categoria, dia) {
         console.log('Modal cerrado');
     }
 }
+
+
+
 
 
 

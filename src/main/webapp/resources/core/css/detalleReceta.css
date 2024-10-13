@@ -1,87 +1,19 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-}
-
-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 16em;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: #f8a488;
-    align-items: center;
-    justify-content: center;
-}
-
-.logo {
-    margin-top: 20%;
-}
-
-
-.botones1 {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20%;
-    flex: 1;
-}
-
-.botones1 button {
-    border: none;
-    border-radius: 30px;
-    background-color: #fff4e6;
-    padding: 0.8em 2em;
-    font-size: 1em;
-    cursor: pointer;
-    color: #4a4a4a;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.botones1 button:hover {
-    background-color: #ffb573;
-    transform: translateY(-2px);
-}
-
-.recipe-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    overflow: hidden;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.recipe-header {
-    background-color: #c1d9a3;
-    color: white;
-    padding: 15px;
-    font-size: 24px;
+.receta-titulo {
+    flex-grow: 1;
+    font-weight: bold;
 }
 
 .contenido {
     padding: 20px;
 }
 
-.imagen {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.imagen img {
+.receta-img{
     max-width: 100%;
-    border-radius: 5px;
+    border-radius: 25px;
 }
 
 .ingredientes,
-.instructiones {
+.intrucciones {
     background-color: #f8a488;    border-radius: 5px;
     padding: 15px;
     margin-bottom: 20px;

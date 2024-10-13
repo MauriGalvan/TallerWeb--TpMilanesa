@@ -31,25 +31,60 @@ public class ControladorReceta {
 
     @PostMapping("/buscar-receta-titulo")
     public ModelAndView buscarRecetasPorTitulo(
-            @RequestParam(value = "titulo", required = false) String titulo) {
+            @RequestParam(value = "titulo", required = false) String titulo,
+            @RequestParam(value = "categoria", required = false) String categoria,
+            @RequestParam(value = "tiempo", required = false) String tiempo) {
 
         ModelMap modelo = new ModelMap();
         List<Receta> recetas;
 
+        Categoria categoriaEnum = null;
+        TiempoDePreparacion tiempoEnum = null;
+
+        if (categoria != null && !categoria.equals("todos")) {
+            categoriaEnum = Categoria.valueOf(categoria);
+        }
+
+        if (tiempo != null && !tiempo.equals("-")) {
+            tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
+        }
+
+        // Aplicar los filtros junto con la búsqueda por título
         if (titulo != null && !titulo.isEmpty()) {
-            recetas = servicioReceta.buscarRecetasPorTitulo(titulo);
+            if (categoriaEnum != null && tiempoEnum != null) {
+                recetas = servicioReceta.buscarRecetasPorTituloCategoriaYTiempo(titulo, categoriaEnum, tiempoEnum);
+            } else if (categoriaEnum != null) {
+                recetas = servicioReceta.buscarRecetasPorTituloYCategoria(titulo, categoriaEnum);
+            } else if (tiempoEnum != null) {
+                recetas = servicioReceta.buscarRecetasPorTituloYTiempo(titulo, tiempoEnum);
+            } else {
+                recetas = servicioReceta.buscarRecetasPorTitulo(titulo);
+            }
+
             if (recetas.isEmpty()) {
                 modelo.put("mensajeError", "No se encontró ninguna receta con esa referencia");
             }
         } else {
-            recetas = servicioReceta.getTodasLasRecetas();
+            // Si no se busca por título, solo aplicar los filtros de categoría y tiempo
+            if (categoriaEnum != null && tiempoEnum != null) {
+                recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoriaEnum, tiempoEnum);
+            } else if (categoriaEnum != null) {
+                recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
+            } else if (tiempoEnum != null) {
+                recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoEnum);
+            } else {
+                recetas = servicioReceta.getTodasLasRecetas();
+            }
         }
 
         modelo.put("todasLasRecetas", recetas);
         modelo.put("tituloBuscado", titulo);
+        modelo.put("categoriaSeleccionada", categoria);
+        modelo.put("tiempoSeleccionado", tiempo);
 
         return new ModelAndView("vistaReceta", modelo);
     }
+
 
 
 

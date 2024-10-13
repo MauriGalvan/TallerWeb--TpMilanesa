@@ -59,6 +59,7 @@ public class ServicioRecetaImpl implements ServicioReceta {
         Receta recetaExistente = repositorioReceta.getRecetaPorId(receta.getId());
         if (recetaExistente != null) {
             recetaExistente.setTitulo(receta.getTitulo());
+            recetaExistente.setTiempo_preparacion(receta.getTiempo_preparacion());
             recetaExistente.setIngredientes(receta.getIngredientes());
             recetaExistente.setPasos(receta.getPasos());
             recetaExistente.setImagen(receta.getImagen());
@@ -91,6 +92,21 @@ public class ServicioRecetaImpl implements ServicioReceta {
         int random1 = (int) (Math.random() * Integer.MAX_VALUE);
         int random2 = (int) (Math.random() * Integer.MAX_VALUE);
         return Integer.compare(random1, random2);
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloCategoriaYTiempo(String titulo, Categoria categoriaEnum, TiempoDePreparacion tiempoEnum) {
+        return repositorioReceta.buscarRecetasPorTituloCategoriaYTiempo(titulo, categoriaEnum, tiempoEnum);
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYCategoria(String titulo, Categoria categoriaEnum) {
+        return repositorioReceta.buscarRecetasPorTituloYCategoria(titulo, categoriaEnum);
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempoEnum) {
+        return repositorioReceta.buscarRecetasPorTituloYTiempo(titulo, tiempoEnum);
     }
 
 }
