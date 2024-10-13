@@ -25,6 +25,10 @@ public class ControladorDetalleReceta {
     public ModelAndView mostrarDetalleReceta(Integer id) {
         ModelMap modelo = new ModelMap();
         Receta receta = servicioReceta.getUnaRecetaPorId(id);
+
+        //cuenta las visitas
+        servicioReceta.actualizarClicksDeReceta(receta);
+
         modelo.put("unaReceta", receta);
         return new ModelAndView("detalleReceta", modelo);
     }
@@ -47,6 +51,9 @@ public class ControladorDetalleReceta {
     @PostMapping("/modificarReceta")
     public ModelAndView modificarReceta(@ModelAttribute Receta receta) {
         ModelMap modelo = new ModelMap();
+
+        System.out.println("Receta recibida: " + receta.getTitulo());
+        System.out.println("Tiempo de preparación recibido: " + receta.getTiempo_preparacion());
 
         if (receta.getTitulo() == null || receta.getTitulo().isEmpty() ||
                 receta.getIngredientes() == null || receta.getIngredientes().isEmpty() ||

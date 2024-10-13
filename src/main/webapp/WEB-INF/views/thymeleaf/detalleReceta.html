@@ -1,110 +1,172 @@
 <!DOCTYPE HTML>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Detalle Receta</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
-  <link rel="stylesheet" th:href="@{/css/detalleReceta.css}">
-  <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
 
-</head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Detalle Receta</title>
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+    <link rel="stylesheet" th:href="@{/css/detalleReceta.css}">
 
-<body>
-<nav>
-  <div class="logo">
-    <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
-  </div>
-  <section class="botones1">
-    <button type="button" class="recetas">
-      <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
-        <i class="fas fa-utensils"></i> Recetas
-      </a>
-    </button>
-    <button type="button" class="planificador" onclick="mostrarPopup()">
-      <a href="http://localhost:8080/spring/vista-planificador" class="link-receta">
-      </a>
-      <i class="fas fa-calendar-alt"></i> Planificador
-    </button>
-    <button type="button" class="listaCompras" onclick="mostrarPopup()">
-      <i class="fas fa-shopping-cart"></i> Lista de compras
-    </button>
-    <button type="button" class="perfil" onclick="mostrarPopup()">
-      <i class="fas fa-user"></i> Perfil
-    </button>
-  </section>
-</nav>
+  </head>
 
-<main>
-  <h1 th:text="${unaReceta.titulo}">Nombre de la Receta</h1>
+  <body>
+  <div class="container-fluid">
+    <div class="row">
+      <aside id="sidebar" class="sidebar fondo-verde" th:fragment="aside">
+        <div class="sidebar-content">
+          <a href="#" class="logo-link">
+            <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" alt="Logo de la Web" class="logo">
+          </a>
+          <nav>
+            <ul>
+              <li><a href="http://localhost:8080/spring/vista-receta" class="nav-link"><i class="fa-solid fa-utensils"></i> Recetas</a></li>
+              <li><a href="http://localhost:8080/spring/vista-planificador" class="nav-link"><i class="fas fa-calendar-alt"></i> Planificador</a></li>
+              <li onclick="mostrarPopup()"><a href="#" class="nav-link"><i class="fas fa-shopping-cart" ></i> Lista de compras</a></li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
 
-  <div th:if="${mensajeExito}" class="mensaje-exito">
-    <p th:text="${mensajeExito}" style="color: green; font-weight: bold;"></p>
-  </div>
-  <div th:if="${mensajeError}" class="mensaje-error">
-    <p th:text="${mensajeError}" style="color: red; font-weight: bold;"></p>
-  </div>
-
-  <div class="contenido">
-    <div class="imagen">
-      <img th:src="${unaReceta.imagen}" alt="Foto de la comida">
-    </div>
-    <div class="ingredientes">
-      <h2>INGREDIENTES</h2>
-      <ul>
-        <li th:each="ingrediente : ${unaReceta.ingredientes}" th:text="${ingrediente}">Ingrediente</li>
-      </ul>
-    </div>
-    <div class="instrucciones">
-      <h2>PREPARACIÓN</h2>
-      <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
-    </div>
-
-    <div class="contenedor-botones">
-      <label for="modalEliminar" class="btn-eliminar">Eliminar Receta</label>
-      <label for="modalModificar" class="btn-modificar">Modificar Receta</label>
-    </div>
-
-    <input type="checkbox" id="modalEliminar" class="modal-checkbox">
-    <div id="eliminarRecetaModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="document.getElementById('modalEliminar').checked=false;">&times;</span>
-        <h2>Eliminar Receta</h2>
-        <p>¿Estás seguro que deseas eliminar esta receta?</p>
-        <form th:action="@{/eliminarReceta}" method="post" accept-charset="UTF-8">
-          <input type="hidden" name="id" th:value="${unaReceta.id}" />
-          <button type="submit">Sí, eliminar</button>
-        </form>
-        <button onclick="document.getElementById('modalEliminar').checked=false;">Cancelar</button>
-      </div>
-    </div>
-
-    <input type="checkbox" id="modalModificar" class="modal-checkbox">
-    <div id="modificarRecetaModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="document.getElementById('modalModificar').checked=false;">&times;</span>
-        <h2>Modificar Receta</h2>
-        <form th:action="@{/modificarReceta}" method="post" accept-charset="UTF-8">
-          <input type="hidden" name="id" th:value="${unaReceta.id}" />
-          <label for="titulo">Título</label>
-          <input type="text" id="titulo" name="titulo" th:value="${unaReceta.titulo}" />
-          <label for="ingredientes">Ingredientes</label>
-          <textarea id="ingredientes" name="ingredientes" rows="4" th:text="${unaReceta.ingredientes}"></textarea>
-          <label for="pasos">Pasos</label>
-          <textarea id="pasos" name="pasos" rows="4" th:text="${unaReceta.pasos}"></textarea>
-          <label for="imagen">Imagen URL</label>
-          <input type="text" id="imagen" name="imagen" th:value="${unaReceta.imagen}" />
-          <div class="form-buttons">
-            <button type="submit">Guardar Cambios</button>
-            <button onclick="document.getElementById('modalModificar').checked=false;">Cancelar</button>
+      <div class="contenido-general">
+        <button class="btn fondo-verde d-lg-none btn-nav" type="button" id="sidebarToggle" aria-label="Toggle navigation" th:fragment="boton-nav">
+          <i class="fas fa-bars"></i>
+        </button>
+        <header>
+          <div class="header-container">
+            <h1 class="titulo-header" ></h1>
+            <div class="user-menu">
+              <div class="dropdown">
+                <a href="#" id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
+                  <span>usuario</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
+                  <li  onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-gear"></i>Ajustes</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i>Salir</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
-        </form>
+        </header>
+
+        <main class="main-contenido">
+
+          <div class="card p-4">
+            <!-- Mensajes de éxito y error -->
+            <div th:if="${mensajeExito}" class="alert alert-success" role="alert">
+              <p th:text="${mensajeExito}"></p>
+            </div>
+            <div th:if="${mensajeError}" class="alert alert-danger" role="alert">
+              <p th:text="${mensajeError}"></p>
+            </div>
+
+            <section class="row">
+              <!-- Imagen -->
+                <div class="col-md-4">
+                  <img th:src="${unaReceta.imagen}" alt="Foto de la comida" class="img-fluid receta-img">
+                </div>
+                <!-- Detalles -->
+                <div class="col-md-8">
+                  <div class="receta-header">
+                    <h1 class="receta-titulo" th:text="${unaReceta.titulo}">Título de la Receta</h1>
+
+                    <!-- Tiempo de preparación -->
+                    <h5 class="text-muted mt-3">Tiempo de preparación: <span th:text="${unaReceta.tiempo_preparacion != null ? unaReceta.tiempo_preparacion.tiempo : ''}">30 minutos</span></h5>
+                  </div>
+
+                   <!-- Ingredientes -->
+                  <div class="mt-4">
+                    <h5 class="ingredientes">Ingredientes:</h5>
+                    <ul>
+                        <li th:each="ingrediente : ${unaReceta.ingredientes}" th:text="${ingrediente}">Ingrediente</li>
+                    </ul>
+                  </div>
+
+                  <!-- Preparación -->
+                  <div class="mt-4">
+                    <h5 class="intrucciones">Preparación:</h5>
+                    <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
+                  </div>
+
+                  <!-- Botones de eliminar y modificar -->
+                  <div class="mt-4">
+                    <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar </button>
+                    <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar </button>
+                  </div>
+              </div>
+            </section>
+
+            <!-- Modal de Eliminar Receta -->
+            <input type="checkbox" id="modalEliminar" class="modal-checkbox"/>
+            <div id="eliminarRecetaModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="document.getElementById('modalEliminar').checked=false;">&times;</span>
+                    <h2>Eliminar Receta</h2>
+                    <p>¿Estás seguro que deseas eliminar esta receta?</p>
+                    <form th:action="@{/eliminarReceta}" method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="id" th:value="${unaReceta.id}" />
+                        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    </form>
+                  <button class="btn btn-secondary" onclick="document.getElementById('modalEliminar').checked=false;">Cancelar</button>
+                </div>
+            </div>
+
+            <!-- Modal de Modificar Receta -->
+            <input type="checkbox" id="modalModificar" class="modal-checkbox">
+            <div id="modificarRecetaModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" onclick="document.getElementById('modalModificar').checked=false;">&times;</span>
+                  <h2>Modificar Receta</h2>
+                  <form th:action="@{/modificarReceta}" method="post" accept-charset="UTF-8">
+                      <input type="hidden" name="id" th:value="${unaReceta.id}" />
+                      <label for="titulo">Título</label>
+                      <input type="text" id="titulo" name="titulo" class="form-control" th:value="${unaReceta.titulo}" />
+
+                      <label for="tiempoPreparacion" class="col-form-label">Tiempo de preparación:</label>
+                      <select id="tiempoPreparacion" name="tiempo_preparacion" class="form-control">
+                          <option value="DIEZ_MIN" th:selected="${unaReceta.tiempo_preparacion.name() == 'DIEZ_MIN'}">10 minutos</option>
+                          <option value="VEINTE_MIN" th:selected="${unaReceta.tiempo_preparacion.name() == 'VEINTE_MIN'}">20 minutos</option>
+                          <option value="TREINTA_MIN" th:selected="${unaReceta.tiempo_preparacion.name() == 'TREINTA_MIN'}">30 minutos</option>
+                          <option value="UNA_HORA" th:selected="${unaReceta.tiempo_preparacion.name() == 'UNA_HORA'}">1 hora</option>
+                      </select>
+
+                      <label for="ingredientes">Ingredientes</label>
+                      <textarea id="ingredientes" name="ingredientes" rows="4" class="form-control" th:text="${unaReceta.ingredientes}"></textarea>
+
+                      <label for="pasos">Pasos</label>
+                      <textarea id="pasos" name="pasos" rows="4" class="form-control" th:text="${unaReceta.pasos}"></textarea>
+
+                      <label for="imagen">Imagen URL</label>
+                      <input type="text" id="imagen" name="imagen" class="form-control" th:value="${unaReceta.imagen}" />
+
+                      <div class="form-buttons mt-3">
+                          <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                          <button type="button" class="btn btn-secondary" onclick="document.getElementById('modalModificar').checked=false;">Cancelar</button>
+                      </div>
+                  </form>
+              </div>
+            </div>
+
+          </div>
+        </main>
+
+        <footer>
+          <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
+        </footer>
       </div>
     </div>
   </div>
-</main>
-
-</body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/sidebar.js"></script>
+  </script>
+  <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
+  </body>
 </html>

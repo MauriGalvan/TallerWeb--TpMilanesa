@@ -1,172 +1,191 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Vista Receta</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
-    <script>
-        function mostrarPopup() {alert("Funcionalidad en desarrollo!");}
-        function mostrarModal() {
-            document.getElementById('modalReceta').style.display = 'block';
-        }
-        function cerrarModal() {
-            document.getElementById('modalReceta').style.display = 'none';
-        }
-    </script>
-    <style>
-        /* Estilos básicos para el modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
 
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Vista Receta</title>
+        <!--Bootstrap-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <!--Font Awesome-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!--CSS-->
+        <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+    </head>
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <aside id="sidebar" class="sidebar fondo-verde" >
+                    <div class="sidebar-content">
+                        <a href="#" class="logo-link">
+                            <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" alt="Logo de la Web" class="logo">
+                        </a>
+                        <nav>
+                            <ul>
+                                <li><a href="http://localhost:8080/spring/vista-receta" class="nav-link"><i class="fa-solid fa-utensils"></i> Recetas</a></li>
+                                <li><a href="http://localhost:8080/spring/vista-planificador" class="nav-link"><i class="fas fa-calendar-alt"></i> Planificador</a></li>
+                                <li onclick="mostrarPopup()"><a href="#" class="nav-link"><i class="fas fa-shopping-cart" ></i> Lista de compras</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </aside>
 
-        .close:hover, .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-<nav>
-    <div class="logo">
-        <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
-    </div>
-    <section class="botones">
-        <button type="button" class="recetas">
-            <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
-                <i class="fas fa-utensils"></i> Recetas
-            </a>
-        </button>
-        <button type="button" class="planificador" >
-            <a href="http://localhost:8080/spring/vista-planificador" class="link-receta">
-                <i class="fas fa-calendar-alt"></i> Planificador
-            </a>
-        </button>
-        <button type="button" class="listaCompras" onclick="mostrarPopup()">
-            <i class="fas fa-shopping-cart"></i> Lista de compras
-        </button>
-        <button type="button" class="perfil" onclick="mostrarPopup()">
-            <i class="fas fa-user"></i> Perfil
-        </button>
-    </section>
-</nav>
-<main>
-    <h1>Recetas</h1>
-    <section class="filtros">
-        <form method="post">
-            <label for="time">
-                Tiempo de preparación
-            </label>
-            <select id="time" name="tiempo" th:value="${tiempoSeleccionado}">
-                <option value="-" th:selected="${tiempoSeleccionado == '-'}">-</option>
-                <option value="DIEZ_MIN" th:selected="${tiempoSeleccionado == 'DIEZ_MIN'}">10min</option>
-                <option value="VEINTE_MIN" th:selected="${tiempoSeleccionado == 'VEINTE_MIN'}">20min</option>
-                <option value="TREINTA_MIN" th:selected="${tiempoSeleccionado == 'TREINTA_MIN'}">30min</option>
-                <option value="UNA_HORA" th:selected="${tiempoSeleccionado == 'UNA_HORA'}">1h</option>
-            </select>
-            <label for="categorias">
-                Categoría
-            </label>
-            <select id="categorias" name="categoria" th:value="${categoriaSeleccionada}">
-                <option value="todos" th:selected="${categoriaSeleccionada == 'todos'}">Todos</option>
-                <option value="DESAYUNO_MERIENDA" th:selected="${categoriaSeleccionada == 'DESAYUNO_MERIENDA'}">Desayuno/Merienda</option>
-                <option value="ALMUERZO_CENA" th:selected="${categoriaSeleccionada == 'ALMUERZO_CENA'}">Almuerzo/Cena</option>
-            </select>
-            <button type="submit">Filtrar</button>
-            <button type="button" onclick="mostrarModal()">Cargar receta</button>
-        </form>
-    </section>
+                <div class="contenido-general">
+                    <button class="btn fondo-verde d-lg-none btn-nav" type="button" id="sidebarToggle" aria-label="Toggle navigation" >
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    <header>
+                        <div class="header-container">
+                            <h1 class="titulo-header">Recetas</h1>
+                            <div class="user-menu">
+                                <div class="dropdown">
+                                    <a href="#" id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
+                                        <span>usuario</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
+                                        <li  onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-gear"></i>Ajustes</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i>Salir</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
 
-    <div id="modalReceta" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cerrarModal()">&times;</span>
-            <h2>Cargar nueva receta</h2>
-            <form th:action="@{/guardarReceta}" method="post" accept-charset="UTF-8">
-                <label for="titulo">Título:</label>
-                <input type="text" id="titulo" name="titulo" required><br>
+                    <section class="section">
+                        <div class="filtros">
+                            <div class="filtro-grupo">
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#modalReceta">
+                                    <i class="fas fa-plus"></i> Cargar receta
+                                </button>
+                            </div>
+                            <!--modal formulario cargar receta-->
+                            <div class="modal fade" id="modalReceta" tabindex="-1" aria-labelledby="modalRecetaLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title fs-5" id="modalRecetaLabel">Cargar nueva receta</h2>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form th:action="@{/guardarReceta}" method="post" accept-charset="UTF-8">
+                                                <div class="mb-3">
+                                                    <label for="titulo" class="col-form-label">Título:</label>
+                                                    <input type="text" id="titulo" name="titulo" class="form-control" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="descripcion" class="col-form-label">Descripción:</label>
+                                                    <textarea id="descripcion" name="descripcion" class="form-control" required></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="tiempoPreparacion" class="col-form-label">Tiempo de preparación:</label>
+                                                    <select id="tiempoPreparacion" name="tiempoPreparacion" class="form-select" required>
+                                                        <option value="DIEZ_MIN">10min</option>
+                                                        <option value="VEINTE_MIN">20min</option>
+                                                        <option value="TREINTA_MIN">30min</option>
+                                                        <option value="UNA_HORA">1h</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="categoria" class="col-form-label">Categoría:</label>
+                                                    <select id="categoria" name="categoria" class="form-select" required>
+                                                        <option value="DESAYUNO_MERIENDA">Desayuno/Merienda</option>
+                                                        <option value="ALMUERZO_CENA">Almuerzo/Cena</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="ingredientes" class="col-form-label">Ingredientes:</label>
+                                                    <textarea id="ingredientes" name="ingredientes" class="form-control" required></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="pasos" class="col-form-label">Instrucciones:</label>
+                                                    <textarea id="pasos" name="pasos" class="form-control"></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="imagen" class="col-form-label">URL de la imagen:</label>
+                                                    <input type="text" id="imagen" name="imagen" class="form-control" required>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" name="descripcion" required></textarea><br>
+                            <div>
+                                <form method="post" th:action="@{/buscar-receta-titulo}" class="filtro-grupo">
+                                    <input type="text" name="titulo" id="tituloBusqueda" placeholder="Buscar recetas" list="listaRecetas" th:value="${tituloBuscado}" class="flex-grow p-2 border rounded" />
 
-                <label for="tiempoPreparacion">Tiempo de preparación:</label>
-                <select id="tiempoPreparacion" name="tiempoPreparacion" required>
-                    <option value="DIEZ_MIN">10min</option>
-                    <option value="VEINTE_MIN">20min</option>
-                    <option value="TREINTA_MIN">30min</option>
-                    <option value="UNA_HORA">1h</option>
-                </select><br>
 
-                <label for="categoria">Categoría:</label>
-                <select id="categoria" name="categoria" required>
-                    <option value="DESAYUNO_MERIENDA">Desayuno/Merienda</option>
-                    <option value="ALMUERZO_CENA">Almuerzo/Cena</option>
-                </select><br>
+                                    <!-- Datalist para el autocompletado -->
+                                    <datalist id="listaRecetas">
+                                        <option th:each="receta : ${todasLasRecetas}" th:value="${receta.titulo}"></option>
+                                    </datalist>
 
-                <label for="ingredientes">Ingredientes:</label>
-                <textarea id="ingredientes" name="ingredientes" required></textarea><br>
+                                    <div class="filtro-grupo">
+                                        <label for="time" class="ms-2">Tiempo de preparación</label>
+                                        <select id="time" name="tiempo" th:value="${tiempoSeleccionado}">
+                                            <option value="-" th:selected="${tiempoSeleccionado == '-'}">-</option>
+                                            <option value="DIEZ_MIN" th:selected="${tiempoSeleccionado == 'DIEZ_MIN'}">10min</option>
+                                            <option value="VEINTE_MIN" th:selected="${tiempoSeleccionado == 'VEINTE_MIN'}">20min</option>
+                                            <option value="TREINTA_MIN" th:selected="${tiempoSeleccionado == 'TREINTA_MIN'}">30min</option>
+                                            <option value="UNA_HORA" th:selected="${tiempoSeleccionado == 'UNA_HORA'}">1h</option>
+                                        </select>
+                                    </div>
+                                    <div class="filtro-grupo">
+                                        <label for="category" class="ms-2">Categoría</label>
+                                        <select id="category" name="categoria" th:value="${categoriaSeleccionada}">
+                                            <option value="todos" th:selected="${categoriaSeleccionada == 'todos'}">Todos</option>
+                                            <option value="DESAYUNO_MERIENDA" th:selected="${categoriaSeleccionada == 'DESAYUNO_MERIENDA'}">Desayuno/Merienda</option>
+                                            <option value="ALMUERZO_CENA" th:selected="${categoriaSeleccionada == 'ALMUERZO_CENA'}">Almuerzo/Cena</option>
+                                        </select>
+                                    </div>
+                                    <div class="ms-1">
+                                        <button type="submit" class="buscar-btn p-2">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                  <!--  <button type="submit">Filtrar</button> -->
+                                </form>
+                            </div>
+                        </div>
 
-                <label for="pasos">Instrucciones</label>
-                <textarea id="pasos" name="pasos"></textarea>
+                    </section>
 
-                <label for="imagen">URL de la imagen:</label>
-                <input type="text" id="imagen" name="imagen" required><br>
-
-                <button type="submit">Aceptar</button>
-            </form>
-        </div>
-    </div>
-
-    <section class="buscar-por-titulo">
-        <form method="post" th:action="@{/buscar-receta-titulo}" class="buscar-form">
-            <label for="tituloBusqueda">Buscar por título</label>
-            <div class="buscar-container">
-                <input type="text" id="tituloBusqueda" name="titulo" placeholder="Buscar recetas" th:value="${tituloBuscado}" class="buscar-input"/>
-                <button type="submit" class="buscar-boton">Buscar</button>
+                    <main class="main-contenido">
+                        <section class="recetas" th:if="${todasLasRecetas != null && !#lists.isEmpty(todasLasRecetas)}">
+                            <article th:each="receta : ${todasLasRecetas}">
+                                <a th:href="@{/detalleReceta(id=${receta.id})}" class="receta link-receta ">
+                                    <div class="container">
+                                        <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>
+                                        <p class="desc" th:text="${receta.descripcion}">Descripción</p>
+                                    </div>
+                                    <img class="foto" th:src="${receta.imagen}" alt="Imagen receta">
+                                </a>
+                            </article>
+                        </section>
+                        <section class="mensaje-error" th:if="${mensajeError}">
+                            <p th:text="${mensajeError}" style="color: red; font-weight: bold;"></p>
+                        </section>
+                    </main>
+                    <footer>
+                        <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
+                    </footer>
+                </div>
             </div>
-        </form>
-    </section>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/sidebar.js"></script>
+        <script>
+            function mostrarPopup() {alert("Funcionalidad en desarrollo!");}
+        </script>
 
+    </body>
 
-    <section class="mensaje-error" th:if="${mensajeError}">
-        <p th:text="${mensajeError}" style="color: red; font-weight: bold;"></p>
-    </section>
-
-    <section class="recetas" th:if="${todasLasRecetas != null && !#lists.isEmpty(todasLasRecetas)}">
-        <article th:each="receta : ${todasLasRecetas}">
-            <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta">
-                <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>
-                <p class="desc" th:text="${receta.descripcion}">Descripción</p>
-                <img class="foto" th:src="${receta.imagen}" alt="Imagen receta">
-            </a>
-        </article>
-    </section>
-</main>
-<footer>
-</footer>
-</body>
 </html>

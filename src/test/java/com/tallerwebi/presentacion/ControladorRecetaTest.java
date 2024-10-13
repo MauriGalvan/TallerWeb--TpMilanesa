@@ -44,10 +44,12 @@ public class ControladorRecetaTest {
     @Test
     public void QueRetorneLaVistaDetalleRecetaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
         //Dado
-        int id = 1;
+        Receta receta = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso.");
         //Cuando
-        ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(id);
+        when(servicioRecetaMock.getUnaRecetaPorId(receta.getId())).thenReturn(receta);
+        ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(receta.getId());
         //Entonces
+        verify(servicioRecetaMock, times(1)).getUnaRecetaPorId(receta.getId());
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("detalleReceta"));
     }
 
@@ -68,10 +70,10 @@ public class ControladorRecetaTest {
         //Entonces
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
-        assertThat(recetas, hasSize(3));  // Verificamos que hay 3 recetas
-        assertThat(recetas.get(0).getTitulo(), equalTo("Milanesa napolitana"));
-        assertThat(recetas.get(1).getTitulo(), equalTo("Tarta jamón y queso"));
-        assertThat(recetas.get(2).getTitulo(), equalTo("Café cortado con tostadas"));
+        assertThat(recetas, hasSize(3));
+        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
+        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Tarta jamón y queso"))));
+        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Café cortado con tostadas"))));
     }
 
 
@@ -91,10 +93,9 @@ public class ControladorRecetaTest {
         //Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
         assertThat(recetas, hasSize(2));
-        assertThat(recetas.get(0).getTitulo(), equalTo("Milanesa napolitana"));
-        assertThat(recetas.get(1).getTitulo(), equalTo("Tarta jamón y queso"));
-        assertThat(recetas.get(0).getCategoria(), equalTo(Categoria.ALMUERZO_CENA));
-        assertThat(recetas.get(1).getCategoria(), equalTo(Categoria.ALMUERZO_CENA));
+        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
+        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Tarta jamón y queso"))));
+        assertThat(recetas, everyItem(hasProperty("categoria", equalTo(Categoria.ALMUERZO_CENA))));
     }
 
     @Test
@@ -106,7 +107,7 @@ public class ControladorRecetaTest {
 
         // Cuando
         when(servicioRecetaMock.buscarRecetasPorTitulo(tituloBuscado)).thenReturn(recetasMock);
-        ModelAndView modelAndView = controladorReceta.buscarRecetasPorTitulo(tituloBuscado);
+        ModelAndView modelAndView = controladorReceta.buscarRecetasPorTitulo(tituloBuscado, null, null);
 
         // Entonces
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
