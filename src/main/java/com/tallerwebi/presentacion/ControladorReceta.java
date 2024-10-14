@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -30,32 +32,9 @@ public class ControladorReceta {
 
     @PostMapping("/buscar-receta-titulo")
     public ModelAndView buscarRecetasPorTitulo(
-            @RequestParam(value = "titulo", required = false) String titulo) {
-
-        ModelMap modelo = new ModelMap();
-        List<Receta> recetas;
-
-        if (titulo != null && !titulo.isEmpty()) {
-            recetas = servicioReceta.buscarRecetasPorTitulo(titulo);
-            if (recetas.isEmpty()) {
-                modelo.put("mensajeError", "No se encontró ninguna receta con esa referencia");
-            }
-        } else {
-            recetas = servicioReceta.getTodasLasRecetas();
-        }
-
-        modelo.put("todasLasRecetas", recetas);
-        modelo.put("tituloBuscado", titulo);
-
-        return new ModelAndView("vistaReceta", modelo);
-    }
-
-
-
-    @RequestMapping("/vista-receta")
-    public ModelAndView irARecetas(
+            @RequestParam(value = "titulo", required = false) String titulo,
             @RequestParam(value = "categoria", required = false) String categoria,
-            @RequestParam(value = "tiempo", required = false) String tiempo){
+            @RequestParam(value = "tiempo", required = false) String tiempo) {
 
         ModelMap modelo = new ModelMap();
         List<Receta> recetas;
@@ -71,13 +50,69 @@ public class ControladorReceta {
             tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
         }
 
-        if (categoriaEnum != null){
-            if (tiempoEnum != null){
+        // Aplicar los filtros junto con la búsqueda por título
+        if (titulo != null && !titulo.isEmpty()) {
+            if (categoriaEnum != null && tiempoEnum != null) {
+                recetas = servicioReceta.buscarRecetasPorTituloCategoriaYTiempo(titulo, categoriaEnum, tiempoEnum);
+            } else if (categoriaEnum != null) {
+                recetas = servicioReceta.buscarRecetasPorTituloYCategoria(titulo, categoriaEnum);
+            } else if (tiempoEnum != null) {
+                recetas = servicioReceta.buscarRecetasPorTituloYTiempo(titulo, tiempoEnum);
+            } else {
+                recetas = servicioReceta.buscarRecetasPorTitulo(titulo);
+            }
+
+            if (recetas.isEmpty()) {
+                modelo.put("mensajeError", "No se encontró ninguna receta con esa referencia");
+            }
+        } else {
+            // Si no se busca por título, solo aplicar los filtros de categoría y tiempo
+            if (categoriaEnum != null && tiempoEnum != null) {
+                recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoriaEnum, tiempoEnum);
+            } else if (categoriaEnum != null) {
+                recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
+            } else if (tiempoEnum != null) {
+                recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoEnum);
+            } else {
+                recetas = servicioReceta.getTodasLasRecetas();
+            }
+        }
+
+        modelo.put("todasLasRecetas", recetas);
+        modelo.put("tituloBuscado", titulo);
+        modelo.put("categoriaSeleccionada", categoria);
+        modelo.put("tiempoSeleccionado", tiempo);
+
+        return new ModelAndView("vistaReceta", modelo);
+    }
+
+
+    @RequestMapping("/vista-receta")
+    public ModelAndView irARecetas(
+            @RequestParam(value = "categoria", required = false) String categoria,
+            @RequestParam(value = "tiempo", required = false) String tiempo) {
+
+        ModelMap modelo = new ModelMap();
+        List<Receta> recetas;
+
+        Categoria categoriaEnum = null;
+        TiempoDePreparacion tiempoEnum = null;
+
+        if (categoria != null && !categoria.equals("todos")) {
+            categoriaEnum = Categoria.valueOf(categoria);
+        }
+
+        if (tiempo != null && !tiempo.equals("-")) {
+            tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
+        }
+
+        if (categoriaEnum != null) {
+            if (tiempoEnum != null) {
                 recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoriaEnum, tiempoEnum);
             } else {
                 recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
             }
-        } else if (tiempoEnum != null){
+        } else if (tiempoEnum != null) {
             recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoEnum);
         } else {
             recetas = servicioReceta.getTodasLasRecetas();
@@ -100,12 +135,12 @@ public class ControladorReceta {
             @RequestParam("descripcion") String descripcion,
             @RequestParam("imagen") String imagen) {
 
-        System.out.println("Título recibido: " + titulo);
-    //valida que los campos no esten vacios o solo con espacios vacios
+        //valida que los campos no esten vacios o solo con espacios vacios
         ModelAndView errorModelAndView = validarCampos(titulo, ingredientes, imagen, descripcion);
         if (errorModelAndView != null) {
             return errorModelAndView;
         }
+
 
         Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen, ingredientes, descripcion, pasos);
         servicioReceta.guardarReceta(nuevaReceta);
@@ -117,9 +152,6 @@ public class ControladorReceta {
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/vista-receta");
     }
-
-
-
 
 
     private ModelAndView validarCampos(String titulo, String ingredientes, String imagen, String descripcion) {
@@ -145,5 +177,3 @@ public class ControladorReceta {
         return modelAndView;
     }
 }
-
-

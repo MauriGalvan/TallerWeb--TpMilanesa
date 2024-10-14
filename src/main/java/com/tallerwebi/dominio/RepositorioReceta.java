@@ -22,5 +22,11 @@ public interface RepositorioReceta {
 
     List<Receta> buscarRecetasPorTitulo(String titulo);
 
+    List<Receta> buscarRecetasPorTituloYCategoria(String titulo, Categoria categoria);
+
+    List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempo);
+
+    List<Receta> buscarRecetasPorTituloCategoriaYTiempo(String titulo, Categoria categoria, TiempoDePreparacion tiempo);
+
     List<Receta> listRecetaRecomendadas(List<String> titulos);
 }

@@ -1,27 +1,18 @@
 package com.tallerwebi.dominio;
 
 public enum TiempoDePreparacion {
-    DIEZ_MIN(10),
-    VEINTE_MIN(20),
-    TREINTA_MIN(30),
-    UNA_HORA(60);
+    DIEZ_MIN("10 minutos"),
+    VEINTE_MIN("20 minutos"),
+    TREINTA_MIN("30 minutos"),
+    UNA_HORA("1 hora");
 
-    private final int minutos;
+    private final String tiempo;
 
-    TiempoDePreparacion(int minutos) {
-        this.minutos = minutos;
+    TiempoDePreparacion(String tiempoATexto) {
+        this.tiempo = tiempoATexto;
     }
 
-    public int getMinutos() {
-        return minutos;
-    }
-
-    @Override
-    public String toString() {
-        if (minutos < 60) {
-            return minutos + " min";
-        } else {
-            return (minutos / 60) + " hr";
-        }
+    public String getTiempo(){
+        return tiempo;
     }
 }

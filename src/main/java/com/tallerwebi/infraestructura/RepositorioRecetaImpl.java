@@ -23,24 +23,18 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     }
 
     @Override
-    public void guardar(Receta receta){
-        if (receta == null) {
-            throw new NullPointerException("La receta no puede ser null");
-        }
-
+    public void guardar(Receta receta) {
         sessionFactory.getCurrentSession().save(receta);
     }
 
 
     @Override
     public void eliminar(Receta receta) {
-        
         sessionFactory.getCurrentSession().delete(receta);
     }
 
     @Override
     public void actualizar(Receta receta) {
-
         sessionFactory.getCurrentSession().update(receta);
     }
 
@@ -96,6 +90,35 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
         return query.getResultList();
     }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYCategoria(String titulo, Categoria categoria) {
+        String hql = "FROM Receta r WHERE lower(r.titulo) LIKE :titulo AND r.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempo) {
+        String hql = "FROM Receta r WHERE lower(r.titulo) LIKE :titulo AND r.tiempo_preparacion = :tiempo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
+        query.setParameter("tiempo", tiempo);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Receta> buscarRecetasPorTituloCategoriaYTiempo(String titulo, Categoria categoria, TiempoDePreparacion tiempo) {
+        String hql = "FROM Receta r WHERE lower(r.titulo) LIKE :titulo AND r.categoria = :categoria AND r.tiempo_preparacion = :tiempo";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("titulo", "%" + titulo.toLowerCase() + "%");
+        query.setParameter("categoria", categoria);
+        query.setParameter("tiempo", tiempo);
+        return query.getResultList();
+    }
+
     @Transactional
     @Override
     public List<Receta> listRecetaRecomendadas(List<String> titulos) {
