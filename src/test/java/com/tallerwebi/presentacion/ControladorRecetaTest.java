@@ -6,8 +6,11 @@ import com.tallerwebi.dominio.ServicioReceta;
 import com.tallerwebi.dominio.TiempoDePreparacion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +33,22 @@ public class ControladorRecetaTest {
         controladorDetalleReceta = new ControladorDetalleReceta(servicioRecetaMock);
     }
 
+    private Receta recetaMilanesaNapolitanaDeTreintaMinCreada(){
+        byte[] imagen = new byte[]{0, 1};
+        return new Receta ("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                imagen, ".", "Esto es una descripción de mila napo", ".");
+    }
+    private Receta recetaMilanesaConPapasDeVeinteMinCreada(){
+        byte[] imagen = new byte[]{0, 1};
+        return new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+                imagen, ".", "Milanesa con guarnición de papas fritas", ".");
+    }
+    private Receta recetaCafeConLecheDeDiezMinCreada(){
+        byte[] imagen = new byte[]{0, 1};
+        return new Receta ("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
+                imagen, ".", "Un clásico de las mañanas.", ".");
+    }
+
     @Test
     public void QueRetorneLaVistaRecetaCuandoSeEjecutaElMetodoIrARecetas(){
         //Dado
@@ -44,7 +63,7 @@ public class ControladorRecetaTest {
     @Test
     public void QueRetorneLaVistaDetalleRecetaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
         //Dado
-        Receta receta = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso.");
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         //Cuando
         when(servicioRecetaMock.getUnaRecetaPorId(receta.getId())).thenReturn(receta);
         ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(receta.getId());
@@ -59,9 +78,9 @@ public class ControladorRecetaTest {
     public void QueRetorneTodasLasRecetasCuandoNoHayNingunFiltroSeleccionadoEnCategorias() {
         //Dado
         List<Receta> recetasMock = new ArrayList<>();
-        recetasMock.add(new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso."));
-        recetasMock.add(new Receta("Tarta jamón y queso", TiempoDePreparacion.UNA_HORA, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/XYXRZ1Mq/tarta-jamon-queso.jpg", "Jamón, Queso, Tapa pascualina, Huevo, Tomate", "Para comer con tus amigos y familia.", "Precalienta el horno a 180 grados. Extiende una tapa de pascualina en un molde. Mezcla jamón picado, queso y tomate. Bate un huevo y agrégalo. Vierte sobre la base, cubre con otra tapa si deseas y haz cortes. Hornea 30-35 minutos hasta dorar."));
-        recetasMock.add(new Receta("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA, "https://i.postimg.cc/90QVFGGj/cafe-tostada.jpg", "Café, Leche, Pan lactal, Mermelada", "Un clásico de las mañanas.", "Prepara el café a tu gusto y añade un chorrito de leche caliente. Tuesta las rebanadas de pan lactal hasta dorarlas. Unta mermelada en las tostadas. Sirve el café cortado en una taza y acompáñalo con las tostadas."));
+        recetasMock.add(this.recetaMilanesaConPapasDeVeinteMinCreada());
+        recetasMock.add(this.recetaCafeConLecheDeDiezMinCreada());
+        recetasMock.add(this.recetaMilanesaNapolitanaDeTreintaMinCreada());
 
         //Cuando
         when(servicioRecetaMock.getTodasLasRecetas()).thenReturn(recetasMock);
@@ -72,7 +91,7 @@ public class ControladorRecetaTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
         assertThat(recetas, hasSize(3));
         assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
-        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Tarta jamón y queso"))));
+        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
         assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Café cortado con tostadas"))));
     }
 
@@ -81,8 +100,8 @@ public class ControladorRecetaTest {
     public void QueRetorneLasRecetasDeAlmuerzoCuandoElFiltroDeCategoriaEsteSeleccionadoEnAlmmuerzo() {
         //Dado
         List<Receta> recetasMock = new ArrayList<>();
-        recetasMock.add(new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso."));
-        recetasMock.add(new Receta("Tarta jamón y queso", TiempoDePreparacion.UNA_HORA, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/XYXRZ1Mq/tarta-jamon-queso.jpg", "Jamón, Queso, Tapa pascualina, Huevo, Tomate", "Para comer con tus amigos y familia.", "Precalienta el horno a 180 grados. Extiende una tapa de pascualina en un molde. Mezcla jamón picado, queso y tomate. Bate un huevo y agrégalo. Vierte sobre la base, cubre con otra tapa si deseas y haz cortes. Hornea 30-35 minutos hasta dorar."));
+        recetasMock.add(this.recetaMilanesaConPapasDeVeinteMinCreada());
+        recetasMock.add(this.recetaMilanesaNapolitanaDeTreintaMinCreada());
 
         //Cuando
         when(servicioRecetaMock.getRecetasPorCategoria(Categoria.ALMUERZO_CENA)).thenReturn(recetasMock);
@@ -94,7 +113,7 @@ public class ControladorRecetaTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
         assertThat(recetas, hasSize(2));
         assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
-        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Tarta jamón y queso"))));
+        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
         assertThat(recetas, everyItem(hasProperty("categoria", equalTo(Categoria.ALMUERZO_CENA))));
     }
 
@@ -103,7 +122,7 @@ public class ControladorRecetaTest {
         // Dado
         String tituloBuscado = "Milanesa";
         List<Receta> recetasMock = new ArrayList<>();
-        recetasMock.add(new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso."));
+        recetasMock.add(this.recetaMilanesaNapolitanaDeTreintaMinCreada());
 
         // Cuando
         when(servicioRecetaMock.buscarRecetasPorTitulo(tituloBuscado)).thenReturn(recetasMock);
@@ -117,18 +136,23 @@ public class ControladorRecetaTest {
     }
 
     @Test
-    public void QueSePuedaCargarUnaReceta(){
+    public void QueSePuedaCargarUnaReceta() throws IOException {
         String titulo = "Milanesa napolitana";
         TiempoDePreparacion tiempo = TiempoDePreparacion.TREINTA_MIN;
         Categoria categoria = Categoria.ALMUERZO_CENA;
-        String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
+        MockMultipartFile imagen = new MockMultipartFile(
+                "imagen", // nombre del campo
+                "imagen.jpg", // nombre del archivo
+                "image/jpeg", // tipo de contenido
+                new byte[]{0, 1, 2, 3} // contenido de la imagen
+        );
         String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
         String descripcion = "Esto es una descripción de mila napo";
         String pasos = ".";
 
         ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, ingredientes, descripcion, imagen);
 
-        Receta recetaEsperada = new Receta(titulo, tiempo, categoria, imagen, ingredientes, descripcion, pasos);
+        Receta recetaEsperada = new Receta(titulo, tiempo, categoria, imagen.getBytes(), ingredientes, descripcion, pasos);
         verify(servicioRecetaMock, times(1)).guardarReceta(recetaEsperada);
 
         assertEquals("redirect:/vista-receta", modelAndView.getViewName());

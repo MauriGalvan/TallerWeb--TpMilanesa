@@ -71,7 +71,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form th:action="@{/guardarReceta}" method="post" accept-charset="UTF-8">
+                                            <form th:action="@{/guardarReceta}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                                                 <div class="mb-3">
                                                     <label for="titulo" class="col-form-label">Título:</label>
                                                     <input type="text" id="titulo" name="titulo" class="form-control" required>
@@ -105,8 +105,8 @@
                                                     <textarea id="pasos" name="pasos" class="form-control"></textarea>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="imagen" class="col-form-label">URL de la imagen:</label>
-                                                    <input type="text" id="imagen" name="imagen" class="form-control" required>
+                                                    <label for="imagen" class="col-form-label">Cargar imagen:</label>
+                                                    <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*" required>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

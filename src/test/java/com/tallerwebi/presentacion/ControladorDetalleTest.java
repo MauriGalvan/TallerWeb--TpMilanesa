@@ -26,19 +26,17 @@ public class ControladorDetalleTest {
         controlador = new ControladorDetalleReceta(servicioRecetaMock);
     }
 
+    private Receta recetaMilanesaNapolitanaDeTreintaMinCreada(){
+        byte[] imagen = new byte[]{0, 1};
+        return new Receta ("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                imagen, ".", "Esto es una descripción de mila napo", ".");
+    }
+
     @Test
     public void DebeRetornarVistaConTituloImagenIngredientesYPasosCuandoSeMuestraDetalleReceta(){
         //DADO
         int id = 1;
-        String titulo = "Milanesa napolitana";
-        TiempoDePreparacion tiempo_preparacion = TiempoDePreparacion.TREINTA_MIN;
-        Categoria categoria = Categoria.ALMUERZO_CENA;
-        String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
-        String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
-        String descripcion = "Esto es una descripción de mila napo";
-        String pasos = "Aplasta la carne y condimenta con sal y pimienta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe en aceite caliente hasta dorar. Acompaña con papas fritas o hervidas y añade salsa de tomate, jamón y queso.";
-
-        Receta recetaMock = new Receta(titulo,tiempo_preparacion,categoria,imagen,ingredientes,descripcion,pasos);
+        Receta recetaMock = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         recetaMock.setId(id);
 
         //CUANDO
@@ -46,16 +44,15 @@ public class ControladorDetalleTest {
         ModelAndView modelAndView = controlador.mostrarDetalleReceta(recetaMock.getId());
         //ENTONCES
         Receta recetaDelModelo = (Receta) modelAndView.getModel().get("unaReceta");
-        assertThat(recetaDelModelo.getTitulo(), equalTo(titulo));
-        assertThat(recetaDelModelo.getImagen(), equalTo(imagen));
-        assertThat(recetaDelModelo.getPasos(), equalTo(pasos));
+        assertThat(recetaDelModelo.getTitulo(), equalTo(recetaMock.getTitulo()));
+        assertThat(recetaDelModelo.getImagen(), equalTo(recetaMock.getImagen()));
+        assertThat(recetaDelModelo.getPasos(), equalTo(recetaMock.getPasos()));
     }
 
     @Test
     public void DebeModificarRecetaYRetornarVistaConMensajeDeExito() {
         //DADO
-        Receta recetaMock = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
+        Receta recetaMock = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         recetaMock.setId(1);
 
         //CUANDO
@@ -70,8 +67,8 @@ public class ControladorDetalleTest {
 
     @Test
     public void QueAparezaUnMensajeDeErrorYNoSePuedaActualizarEnLaBaseDeDatosSiSeModificaElTituloYLoDejaVacio(){
-        Receta receta = new Receta(null, TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        receta.setTitulo(""); //titulo vacío
 
         ModelAndView modelAndView = controlador.modificarReceta(receta);
 
@@ -84,8 +81,7 @@ public class ControladorDetalleTest {
     @Test
     public void DebeEliminarRecetaYRedirigirAVistaCorrecta() {
         //DADO
-        Receta recetaMock = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
+        Receta recetaMock = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         recetaMock.setId(1);
 
         //CUANDO

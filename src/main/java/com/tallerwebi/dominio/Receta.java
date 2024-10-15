@@ -15,17 +15,19 @@ public class Receta {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    @Lob
+    private byte[] imagen;
+
     private String titulo;
-    private String imagen;
     private String ingredientes;
     private String descripcion;
     private String pasos;
     private int contador_visitas;
 
     public Receta() {
-
     }
-    public Receta(String titulo, TiempoDePreparacion tiempo_preparacion, Categoria categoria, String imagen,
+
+    public Receta(String titulo, TiempoDePreparacion tiempo_preparacion, Categoria categoria, byte[] imagen,
                   String ingredientes, String descripcion, String pasos){
         this.titulo = titulo;
         this.tiempo_preparacion = tiempo_preparacion;
@@ -35,7 +37,6 @@ public class Receta {
         this.descripcion = descripcion;
         this.pasos = pasos;
         this.contador_visitas = 0;
-
     }
 
     public String getTitulo() {
@@ -70,11 +71,11 @@ public class Receta {
         this.categoria = categoria;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 

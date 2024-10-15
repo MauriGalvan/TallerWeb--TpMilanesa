@@ -42,20 +42,24 @@ public class RepositorioRecetaImplTest {
     }
 
     private Receta recetaTartaJamonYQuesoDeVeinteMinCreada(){
+        byte[] imagen = new byte[]{0, 1};
         return new Receta("Tarta de jamón y queso", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/tarta.jpg", ".", "Deliciosa tarta de jamón y queso.", ".");
+                imagen, ".", "Deliciosa tarta de jamón y queso.", ".");
     }
     private Receta recetaMilanesaNapolitanaDeTreintaMinCreada(){
+        byte[] imagen = new byte[]{0, 1};
         return new Receta ("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", ".", "Esto es una descripción de mila napo", ".");
+                imagen, ".", "Esto es una descripción de mila napo", ".");
     }
     private Receta recetaMilanesaConPapasDeVeinteMinCreada(){
+        byte[] imagen = new byte[]{0, 1};
         return new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/mila-papas.jpg", ".", "Milanesa con guarnición de papas fritas", ".");
+                imagen, ".", "Milanesa con guarnición de papas fritas", ".");
     }
     private Receta recetaCafeConLecheDeDiezMinCreada(){
+        byte[] imagen = new byte[]{0, 1};
         return new Receta ("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
-                "https://i.postimg.cc/90QVFGGj/cafe-tostada.jpg", ".", "Un clásico de las mañanas.", ".");
+                imagen, ".", "Un clásico de las mañanas.", ".");
     }
 
     @Test

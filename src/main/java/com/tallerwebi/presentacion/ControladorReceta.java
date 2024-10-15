@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -134,12 +136,15 @@ public class ControladorReceta {
             @RequestParam("categoria") Categoria categoria,
             @RequestParam("ingredientes") String ingredientes,
             @RequestParam("descripcion") String descripcion,
-            @RequestParam("imagen") String imagen) {
+            @RequestParam("imagen") MultipartFile imagen) throws IOException {
 
-        Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen, ingredientes, descripcion, pasos);
-        servicioReceta.guardarReceta(nuevaReceta);
+      //  if (!imagen.isEmpty() && imagen.getContentType().startsWith("image")) {
+            Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen.getBytes(), ingredientes, descripcion, pasos);
+            servicioReceta.guardarReceta(nuevaReceta);
 
-        return new ModelAndView("redirect:/vista-receta");
+            return new ModelAndView("redirect:/vista-receta");
+//        } else {
+//        }
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
