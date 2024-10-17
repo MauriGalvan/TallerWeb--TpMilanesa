@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,18 +16,19 @@ public class Receta {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    @OneToMany (mappedBy = "receta", fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+    private List<Ingrediente> ingredientes;
+
     private String titulo;
     private String imagen;
-    private String ingredientes;
     private String descripcion;
     private String pasos;
     private int contador_visitas;
 
     public Receta() {
-
     }
     public Receta(String titulo, TiempoDePreparacion tiempo_preparacion, Categoria categoria, String imagen,
-                  String ingredientes, String descripcion, String pasos){
+                  List<Ingrediente> ingredientes, String descripcion, String pasos){
         this.titulo = titulo;
         this.tiempo_preparacion = tiempo_preparacion;
         this.categoria = categoria;
@@ -35,7 +37,6 @@ public class Receta {
         this.descripcion = descripcion;
         this.pasos = pasos;
         this.contador_visitas = 0;
-
     }
 
     public String getTitulo() {
@@ -78,11 +79,11 @@ public class Receta {
         this.imagen = imagen;
     }
 
-    public String getIngredientes() {
+    public List<Ingrediente> getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(String ingredientes) {
+    public void setIngredientes(List<Ingrediente> ingredientes) {
         this.ingredientes = ingredientes;
     }
 

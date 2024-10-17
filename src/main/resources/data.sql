@@ -1,8 +1,8 @@
 INSERT INTO Usuario(id, email, password, rol, activo) VALUES(null, 'test@unlam.edu.ar', 'test', 'ADMIN', true);
 
-INSERT INTO Receta (titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos, contador_visitas)
+INSERT INTO Receta (titulo, tiempo_preparacion, categoria, imagen, descripcion, pasos, contador_visitas)
 VALUES
-('Milanesa napolitana', 'TREINTA_MIN', 'ALMUERZO_CENA', 'https://i.postimg.cc/7hbGvN2c/mila-napo.webp', 'Carne, Huevo, Pan rallado, Perejil, Papas', 'No vayas más al club de la milanesa, traelo a tu casa.', 'Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso.', 0),
+('Milanesa napolitana', 'TREINTA_MIN', 'ALMUERZO_CENA', 'https://i.postimg.cc/7hbGvN2c/mila-napo.webp', 'No vayas más al club de la milanesa, traelo a tu casa.', 'Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso.', 0),
 
 ('Tarta jamón y queso', 'UNA_HORA', 'ALMUERZO_CENA', 'https://i.postimg.cc/XYXRZ1Mq/tarta-jamon-queso.jpg', 'Jamón, Queso, Tapa pascualina, Huevo, Tomate', 'Para comer con tus amigos y familia.', 'Precalienta el horno a 180 grados. Extiende una tapa de pascualina en un molde. Mezcla jamón picado, queso y tomate. Bate un huevo y agrégalo. Vierte sobre la base, cubre con otra tapa si deseas y haz cortes. Hornea 30-35 minutos hasta dorar.', 0),
 
@@ -22,4 +22,10 @@ VALUES
 
 ('Hamburguesas de Lentejas', 'TREINTA_MIN', 'ALMUERZO_CENA', 'https://i.postimg.cc/GpF91CcP/hamburguesa-de-lentejas.jpg', 'Lentejas, Ajo, Cebolla, Pan rallado, Especias, Lechuga, Tomate, Pan de hamburguesa', 'Sabrosas y llenas de proteínas, perfectas para una cena sustanciosa.', 'Cocina las lentejas y aplástalas. Mezcla con ajo, cebolla picada, pan rallado y especias. Forma hamburguesas y cocina en una sartén hasta dorar. Sirve en pan con lechuga y tomate.', 0);
 
-
+INSERT INTO Ingrediente (nombre, cantidad, unidad_de_medida, tipo, receta_id)
+VALUES
+('Carne', 500, 'GRAMOS', 'PROTEINA_ANIMAL', 1),
+('Huevo', 2, 'UNIDAD', 'LACTEO', 1),
+('Pan rallado', 200, 'GRAMOS', 'CEREAL_O_GRANO', 1),
+('Perejil', 50, 'GRAMOS', 'VERDURA', 1),
+('Papas', 300, 'GRAMOS', 'VERDURA', 1);
