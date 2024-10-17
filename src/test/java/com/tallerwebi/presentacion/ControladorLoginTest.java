@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Rol;
 import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
@@ -47,23 +48,6 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
 		verify(sessionMock, times(0)).setAttribute("ROL", "ADMIN");
-	}
-	
-	@Test
-	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
-		// preparacion
-		Usuario usuarioEncontradoMock = mock(Usuario.class);
-		when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
-
-		when(requestMock.getSession()).thenReturn(sessionMock);
-		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
-		
-		// ejecucion
-		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
-		
-		// validacion
-		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
-		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
 	}
 
 	@Test

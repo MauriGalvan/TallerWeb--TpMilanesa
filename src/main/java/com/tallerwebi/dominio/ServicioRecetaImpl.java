@@ -76,19 +76,19 @@ public class ServicioRecetaImpl implements ServicioReceta {
 
     @Transactional
     @Override
-    public void actualizarClicksDeReceta(Receta receta) {
-        receta.incrementarClicks();
+    public void actualizarVisitasDeReceta(Receta receta) {
+        receta.incrementarVisitas();
         repositorioReceta.actualizar(receta);
     }
 
     private List<Receta> ordenarPorPopularidad(List<Receta> recetas) {
         Collections.shuffle(recetas); //mezcla la lista en orden aleatorio
 
-        recetas.sort(Comparator.comparingInt(Receta::getContadorClicks).reversed() //ordena de mayor a menor por clicks
-                .thenComparing(this::ordenarAleatoriamenteSiCoincidenClicks)); //otro criterio de ordenamiento si coinciden
+        recetas.sort(Comparator.comparingInt(Receta::getContadorVisitas).reversed() //ordena de mayor a menor por clicks
+                .thenComparing(this::ordenarAleatoriamenteSiCoincidenVisitas)); //otro criterio de ordenamiento si coinciden
         return recetas;
     }
-    private int ordenarAleatoriamenteSiCoincidenClicks(Receta receta1, Receta receta2) {
+    private int ordenarAleatoriamenteSiCoincidenVisitas(Receta receta1, Receta receta2) {
         int random1 = (int) (Math.random() * Integer.MAX_VALUE);
         int random2 = (int) (Math.random() * Integer.MAX_VALUE);
         return Integer.compare(random1, random2);

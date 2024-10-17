@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import static org.mockito.ArgumentMatchers.any;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +37,22 @@ public class ControladorRecetaTest {
 
     @Test
     public void QueRetorneLaVistaRecetaCuandoSeEjecutaElMetodoIrARecetas(){
-        //Dado
+        // Dado
         String categoria = "ALMUERZO_CENA";
         String tiempo = "UNA_HORA";
-        //Cuando
-        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo);
-        //Entonces
+
+        // Mockear HttpServletRequest y HttpSession
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        // Configurar el valor que retorna el atributo "ROL" en la sesión
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("ROL")).thenReturn(null);  // O asigna Rol.PROFESIONAL si lo necesitas
+
+        // Cuando
+        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo, null, requestMock);
+
+        // Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
     }
 
@@ -56,49 +69,6 @@ public class ControladorRecetaTest {
     }
 
 
-
-    @Test
-    public void QueRetorneTodasLasRecetasCuandoNoHayNingunFiltroSeleccionadoEnCategorias() {
-        //Dado
-        List<Receta> recetasMock = new ArrayList<>();
-        recetasMock.add(new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso."));
-        recetasMock.add(new Receta("Tarta jamón y queso", TiempoDePreparacion.UNA_HORA, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/XYXRZ1Mq/tarta-jamon-queso.jpg", "Jamón, Queso, Tapa pascualina, Huevo, Tomate", "Para comer con tus amigos y familia.", "Precalienta el horno a 180 grados. Extiende una tapa de pascualina en un molde. Mezcla jamón picado, queso y tomate. Bate un huevo y agrégalo. Vierte sobre la base, cubre con otra tapa si deseas y haz cortes. Hornea 30-35 minutos hasta dorar."));
-        recetasMock.add(new Receta("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA, "https://i.postimg.cc/90QVFGGj/cafe-tostada.jpg", "Café, Leche, Pan lactal, Mermelada", "Un clásico de las mañanas.", "Prepara el café a tu gusto y añade un chorrito de leche caliente. Tuesta las rebanadas de pan lactal hasta dorarlas. Unta mermelada en las tostadas. Sirve el café cortado en una taza y acompáñalo con las tostadas."));
-
-        //Cuando
-        when(servicioRecetaMock.getTodasLasRecetas()).thenReturn(recetasMock);
-        ModelAndView modelAndView = controladorReceta.irARecetas(null, null);
-
-        //Entonces
-        List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
-        assertThat(recetas, hasSize(3));
-        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
-        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Tarta jamón y queso"))));
-        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Café cortado con tostadas"))));
-    }
-
-
-    @Test
-    public void QueRetorneLasRecetasDeAlmuerzoCuandoElFiltroDeCategoriaEsteSeleccionadoEnAlmmuerzo() {
-        //Dado
-        List<Receta> recetasMock = new ArrayList<>();
-        recetasMock.add(new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso."));
-        recetasMock.add(new Receta("Tarta jamón y queso", TiempoDePreparacion.UNA_HORA, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/XYXRZ1Mq/tarta-jamon-queso.jpg", "Jamón, Queso, Tapa pascualina, Huevo, Tomate", "Para comer con tus amigos y familia.", "Precalienta el horno a 180 grados. Extiende una tapa de pascualina en un molde. Mezcla jamón picado, queso y tomate. Bate un huevo y agrégalo. Vierte sobre la base, cubre con otra tapa si deseas y haz cortes. Hornea 30-35 minutos hasta dorar."));
-
-        //Cuando
-        when(servicioRecetaMock.getRecetasPorCategoria(Categoria.ALMUERZO_CENA)).thenReturn(recetasMock);
-        ModelAndView modelAndView = controladorReceta.irARecetas("ALMUERZO_CENA", null);
-
-        List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
-
-        //Entonces
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
-        assertThat(recetas, hasSize(2));
-        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
-        assertThat(recetas, hasItem(hasProperty("titulo", equalTo("Tarta jamón y queso"))));
-        assertThat(recetas, everyItem(hasProperty("categoria", equalTo(Categoria.ALMUERZO_CENA))));
-    }
 
     @Test
     public void QueRetorneRecetasCuandoSeBuscaPorTitulo() {

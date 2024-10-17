@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -24,17 +26,22 @@ public class ServicioRecetaTest {
         this.servicioReceta = new ServicioRecetaImpl(repositorioReceta);
     }
 
+    private Receta recetaMilanesaNapolitanaDeTreintaMinCreada(){
+        return new Receta ("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", ".", "Esto es una descripción de mila napo", ".");
+    }
+    private Receta recetaMilanesaConPapasDeVeinteMinCreada(){
+        return new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+                "https://i.postimg.cc/mila-papas.jpg", ".", "Milanesa con guarnición de papas fritas", ".");
+    }
+    private Receta recetaCafeConLecheDeDiezMinCreada(){
+        return new Receta ("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
+                "https://i.postimg.cc/90QVFGGj/cafe-tostada.jpg", ".", "Un clásico de las mañanas.", ".");
+    }
+
     @Test
     public void queSePuedaGuardarUnaReceta() {
-        String titulo = "Milanesa napolitana";
-        TiempoDePreparacion tiempo_preparacion = TiempoDePreparacion.TREINTA_MIN;
-        Categoria categoria = Categoria.ALMUERZO_CENA;
-        String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
-        String ingredientes = "Jamón, Queso, Tapa pascualina, Huevo, Tomate";
-        String descripcion = "Esto es una descripción de mila napo";
-        String pasos = ".";
-
-        Receta receta = new Receta(titulo, tiempo_preparacion, categoria, imagen, ingredientes, descripcion, pasos);
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         int idBuscado = receta.getId();
 
         servicioReceta.guardarReceta(receta);
@@ -45,97 +52,71 @@ public class ServicioRecetaTest {
 
     @Test
     public void queSePuedaFiltrarPorCategoriaYSeMuestrenSoloLosDesayunosYMeriendas(){
-        Categoria categoria = Categoria.ALMUERZO_CENA;
-        Categoria categoria1 = Categoria.DESAYUNO_MERIENDA;
-        Receta receta = new Receta();
-        receta.setCategoria(categoria);
-        Receta receta1 = new Receta();
-        receta1.setCategoria(categoria1);
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Categoria categoria = Categoria.DESAYUNO_MERIENDA;
 
         List<Receta> todasLasRecetasYaFiltradas = new ArrayList<>();
         todasLasRecetasYaFiltradas.add(receta1);
 
-        Mockito.when(repositorioReceta.getRecetasPorCategoria(categoria1)).thenReturn(todasLasRecetasYaFiltradas);
+        Mockito.when(repositorioReceta.getRecetasPorCategoria(categoria)).thenReturn(todasLasRecetasYaFiltradas);
 
-        servicioReceta.guardarReceta(receta);
-        servicioReceta.guardarReceta(receta1);
+        List<Receta> recetasFiltradas = servicioReceta.getRecetasPorCategoria(categoria);
 
-        List<Receta> recetasFiltradas = servicioReceta.getRecetasPorCategoria(categoria1);
-
-        Mockito.verify(repositorioReceta, times(1)).getRecetasPorCategoria(categoria1);
+        Mockito.verify(repositorioReceta, times(1)).getRecetasPorCategoria(categoria);
 
         assertEquals(1, recetasFiltradas.size());
+        assertThat(recetasFiltradas, not(hasItem(receta)));
     }
 
     @Test
     public void queSePuedaFiltrarPorTiempoDePreparacionYSeMuestrenSoloLosQueTienen30Min(){
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
         TiempoDePreparacion tiempo_preparacion = TiempoDePreparacion.TREINTA_MIN;
-        TiempoDePreparacion tiempo_preparacion1 = TiempoDePreparacion.UNA_HORA;
-        Receta receta = new Receta();
-        receta.setTiempo_preparacion(tiempo_preparacion);
-        Receta receta1 = new Receta();
-        receta1.setTiempo_preparacion(tiempo_preparacion1);
 
         List<Receta> todasLasRecetasYaFiltradas = new ArrayList<>();
         todasLasRecetasYaFiltradas.add(receta);
 
         Mockito.when(repositorioReceta.getRecetasPorTiempoDePreparacion(tiempo_preparacion)).thenReturn(todasLasRecetasYaFiltradas);
 
-        servicioReceta.guardarReceta(receta);
-        servicioReceta.guardarReceta(receta1);
-
         List<Receta> recetasFiltradas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempo_preparacion);
 
         Mockito.verify(repositorioReceta, times(1)).getRecetasPorTiempoDePreparacion(tiempo_preparacion);
 
         assertEquals(1, recetasFiltradas.size());
+        assertThat(recetasFiltradas, not(hasItem(receta1)));
     }
 
     @Test
     public void queSePuedaFiltrarPorCategoriaYPorTiempoYSeMuestreElAlmuerzoOCenaDe30Min(){
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
         TiempoDePreparacion tiempo_preparacion = TiempoDePreparacion.TREINTA_MIN;
-        TiempoDePreparacion tiempo_preparacion1 = TiempoDePreparacion.UNA_HORA;
         Categoria categoria = Categoria.ALMUERZO_CENA;
-        Categoria categoria1 = Categoria.DESAYUNO_MERIENDA;
-        Receta receta = new Receta();
-        receta.setCategoria(categoria);
-        receta.setTiempo_preparacion(tiempo_preparacion);
-        Receta receta1 = new Receta();
-        receta1.setCategoria(categoria);
-        receta1.setTiempo_preparacion(tiempo_preparacion1);
-        Receta receta2 = new Receta();
-        receta2.setCategoria(categoria1);
-        receta2.setTiempo_preparacion(tiempo_preparacion);
-
 
         List<Receta> todasLasRecetasYaFiltradas = new ArrayList<>();
         todasLasRecetasYaFiltradas.add(receta);
 
         Mockito.when(repositorioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempo_preparacion)).thenReturn(todasLasRecetasYaFiltradas);
 
-        servicioReceta.guardarReceta(receta);
-        servicioReceta.guardarReceta(receta1);
-
         List<Receta> recetasFiltradas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempo_preparacion);
 
         Mockito.verify(repositorioReceta, times(1)).getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempo_preparacion);
 
         assertEquals(1, recetasFiltradas.size());
+        assertThat(recetasFiltradas, not(hasItem(receta1)));
+        assertThat(recetasFiltradas, not(hasItem(receta2)));
     }
 
     @Test
     public void queSePuedaBuscarRecetasPorTituloYSeEncuentrenLasCorrectas() {
         // Definir algunos títulos y recetas
         String tituloBuscado = "Milanesa";
-        Receta receta1 = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso, Tapa pascualina, Huevo, Tomate",
-                "Esto es una descripción de mila napo", ".");
-        Receta receta2 = new Receta("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/mila-papas.jpg", "Carne, Pan rallado, Papas",
-                "Milanesa con guarnición de papas fritas", ".");
-        Receta receta3 = new Receta("Ensalada Cesar", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/cesar.jpg", "Lechuga, Pollo, Croutones, Queso",
-                "Fresca ensalada con aderezo cesar.", ".");
+        Receta receta1 = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+        Receta receta3 = this.recetaCafeConLecheDeDiezMinCreada();
 
         List<Receta> recetasFiltradas = new ArrayList<>();
         recetasFiltradas.add(receta1);
@@ -143,18 +124,14 @@ public class ServicioRecetaTest {
 
         Mockito.when(repositorioReceta.buscarRecetasPorTitulo(tituloBuscado)).thenReturn(recetasFiltradas);
 
-        servicioReceta.guardarReceta(receta1);
-        servicioReceta.guardarReceta(receta2);
-        servicioReceta.guardarReceta(receta3);
-
         List<Receta> recetasEncontradas = servicioReceta.buscarRecetasPorTitulo(tituloBuscado);
 
         Mockito.verify(repositorioReceta, times(1)).buscarRecetasPorTitulo(tituloBuscado);
 
         assertEquals(2, recetasEncontradas.size());
-
-        assertEquals(receta1, recetasEncontradas.get(0));
-        assertEquals(receta2, recetasEncontradas.get(1));
+        assertThat(recetasEncontradas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
+        assertThat(recetasEncontradas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
+        assertThat(recetasEncontradas, not(hasItem(receta3)));
     }
 
     @Test
@@ -168,5 +145,166 @@ public class ServicioRecetaTest {
         Mockito.verify(repositorioReceta, times(1)).buscarRecetasPorTitulo(tituloBuscado);
 
         assertEquals(0, recetasEncontradas.size());
+    }
+
+    @Test
+    public void queSePuedanActualizarLosClicksOVisitasDeLasRecetas() {
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta1);
+
+        Mockito.verify(repositorioReceta, times(2)).actualizar(receta);
+        Mockito.verify(repositorioReceta, times(1)).actualizar(receta1);
+        assertEquals(receta.getContadorVisitas(), 2);
+        assertEquals(receta1.getContadorVisitas(), 1);
+    }
+
+    @Test
+    public void queSePuedanBuscarTodasLasRecetasYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+        List<Receta> todasLasRecetas = new ArrayList<>();
+        todasLasRecetas.add(receta);
+        todasLasRecetas.add(receta1);
+        todasLasRecetas.add(receta2);
+
+        Mockito.when(repositorioReceta.getRecetas()).thenReturn(todasLasRecetas);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta1);
+
+        Mockito.verify(repositorioReceta, times(2)).actualizar(receta);
+        Mockito.verify(repositorioReceta, times(1)).actualizar(receta1);
+        assertEquals(receta.getContadorVisitas(), 2);
+        assertEquals(receta1.getContadorVisitas(), 1);
+        assertEquals(receta2.getContadorVisitas(), 0);
+        //la posición
+        assertEquals(receta, todasLasRecetas.get(0));
+        assertEquals(receta1, todasLasRecetas.get(1));
+        assertEquals(receta2, todasLasRecetas.get(2));
+    }
+
+    @Test
+    public void queSePuedanFiltrarLasRecetasPorAlmuerzoOCenaYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+        Categoria categoria = Categoria.ALMUERZO_CENA;
+        List<Receta> recetasFiltradas = new ArrayList<>();
+        recetasFiltradas.add(receta);
+        recetasFiltradas.add(receta2);
+
+        Mockito.when(repositorioReceta.getRecetasPorCategoria(categoria)).thenReturn(recetasFiltradas);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta2);
+
+        Mockito.verify(repositorioReceta, times(2)).actualizar(receta);
+        Mockito.verify(repositorioReceta, times(1)).actualizar(receta2);
+        assertEquals(receta.getContadorVisitas(), 2);
+        assertEquals(receta2.getContadorVisitas(), 1);
+        assertEquals(receta, recetasFiltradas.get(0));
+        assertEquals(receta2, recetasFiltradas.get(1));
+        assertThat(recetasFiltradas, not(hasItem(receta1)));
+    }
+
+    @Test
+    public void queSePuedanFiltrarLasRecetasPorTiempoDe30MinYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+        receta1.setTiempo_preparacion(TiempoDePreparacion.TREINTA_MIN); //ahora es cafe con leche de 30 min
+        TiempoDePreparacion tiempo = TiempoDePreparacion.TREINTA_MIN;
+        List<Receta> recetasFiltradas = new ArrayList<>();
+        recetasFiltradas.add(receta);
+        recetasFiltradas.add(receta1);
+
+        Mockito.when(repositorioReceta.getRecetasPorTiempoDePreparacion(tiempo)).thenReturn(recetasFiltradas);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta1);
+
+        Mockito.verify(repositorioReceta, times(2)).actualizar(receta);
+        Mockito.verify(repositorioReceta, times(1)).actualizar(receta1);
+        assertEquals(receta.getContadorVisitas(), 2);
+        assertEquals(receta1.getContadorVisitas(), 1);
+        assertEquals(receta, recetasFiltradas.get(0));
+        assertEquals(receta1, recetasFiltradas.get(1));
+        assertThat(recetasFiltradas, not(hasItem(receta2)));
+    }
+
+    @Test
+    public void queSePuedanFiltrarLasRecetasPorTiempoDe30MinYAlmuerzoOCenaYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+        receta2.setTiempo_preparacion(TiempoDePreparacion.TREINTA_MIN); //ahora es milanesa con papas de 30 min
+        TiempoDePreparacion tiempo = TiempoDePreparacion.TREINTA_MIN;
+        Categoria categoria = Categoria.ALMUERZO_CENA;
+        List<Receta> recetasFiltradas = new ArrayList<>();
+        recetasFiltradas.add(receta);
+        recetasFiltradas.add(receta2);
+
+        Mockito.when(repositorioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoria, tiempo)).thenReturn(recetasFiltradas);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta2);
+
+        Mockito.verify(repositorioReceta, times(2)).actualizar(receta);
+        Mockito.verify(repositorioReceta, times(1)).actualizar(receta2);
+        assertEquals(receta.getContadorVisitas(), 2);
+        assertEquals(receta2.getContadorVisitas(), 1);
+        assertEquals(receta, recetasFiltradas.get(0));
+        assertEquals(receta2, recetasFiltradas.get(1));
+        assertThat(recetasFiltradas, not(hasItem(receta1)));
+    }
+
+    @Test
+    public void queSePuedanFiltrarLasRecetasPorTituloYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+        String titulo = "milanesa";
+        List<Receta> recetasFiltradas = new ArrayList<>();
+        recetasFiltradas.add(receta);
+        recetasFiltradas.add(receta2);
+
+        Mockito.when(repositorioReceta.buscarRecetasPorTitulo(titulo)).thenReturn(recetasFiltradas);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta);
+        this.servicioReceta.actualizarVisitasDeReceta(receta2);
+
+        Mockito.verify(repositorioReceta, times(2)).actualizar(receta);
+        Mockito.verify(repositorioReceta, times(1)).actualizar(receta2);
+        assertEquals(receta.getContadorVisitas(), 2);
+        assertEquals(receta2.getContadorVisitas(), 1);
+        assertEquals(receta, recetasFiltradas.get(0));
+        assertEquals(receta2, recetasFiltradas.get(1));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
+        assertThat(recetasFiltradas, not(hasItem(receta1)));
+    }
+
+    @Test
+    public void queCuandoSeBusquenTodasLasRecetasYTenganLaMismaCantidadDeVisitasNoHayaCriterioDeOrdenamiento(){
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+        Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+        List<Receta> todasLasRecetas = new ArrayList<>();
+        todasLasRecetas.add(receta);
+        todasLasRecetas.add(receta1);
+        todasLasRecetas.add(receta2);
+
+        Mockito.when(repositorioReceta.getRecetas()).thenReturn(todasLasRecetas);
+        assertEquals(receta.getContadorVisitas(), 0);
+        assertEquals(receta1.getContadorVisitas(), 0);
+        assertEquals(receta2.getContadorVisitas(), 0);
+        assertThat(todasLasRecetas, hasItem(receta));
+        assertThat(todasLasRecetas, hasItem(receta1));
+        assertThat(todasLasRecetas, hasItem(receta2));
     }
 }
