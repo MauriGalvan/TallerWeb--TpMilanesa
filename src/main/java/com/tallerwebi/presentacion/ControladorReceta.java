@@ -124,7 +124,8 @@ public class ControladorReceta {
         modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("categoriaSeleccionada", categoria);
         modelo.put("tiempoSeleccionado", tiempo);
-        modelo.put("esProfesional", esProfesional);
+        modelo.put("esProfesional", Boolean.valueOf(esProfesional));
+
 
         return new ModelAndView("vistaReceta", modelo);
     }

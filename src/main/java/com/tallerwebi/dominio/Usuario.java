@@ -17,7 +17,7 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Rol rol; // enum para rol
 
-    private Boolean activo = false;
+    private Boolean activo = (Boolean) false;
 
     // Getters y Setters
     public Long getId() {
@@ -69,6 +69,6 @@ public class Usuario {
     }
 
     public void activar() {
-        this.activo = true;
+        this.activo = (Boolean) true;
     }
 }
