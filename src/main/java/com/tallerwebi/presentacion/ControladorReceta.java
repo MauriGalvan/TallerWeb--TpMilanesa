@@ -140,7 +140,7 @@ public class ControladorReceta {
             @RequestParam("pasos") String pasos,
             @RequestParam("tiempoPreparacion") TiempoDePreparacion tiempoPreparacion,
             @RequestParam("categoria") Categoria categoria,
-            @RequestParam("ingredientes") String ingredientes,
+            @ModelAttribute("ingredientes") List<Ingrediente> ingredientes,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("imagen") String imagen) {
 
