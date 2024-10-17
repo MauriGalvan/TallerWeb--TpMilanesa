@@ -7,10 +7,10 @@
   <title>Home</title>
   <!-- Boostrap core css -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-
+<!--  font-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- custom style -->
   <link rel="stylesheet" th:href="@{/css/home.css}">
-
 </head>
 
 <body>
@@ -18,26 +18,24 @@
 <nav >
   <div class="logo">
     <a href="http://localhost:8080/spring/inicio">
-      <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px">
+      <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px" alt="logo">
     </a>
   </div>
   <section class="botones">
     <button type="button" class="recetas">
-      <a href="http://localhost:8080/spring/vista-receta" class="link-receta">
-        Recetas
-      </a>
+      <a href="http://localhost:8080/spring/vista-receta" class="link-receta"> <i class="fa-solid fa-utensils"></i>Recetas</a>
     </button>
-    </a>
+
     <button type="button" class="planificador">
-      <a href="http://localhost:8080/spring/vista-planificador" class="link-receta">
-      Planificador
-      </a>
+      <a href="http://localhost:8080/spring/login" class="link-receta" ><i class="fas fa-calendar-alt"></i>Planificá tu menu</a>
     </button>
-    <button type="button" class="listaCompras" onclick="mostrarPopup()">
-      Lista de compras
+
+    <button type="button" class="Iniciar Sesion">
+      <a href="http://localhost:8080/spring/login" ><i class="fa-solid fa-right-to-bracket"></i>Iniciar sesión</a>
     </button>
-    <button type="button" class="perfil" onclick="mostrarPopup()">
-      Perfil
+
+    <button type="button" class="Registrarme">
+      <a href="http://localhost:8080/spring/nuevo-usuario">  <i class="fa-solid fa-user-plus"></i>Registrate</a>
     </button>
   </section>
 </nav>
@@ -53,6 +51,50 @@
     </form>
 
   </section>
+  <section class="profesionales-container">
+    <h2>NUESTROS PROFESIONALES</h2>
+    <article class="profesionales-card">
+      <div class="profesional">
+        <img src="https://i.postimg.cc/9FbmNx9g/martiteguichef.jpg" alt="chef">
+        <div class="info-profesional">
+          <span class="nombre-chef">Las Recetas de Martitegui</span>
+          <p class="descripcion-chef">Sabores únicos, recetas inolvidables, directo de la cocina del maestro gastronomico</p>
+        </div>
+      </div>
+
+      <div class="profesional">
+        <img src="https://i.postimg.cc/wjCs6qqb/christophe-masterchef.jpg" alt="chef">
+        <div class="info-profesional">
+          <span class="nombre-chef">Las Recetas de Christophe</span>
+          <p class="descripcion-chef">Descubre los delicias y la pasion de la cocina del maestro gastronomico</p>
+        </div>
+      </div>
+
+      <div class="profesional">
+        <img src="https://i.postimg.cc/W1F2b0ts/betular.png" alt="chef">
+        <div class="info-profesional">
+          <span class="nombre-chef">Las Recetas de Betular</span>
+          <p class="descripcion-chef">Descubre los secretos dulces del chef maestro en pastelería</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+
+  <section class="container-recomendacion">
+    <h2>RECOMENDACIONES</h2>
+    <article class="recetasRecomendadas categorias-container">
+      <div th:each="receta : ${recetasRecomendadas}" class="receta categoria">
+        <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta-link">
+        <img th:src="${receta.imagen}" alt="recetaRecomendada" class="receta-imagen">
+        <div class="receta-info">
+          <h3 class="titulo" th:text="${receta.titulo}"></h3>
+          <span class="tiempo" th:text="'Tiempo ' + ${receta.tiempo_preparacion.getTiempo()}"></span>
+        </div>
+        </a>
+      </div>
+    </article>
+  </section>
   <section class="categoriasRecetas">
     <h2>CATEGORÍAS POPULARES</h2>
     <article class="categorias-container">
@@ -64,46 +106,26 @@
         </div>
       </div>
       <div class="categoria">
-        <img src="https://i.postimg.cc/3ND97r29/desayuno.jpg" alt="Almuerzo/Cena">
+        <img src="https://i.postimg.cc/mkcN8y1J/almuerzo.jpg" alt="Almuerzo/Cena">
         <div class="categoria-info">
           <span>Almuerzo/Cena</span>
           <a href="/categorias/almuerzo" class="categoria-link"></a>
         </div>
       </div>
       <div class="categoria">
-        <img src="https://i.postimg.cc/3ND97r29/desayuno.jpg" alt="Postre">
+        <img src="https://i.postimg.cc/cJ0Q3Sxv/postre.jpg" alt="Postre">
         <div class="categoria-info">
           <span>Postre</span>
-          <a href="/categorias/postre" class="categoria-link"></a>
+          <a href="" class="categoria-link"></a>
         </div>
       </div>
     </article>
 
   </section>
 
-  <section class="container-recomendacion">
-    <h2>RECOMENDACIONES</h2>
-    <article class="recetasRecomendadas categorias-container">
-      <div th:each="receta : ${recetasRecomendadas}" class="receta categoria">
-        <a th:href="@{/detalleReceta(id=${receta.id}, titulo=${receta.titulo}, imagen=${receta.imagen}, ingredientes=${receta.ingredientes})}" class="receta-link">
-        <img th:src="${receta.imagen}" alt="recetaRecomendada" class="receta-imagen">
-        <div class="receta-info">
-          <h3 class="titulo" th:text="${receta.titulo}"></h3>
-          <span class="tiempo" th:text="'tiempo ' + ${receta.tiempo_preparacion}"></span>
-        </div>
-        </a>
-      </div>
-    </article>
-
-  </section>
-
-  <section class="Novedades">
-  </section>
   </main>
-
-
 <footer>
-
+  <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
 </footer>
 
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
