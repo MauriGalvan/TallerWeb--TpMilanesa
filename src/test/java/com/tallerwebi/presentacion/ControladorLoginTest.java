@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
 
@@ -86,4 +88,63 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
 	}
+
+	@Test
+	public void loginConUsuarioYPasswordCorrectosDeberiaRedirigirAVistaReceta() {
+		// Preparación
+		when(servicioLoginMock.consultarUsuario(datosLoginMock.getEmail(), datosLoginMock.getPassword())).thenReturn(usuarioMock);
+		when(usuarioMock.getRol()).thenReturn(Rol.USUARIO);
+		when(usuarioMock.getUsername()).thenReturn("dami");
+
+		// Simular sesión
+		when(requestMock.getSession()).thenReturn(sessionMock);
+
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
+
+		// Validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/vista-receta"));
+		verify(sessionMock).setAttribute("ROL", Rol.USUARIO);
+		verify(sessionMock).setAttribute("usuarioNombre", "dami");
+	}
+
+	@Test
+	public void nuevoUsuarioDeberiaCargarVistaConFormulario() {
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.nuevoUsuario();
+
+		// Validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+		assertThat(modelAndView.getModel().get("usuario"), is(instanceOf(Usuario.class)));
+		assertThat(modelAndView.getModel().get("roles"), is(Rol.values()));
+	}
+
+	@Test
+	public void logoutDeberiaInvalidarSesionYRedirigirALogin() {
+		// Preparación
+		when(requestMock.getSession()).thenReturn(sessionMock);
+
+		// Ejecución
+		String result = controladorLogin.logout(requestMock);
+
+		// Validación
+		verify(sessionMock, times(1)).invalidate();
+		assertThat(result, equalToIgnoringCase("redirect:/login"));
+	}
+
+	@Test
+	public void registrarUsuarioExistenteDeberiaMostrarMensajeDeError() throws UsuarioExistente {
+		// Preparación
+		doThrow(UsuarioExistente.class).when(servicioLoginMock).registrar(usuarioMock);
+
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
+
+		// Validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario ya existe"));
+	}
+
+
+
 }
