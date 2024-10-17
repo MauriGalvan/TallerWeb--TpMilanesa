@@ -29,7 +29,7 @@ public class ControladorPlanificadorTest {
     @BeforeEach
     public void setup() {
         servicioRecetaMock = mock(ServicioReceta.class);
-        controladorPlanificador = new ControladorPlanificador(servicioRecetaMock); // Uncomment this line
+        controladorPlanificador = new ControladorPlanificador(servicioRecetaMock); 
         this.controladorReceta = new ControladorReceta(servicioRecetaMock);
     }
 
@@ -47,11 +47,10 @@ public class ControladorPlanificadorTest {
         // Dado
         List<Receta> recetasMock = new ArrayList<>();
         Receta desayuno = new Receta();
-        desayuno.setTitulo("Soy un desayuno");
+        desayuno.setTitulo("Budin de chocolate");
         desayuno.setCategoria(Categoria.DESAYUNO_MERIENDA);
         recetasMock.add(desayuno);
 
-        // Simular el comportamiento del servicio
         when(servicioRecetaMock.getRecetasPorCategoria(Categoria.DESAYUNO_MERIENDA)).thenReturn(recetasMock);
 
         // Simular HttpServletRequest
@@ -65,7 +64,7 @@ public class ControladorPlanificadorTest {
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
 
         assertThat(recetas, hasSize(1));
-        assertThat(recetas.get(0).getTitulo(), equalTo("Soy un desayuno"));
+        assertThat(recetas.get(0).getTitulo(), equalTo("Budin de chocolate"));
     }
 
 
