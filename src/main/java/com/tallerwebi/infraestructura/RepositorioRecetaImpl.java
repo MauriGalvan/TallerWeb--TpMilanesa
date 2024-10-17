@@ -49,13 +49,10 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     @Transactional
     @Override
     public Receta getRecetaPorId(int id) {
-        List<Receta> recetas = getRecetas();
-        for (Receta receta : recetas){
-            if (id == receta.getId()){
-                return receta;
-            }
-        }
-        return null;
+        String hql = "FROM Receta r WHERE r.id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return (Receta)query.getSingleResult();
     }
 
     @Override

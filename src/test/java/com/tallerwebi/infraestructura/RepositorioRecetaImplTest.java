@@ -61,7 +61,7 @@ public class RepositorioRecetaImplTest {
     @Test
     @Rollback
     @Transactional
-    public void dadoQueExisteUnRepositorioRecetaCuandoGuardoUnaRecetaEntoncesLoEncuentroEnLaBaseDeDatos(){
+    public void cuandoGuardoUnaRecetaEntoncesLoEncuentroEnLaBaseDeDatos(){
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
 
         this.repositorioReceta.guardar(receta);
@@ -77,7 +77,7 @@ public class RepositorioRecetaImplTest {
     @Test
     @Rollback
     @Transactional
-    public void dadoQueExisteUnRepositorioRecetaCuandoGuardoVariasRecetasEntoncesLasEncuentroEnLaBaseDeDatos(){
+    public void cuandoGuardoVariasRecetasEntoncesLasEncuentroEnLaBaseDeDatos(){
         Receta receta1 = this.recetaTartaJamonYQuesoDeVeinteMinCreada();
         Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
 
@@ -152,7 +152,7 @@ public class RepositorioRecetaImplTest {
         Receta receta = this.recetaMilanesaConPapasDeVeinteMinCreada();
 
         this.sessionFactory.getCurrentSession().save(receta);
-        int idBuscado = receta.getId(); //iría después de que se guarde en la base, porque antes no lo inicializa
+        int idBuscado = receta.getId();
 
         Receta recetaBuscada = this.repositorioReceta.getRecetaPorId(idBuscado);
 
@@ -289,6 +289,112 @@ public class RepositorioRecetaImplTest {
         assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
         assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
     }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenRecetasCuandoBuscoPorTituloYCategoriaEntoncesObtengoRecetasCuyoTituloYCategoriaCoinciden() {
+        Receta receta1 = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta2 = this.recetaCafeConLecheDeDiezMinCreada();
+        receta2.setTitulo("Milanesa de desayuno"); // ahora es Milanesa de desayuno de 10 min
+        Receta receta3 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+
+        this.sessionFactory.getCurrentSession().save(receta1);
+        this.sessionFactory.getCurrentSession().save(receta2);
+        this.sessionFactory.getCurrentSession().save(receta3);
+
+        String hql = "FROM Receta";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        ArrayList<Receta> recetas = (ArrayList<Receta>) query.getResultList();
+
+        assertThat(recetas, hasItem(receta1));
+        assertThat(recetas, hasItem(receta2));
+        assertThat(recetas, hasItem(receta3));
+
+        List<Receta> recetasFiltradas = this.repositorioReceta.buscarRecetasPorTituloYCategoria("milanesa", Categoria.ALMUERZO_CENA);
+
+        assertThat(recetasFiltradas.size(), equalTo(2));
+        assertThat(recetasFiltradas, hasItem(receta1));
+        assertThat(recetasFiltradas, hasItem(receta3));
+        assertThat(recetasFiltradas, not(hasItem(receta2)));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("titulo", equalTo("Milanesa de desayuno")))));
+        assertThat(recetasFiltradas, hasItem(hasProperty("categoria", equalTo(Categoria.ALMUERZO_CENA))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("categoria", equalTo(Categoria.DESAYUNO_MERIENDA)))));
+    }
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenRecetasCuandoBuscoPorTituloYTiempoEntoncesObtengoRecetasCuyoTituloYTiempoCoinciden() {
+        Receta receta1 = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta2 = this.recetaCafeConLecheDeDiezMinCreada();
+        receta2.setTitulo("Milanesa de desayuno"); // ahora es Milanesa de desayuno de 10 min
+        Receta receta3 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+
+        this.sessionFactory.getCurrentSession().save(receta1);
+        this.sessionFactory.getCurrentSession().save(receta2);
+        this.sessionFactory.getCurrentSession().save(receta3);
+
+        String hql = "FROM Receta";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        ArrayList<Receta> recetas = (ArrayList<Receta>) query.getResultList();
+
+        assertThat(recetas, hasItem(receta1));
+        assertThat(recetas, hasItem(receta2));
+        assertThat(recetas, hasItem(receta3));
+
+        List<Receta> recetasFiltradas = this.repositorioReceta.buscarRecetasPorTituloYTiempo("milanesa", TiempoDePreparacion.TREINTA_MIN);
+
+        assertThat(recetasFiltradas.size(), equalTo(1));
+        assertThat(recetasFiltradas, hasItem(receta1));
+        assertThat(recetasFiltradas, not(hasItem(receta3)));
+        assertThat(recetasFiltradas, not(hasItem(receta2)));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas")))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("titulo", equalTo("Milanesa de desayuno")))));
+        assertThat(recetasFiltradas, hasItem(hasProperty("tiempo_preparacion", equalTo(TiempoDePreparacion.TREINTA_MIN))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("tiempo_preparacion", equalTo(TiempoDePreparacion.VEINTE_MIN)))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("tiempo_preparacion", equalTo(TiempoDePreparacion.DIEZ_MIN)))));
+    }
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenRecetasCuandoBuscoPorTituloTiempoYCategoriaEntoncesObtengoRecetasCuyoTituloTiempoYCategoriaCoinciden() {
+        Receta receta1 = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Receta receta2 = this.recetaCafeConLecheDeDiezMinCreada();
+        receta2.setTitulo("Milanesa de desayuno"); // ahora es Milanesa de desayuno de 10 min
+        Receta receta3 = this.recetaMilanesaConPapasDeVeinteMinCreada();
+
+        this.sessionFactory.getCurrentSession().save(receta1);
+        this.sessionFactory.getCurrentSession().save(receta2);
+        this.sessionFactory.getCurrentSession().save(receta3);
+
+        String hql = "FROM Receta";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        ArrayList<Receta> recetas = (ArrayList<Receta>) query.getResultList();
+
+        assertThat(recetas, hasItem(receta1));
+        assertThat(recetas, hasItem(receta2));
+        assertThat(recetas, hasItem(receta3));
+
+        List<Receta> recetasFiltradas = this.repositorioReceta.buscarRecetasPorTituloCategoriaYTiempo("milanesa", Categoria.ALMUERZO_CENA, TiempoDePreparacion.VEINTE_MIN);
+
+        assertThat(recetasFiltradas.size(), equalTo(1));
+        assertThat(recetasFiltradas, hasItem(receta3));
+        assertThat(recetasFiltradas, not(hasItem(receta1)));
+        assertThat(recetasFiltradas, not(hasItem(receta2)));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("titulo", equalTo("Milanesa napolitana")))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("titulo", equalTo("Milanesa de desayuno")))));
+        assertThat(recetasFiltradas, hasItem(hasProperty("tiempo_preparacion", equalTo(TiempoDePreparacion.VEINTE_MIN))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("tiempo_preparacion", equalTo(TiempoDePreparacion.TREINTA_MIN)))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("tiempo_preparacion", equalTo(TiempoDePreparacion.DIEZ_MIN)))));
+        assertThat(recetasFiltradas, hasItem(hasProperty("categoria", equalTo(Categoria.ALMUERZO_CENA))));
+        assertThat(recetasFiltradas, not(hasItem(hasProperty("categoria", equalTo(Categoria.DESAYUNO_MERIENDA)))));
+    }
+
+
 
 }
 

@@ -42,11 +42,9 @@ public class ServicioRecetaTest {
     @Test
     public void queSePuedaGuardarUnaReceta() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
-        int idBuscado = receta.getId();
 
         servicioReceta.guardarReceta(receta);
 
-        Mockito.when(repositorioReceta.getRecetaPorId(idBuscado)).thenReturn(receta);
         Mockito.verify(repositorioReceta, times(1)).guardar(receta);
     }
 
@@ -111,8 +109,40 @@ public class ServicioRecetaTest {
     }
 
     @Test
+    public void queSePuedaObtenerUnaRecetaPorId(){
+        Receta receta = this.recetaCafeConLecheDeDiezMinCreada();
+
+        Mockito.when(repositorioReceta.getRecetaPorId(receta.getId())).thenReturn(receta);
+
+        servicioReceta.getUnaRecetaPorId(receta.getId());
+
+        Mockito.verify(repositorioReceta, times(1)).getRecetaPorId(receta.getId());
+    }
+
+    @Test
+    public void queSePuedaEliminarUnaReceta() {
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+
+        servicioReceta.eliminarReceta(receta);
+
+        Mockito.verify(repositorioReceta, times(1)).eliminar(receta);
+    }
+
+    @Test
+    public void queSePuedaActualizarUnaReceta() {
+        Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
+
+        Mockito.when(repositorioReceta.getRecetaPorId(receta1.getId())).thenReturn(receta1);
+
+        servicioReceta.actualizarReceta(receta1);
+
+        Mockito.verify(repositorioReceta, times(1)).getRecetaPorId(receta1.getId());
+        Mockito.verify(repositorioReceta, times(1)).actualizar(receta1);
+
+    }
+
+    @Test
     public void queSePuedaBuscarRecetasPorTituloYSeEncuentrenLasCorrectas() {
-        // Definir algunos títulos y recetas
         String tituloBuscado = "Milanesa";
         Receta receta1 = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
@@ -148,7 +178,7 @@ public class ServicioRecetaTest {
     }
 
     @Test
-    public void queSePuedanActualizarLosClicksOVisitasDeLasRecetas() {
+    public void queSePuedanActualizarLasVisitasDeLasRecetas() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
 
@@ -264,7 +294,7 @@ public class ServicioRecetaTest {
     }
 
     @Test
-    public void queSePuedanFiltrarLasRecetasPorTituloYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
+    public void queSePuedanBuscarLasRecetasPorTituloYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
         Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
