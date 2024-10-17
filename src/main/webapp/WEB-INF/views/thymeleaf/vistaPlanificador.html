@@ -83,11 +83,17 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <!-- Aquí se cargarán las recetas -->
+                                                        <!-- Reemplaza el form fuera del each para que envíe cada receta individualmente -->
+                                                        <div th:each="receta : ${recetas}">
+                                                            <form th:action="@{/planificador/guardar}" method="post">
+                                                                <input type="hidden" name="dia" th:value="${dia}" />
+                                                                <input type="hidden" name="categoria" th:value="${categoria}" />
+                                                                <input type="hidden" name="recetaId" th:value="${receta.id}" />
 
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                      <!--  <button type="button" class="btn btn-primary">Guardar</button> -->
+                                                                <!-- Cada receta se enviará al hacer clic en este botón -->
+                                                                <button type="submit" class="btn btn-link" th:text="${receta.nombre}"></button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

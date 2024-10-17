@@ -1,12 +1,12 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Receta;
-import com.tallerwebi.dominio.ServicioReceta;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,10 +18,13 @@ public class ControladorPlanificador {
 
 
     private final ServicioReceta servicioReceta;
+    private ServicioPlanificador servicioPlanificador;
 
     @Autowired
-    public ControladorPlanificador(ServicioReceta servicioReceta) {
+    public ControladorPlanificador(ServicioReceta servicioReceta, ServicioPlanificador servicioPlanificador) {
         this.servicioReceta = servicioReceta;
+        this.servicioPlanificador = servicioPlanificador;
+
     }
     @RequestMapping("/vista-planificador")
     public ModelAndView irAPlanificador() {
@@ -62,6 +65,21 @@ public class ControladorPlanificador {
         modelo.put("dia", dia);
 
         return new ModelAndView("recetasModal", modelo);
+    }
+    @RequestMapping(value = "/guardar", method = RequestMethod.POST)
+    public ModelAndView guardarReceta(@RequestParam String dia, @RequestParam int recetaId) {
+        Receta receta = servicioReceta.getUnaRecetaPorId(recetaId);
+
+        Planificador planificador = servicioPlanificador.obtenerPlanificador();
+        if(planificador == null){
+            planificador = new Planificador();
+        }
+
+        servicioPlanificador.agregarReceta(receta);
+
+        servicioPlanificador.guardarPlanificador(planificador);
+
+        return new ModelAndView("redirect:/vistaPlanificador");
     }
 
 

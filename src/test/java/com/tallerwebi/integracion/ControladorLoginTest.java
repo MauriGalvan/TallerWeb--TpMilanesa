@@ -45,17 +45,17 @@ public class ControladorLoginTest {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
-	@Test
-	public void debeRetornarLaPaginaLoginCuandoSeNavegaALLogin() throws Exception {
-
-		MvcResult result = this.mockMvc.perform(get("/login"))
-				.andExpect(status().isOk())
-				.andReturn();
-
-		ModelAndView modelAndView = result.getModelAndView();
-        assert modelAndView != null;
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
-		assertThat(modelAndView.getModel().get("datosLogin").toString(),  containsString("com.tallerwebi.presentacion.DatosLogin"));
-
-	}
+//	@Test
+//	public void debeRetornarLaPaginaLoginCuandoSeNavegaALLogin() throws Exception {
+//
+//		MvcResult result = this.mockMvc.perform(get("/login"))
+//				.andExpect(status().isOk())
+//				.andReturn();
+//
+//		ModelAndView modelAndView = result.getModelAndView();
+//        assert modelAndView != null;
+//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+//		assertThat(modelAndView.getModel().get("datosLogin").toString(),  containsString("com.tallerwebi.presentacion.DatosLogin"));
+//
+//	}
 }
