@@ -51,7 +51,7 @@ public class ControladorPlanificadorTest {
 
         // Cuando
         when(servicioRecetaMock.getRecetasPorCategoria(Categoria.DESAYUNO_MERIENDA)).thenReturn(recetasMock);
-        ModelAndView modelAndView = controladorReceta.irARecetas("DESAYUNO_MERIENDA", null);
+        ModelAndView modelAndView = controladorReceta.irARecetas("DESAYUNO_MERIENDA", null, null, null);
 
         // Entonces
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");

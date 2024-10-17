@@ -31,6 +31,7 @@ public class ControladorLogin {
         return new ModelAndView("login", modelo);
     }
 
+
     @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest request) {
         ModelMap model = new ModelMap();
@@ -38,13 +39,16 @@ public class ControladorLogin {
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
-            // Redirigir a vista-receta si el login es exitoso
+            request.getSession().setAttribute("usuarioNombre", usuarioBuscado.getUsername()); // Guardar el nombre del usuario
             return new ModelAndView("redirect:/vista-receta");
         } else {
             model.put("error", "Usuario o clave incorrecta");
         }
         return new ModelAndView("login", model);
     }
+
+
+
 
 
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
@@ -73,6 +77,12 @@ public class ControladorLogin {
     @RequestMapping(path = "/home", method = RequestMethod.GET)
     public ModelAndView irAHome() {
         return new ModelAndView("home");
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate(); // Invalidar la sesión
+        return "redirect:/login"; // Redirigir a la página de inicio de sesión
     }
 }
 

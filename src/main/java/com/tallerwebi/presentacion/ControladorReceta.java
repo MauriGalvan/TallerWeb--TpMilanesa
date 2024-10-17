@@ -1,18 +1,13 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Receta;
-import com.tallerwebi.dominio.ServicioReceta;
-import com.tallerwebi.dominio.TiempoDePreparacion;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Comparator;
@@ -86,12 +81,13 @@ public class ControladorReceta {
     }
 
 
-
-
+    //Funciona
     @RequestMapping("/vista-receta")
     public ModelAndView irARecetas(
             @RequestParam(value = "categoria", required = false) String categoria,
-            @RequestParam(value = "tiempo", required = false) String tiempo){
+            @RequestParam(value = "tiempo", required = false) String tiempo,
+            @SessionAttribute(value = "usuarioNombre", required = false) String usuarioNombre,
+            HttpServletRequest request) {
 
         ModelMap modelo = new ModelMap();
         List<Receta> recetas;
@@ -107,24 +103,35 @@ public class ControladorReceta {
             tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
         }
 
-        if (categoriaEnum != null){
-            if (tiempoEnum != null){
+        if (categoriaEnum != null) {
+            if (tiempoEnum != null) {
                 recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoriaEnum, tiempoEnum);
             } else {
                 recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
             }
-        } else if (tiempoEnum != null){
+        } else if (tiempoEnum != null) {
             recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoEnum);
         } else {
             recetas = servicioReceta.getTodasLasRecetas();
         }
 
+
+        Rol rolUsuario = (Rol) request.getSession().getAttribute("ROL");
+        boolean esProfesional = rolUsuario != null && rolUsuario.equals(Rol.PROFESIONAL);
+
+
         modelo.put("todasLasRecetas", recetas);
+        modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("categoriaSeleccionada", categoria);
         modelo.put("tiempoSeleccionado", tiempo);
+        modelo.put("esProfesional", esProfesional);
 
         return new ModelAndView("vistaReceta", modelo);
     }
+
+
+
+
 
     @RequestMapping(value = "/guardarReceta", method = RequestMethod.POST)
     public ModelAndView guardarReceta(

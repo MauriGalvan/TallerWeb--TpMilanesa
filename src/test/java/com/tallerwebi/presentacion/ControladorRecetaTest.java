@@ -36,7 +36,7 @@ public class ControladorRecetaTest {
         String categoria = "ALMUERZO_CENA";
         String tiempo = "UNA_HORA";
         //Cuando
-        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo);
+        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo, null, null);
         //Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
     }
@@ -65,7 +65,7 @@ public class ControladorRecetaTest {
 
         //Cuando
         when(servicioRecetaMock.getTodasLasRecetas()).thenReturn(recetasMock);
-        ModelAndView modelAndView = controladorReceta.irARecetas(null, null);
+        ModelAndView modelAndView = controladorReceta.irARecetas(null, null, null, null);
 
         //Entonces
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
@@ -86,7 +86,7 @@ public class ControladorRecetaTest {
 
         //Cuando
         when(servicioRecetaMock.getRecetasPorCategoria(Categoria.ALMUERZO_CENA)).thenReturn(recetasMock);
-        ModelAndView modelAndView = controladorReceta.irARecetas("ALMUERZO_CENA", null);
+        ModelAndView modelAndView = controladorReceta.irARecetas("ALMUERZO_CENA", null, null, null);
 
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
 
