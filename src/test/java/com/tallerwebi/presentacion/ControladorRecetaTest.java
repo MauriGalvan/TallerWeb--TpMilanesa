@@ -56,7 +56,7 @@ public class ControladorRecetaTest {
         Receta receta = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Carne, Huevo, Pan rallado, Perejil, Papas", "No vayas más al club de la milanesa, traelo a tu casa.", "Aplasta la carne y condimenta. Bate un huevo y mezcla pan rallado con perejil. Pasa cada filete por el huevo y luego por el pan rallado. Fríe hasta dorar. Sirve con papas y salsa de tomate, jamón y queso.");
         //Cuando
         when(servicioRecetaMock.getUnaRecetaPorId(receta.getId())).thenReturn(receta);
-        ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(receta.getId());
+        ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(Integer.valueOf(receta.getId()));
         //Entonces
         verify(servicioRecetaMock, times(1)).getUnaRecetaPorId(receta.getId());
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("detalleReceta"));
