@@ -4,7 +4,9 @@ public interface RepositorioPlanificador {
 
     Planificador obtenerPlanificador();
 
-    void agregarReceta(Receta receta);
+    void guardar(Planificador planificador);
 
-    void guardarPlanificador(Planificador planificador);
+    void eliminar(Planificador planificador);
+
+    void actualizar(Planificador planificador);
 }

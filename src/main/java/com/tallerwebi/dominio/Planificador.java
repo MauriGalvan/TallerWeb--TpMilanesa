@@ -1,61 +1,44 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Planificador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Enumerated(EnumType.STRING)
-    private Dia dia;
-
-    @Enumerated(EnumType.STRING)
-    private Categoria categoria;
+    private int id;
 
     @OneToMany
-//    @JoinColumn(name = "receta_id")
-    private List<Receta> receta;
+    private List<DetallePlanificador> detallesPlanificador = new ArrayList<>();
 
-    public Planificador() {}
-
-    public Planificador(Dia dia, Categoria categoria, List<Receta> receta) {
-        this.dia = dia;
-        this.categoria = categoria;
-        this.receta = receta;
+    public Planificador() {
     }
 
-    public Long getId() {
-        return id;
+    public void agregarDetalle(DetallePlanificador detalle){
+        detallesPlanificador.add(detalle);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void eliminarDetalle(DetallePlanificador detalle){
+        detallesPlanificador.remove(detalle);
     }
 
-    public Dia getDia() {
-        return dia;
+    public List<DetallePlanificador> obtenerDetalles(){
+        return this.detallesPlanificador;
     }
 
-    public void setDia(Dia dia) {
-        this.dia = dia;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Planificador that = (Planificador) o;
+        return id == that.id && Objects.equals(detallesPlanificador, that.detallesPlanificador);
     }
 
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
-
-    public List<Receta> getReceta() {
-        return receta;
-    }
-
-    public void setReceta(List<Receta> receta) {
-        this.receta = receta;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, detallesPlanificador);
     }
 }

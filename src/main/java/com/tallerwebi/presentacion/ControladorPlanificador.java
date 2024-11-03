@@ -66,18 +66,23 @@ public class ControladorPlanificador {
 
         return new ModelAndView("recetasModal", modelo);
     }
-    @RequestMapping(value = "/guardar", method = RequestMethod.POST)
-    public ModelAndView guardarReceta(@RequestParam String dia, @RequestParam int recetaId) {
+    @RequestMapping(value = "/guardarPlanificador", method = RequestMethod.POST)
+    public ModelAndView guardarReceta(@RequestParam String dia, @RequestParam String categoria, @RequestParam int recetaId) {
+
         Receta receta = servicioReceta.getUnaRecetaPorId(recetaId);
+        Dia diaEnum = Dia.valueOf(dia.toUpperCase());
+        Categoria categoriaEnum = Categoria.valueOf(categoria.toUpperCase());
+
+        DetallePlanificador detalle = new DetallePlanificador(diaEnum, categoriaEnum, receta);
 
         Planificador planificador = servicioPlanificador.obtenerPlanificador();
         if(planificador == null){
             planificador = new Planificador();
+            servicioPlanificador.guardar(planificador);
         }
 
-        servicioPlanificador.agregarReceta(receta);
-
-        servicioPlanificador.guardarPlanificador(planificador);
+        servicioPlanificador.agregarDetalle(planificador, detalle);
+        servicioPlanificador.actualizar(planificador);
 
         return new ModelAndView("redirect:/vistaPlanificador");
     }

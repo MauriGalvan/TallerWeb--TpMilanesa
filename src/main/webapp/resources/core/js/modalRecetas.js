@@ -12,11 +12,11 @@ document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
                     const modalBody = modal.querySelector('.modal-body');
                     if (modalBody) {
                         modalBody.innerHTML = html;
-                        console.log('Contenido HTML insertado en el modal');
+                        //console.log('Contenido HTML insertado en el modal');
                         agregarEventListenersRecetas(modalId, categoria, dia);
                     }
                 } else {
-                    console.error('Modal no encontrado:', modalId);
+                    //console.error('Modal no encontrado:', modalId);
                 }
             })
     });
@@ -33,19 +33,24 @@ function agregarEventListenersRecetas(modalId, categoria, dia) {
 
 function seleccionarReceta(titulo, modalId, categoria, dia) {
 
-    console.log('Intentando actualizar el título a:', titulo);
+    //console.log('Intentando actualizar el título a:', titulo);
     const nombreRecetaSeleccionada = document.getElementById(`nombreRecetaSeleccionada${categoria}${dia}`);
     if (nombreRecetaSeleccionada) {
         nombreRecetaSeleccionada.innerText = titulo;
-        console.log('Título actualizado');
+        //console.log('Título actualizado');
 }
 
     const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
     if (modal) {
         modal.hide();
-        console.log('Modal cerrado');
+        //console.log('Modal cerrado');
     }
 }
+
+
+
+
+
 
 
 

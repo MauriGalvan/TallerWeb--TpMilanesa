@@ -42,11 +42,9 @@ public class ServicioRecetaTest {
     @Test
     public void queSePuedaGuardarUnaReceta() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
-        int idBuscado = receta.getId();
 
         servicioReceta.guardarReceta(receta);
 
-        Mockito.when(repositorioReceta.getRecetaPorId(idBuscado)).thenReturn(receta);
         Mockito.verify(repositorioReceta, times(1)).guardar(receta);
     }
 

@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.DetallePlanificador;
 import com.tallerwebi.dominio.Planificador;
-import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.RepositorioPlanificador;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,17 @@ public class RepositorioPlanificadorImpl implements RepositorioPlanificador {
     }
 
     @Override
-    public void agregarReceta(Receta receta) { this.sessionFactory.getCurrentSession().save(receta); }
+    public void guardar(Planificador planificador) {
+        this.sessionFactory.getCurrentSession().save(planificador);
+    }
 
     @Override
-    public void guardarPlanificador(Planificador planificador) { this.sessionFactory.getCurrentSession().save(planificador); }
+    public void eliminar(Planificador planificador) {
+        this.sessionFactory.getCurrentSession().delete(planificador);
+    }
+
+    @Override
+    public void actualizar(Planificador planificador) {
+        this.sessionFactory.getCurrentSession().update(planificador);
+    }
 }
