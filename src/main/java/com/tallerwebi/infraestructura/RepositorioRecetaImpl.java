@@ -113,6 +113,13 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         return query.getResultList();
     }
 
+    @Override
+    public List<Ingrediente> getIngredientesDeRecetaPorId(int id) {
+        String hql = "SELECT r.ingredientes FROM Receta r WHERE r.id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
 
 
 }

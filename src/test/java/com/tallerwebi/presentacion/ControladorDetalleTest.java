@@ -26,7 +26,7 @@ public class ControladorDetalleTest {
 
     private List<Ingrediente> unosIngredientes(){
         return Arrays.asList(
-                new Ingrediente("Carne", Tipo_Ingrediente.PROTEINA_ANIMAL),
+                new Ingrediente("Carne", 1, Unidad_De_Medida.KILOGRAMOS, Tipo_Ingrediente.PROTEINA_ANIMAL),
                 new Ingrediente("Huevo", 2, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.PROTEINA_ANIMAL),
                 new Ingrediente("Papas", 10, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.VERDURA),
                 new Ingrediente("Pan rallado", 200, Unidad_De_Medida.GRAMOS, Tipo_Ingrediente.CEREAL_O_GRANO)

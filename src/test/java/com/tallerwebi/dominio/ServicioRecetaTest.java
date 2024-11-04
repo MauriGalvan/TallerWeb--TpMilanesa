@@ -147,7 +147,6 @@ public class ServicioRecetaTest {
 
         Mockito.verify(repositorioReceta, times(1)).getRecetaPorId(receta1.getId());
         Mockito.verify(repositorioReceta, times(1)).actualizar(receta1);
-
     }
 
     @Test

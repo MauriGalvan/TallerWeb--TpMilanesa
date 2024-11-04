@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,8 +17,8 @@ public class Receta {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
-    @OneToMany (mappedBy = "receta", fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
-    private List<Ingrediente> ingredientes;
+    @OneToMany (mappedBy = "receta", fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
+    private List<Ingrediente> ingredientes = new ArrayList<>();
 
     private String titulo;
     private String imagen;

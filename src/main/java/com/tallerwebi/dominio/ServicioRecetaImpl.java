@@ -107,4 +107,10 @@ public class ServicioRecetaImpl implements ServicioReceta {
         return repositorioReceta.buscarRecetasPorTituloYTiempo(titulo, tiempoEnum);
     }
 
+    @Transactional
+    @Override
+    public List<Ingrediente> getIngredientesDeRecetaPorId(int id) {
+        return repositorioReceta.getIngredientesDeRecetaPorId(id);
+    }
+
 }

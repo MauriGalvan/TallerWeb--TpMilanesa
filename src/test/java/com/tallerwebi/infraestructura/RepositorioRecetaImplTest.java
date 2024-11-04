@@ -190,7 +190,7 @@ public class RepositorioRecetaImplTest {
         ingrediente1.setTipo(Tipo_Ingrediente.CEREAL_O_GRANO);
         ingrediente2.setNombre("Salsa de tomate");
         ingrediente2.setCantidad(150);
-        ingrediente2.setUnidad_de_medida(Unidad_De_Medida.MILIMETROS);
+        ingrediente2.setUnidad_de_medida(Unidad_De_Medida.MILILITROS);
         ingrediente2.setTipo(Tipo_Ingrediente.VERDURA);
         ingrediente3.setNombre("Mozzarella");
         ingrediente3.setCantidad(200);
@@ -222,7 +222,7 @@ public class RepositorioRecetaImplTest {
 
         assertThat(ingredienteModificado2.getNombre(), equalTo("Salsa de tomate"));
         assertThat(ingredienteModificado2.getCantidad(), equalTo(150.0));
-        assertThat(ingredienteModificado2.getUnidad_de_medida(), equalTo(Unidad_De_Medida.MILIMETROS));
+        assertThat(ingredienteModificado2.getUnidad_de_medida(), equalTo(Unidad_De_Medida.MILILITROS));
         assertThat(ingredienteModificado2.getTipo(), equalTo(Tipo_Ingrediente.VERDURA));
 
         assertThat(ingredienteModificado3.getNombre(), equalTo("Mozzarella"));

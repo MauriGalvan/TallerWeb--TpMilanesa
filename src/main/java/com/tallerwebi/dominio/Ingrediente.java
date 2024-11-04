@@ -14,11 +14,15 @@ public class Ingrediente {
     @JoinColumn(name = "receta_id")
     private Receta receta;
 
+    @Enumerated(EnumType.STRING)
+    private Unidad_De_Medida unidad_de_medida;
+
+    @Enumerated(EnumType.STRING)
+    private Tipo_Ingrediente tipo;
+
     private String nombre;
     private double cantidad;
-    private Unidad_De_Medida unidad_de_medida;
-    private Tipo_Ingrediente tipo;
-    private Boolean disponible;
+//    private Boolean disponible;
 
     public Ingrediente(){
     }
@@ -29,9 +33,7 @@ public class Ingrediente {
         this.tipo = tipo;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -61,11 +63,11 @@ public class Ingrediente {
         this.tipo = tipo;
     }
 
-    public Boolean isDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(Boolean disponible) {
-        this.disponible = disponible;
-    }
+//    public Boolean isDisponible() {
+//        return disponible;
+//    }
+//
+//    public void setDisponible(Boolean disponible) {
+//        this.disponible = disponible;
+//    }
 }
