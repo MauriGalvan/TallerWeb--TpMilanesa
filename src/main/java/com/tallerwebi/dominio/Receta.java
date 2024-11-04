@@ -27,6 +27,7 @@ public class Receta {
     private int contador_visitas;
 
     public Receta() {
+
     }
     public Receta(String titulo, TiempoDePreparacion tiempo_preparacion, Categoria categoria, String imagen,
                   List<Ingrediente> ingredientes, String descripcion, String pasos){
@@ -38,6 +39,7 @@ public class Receta {
         this.descripcion = descripcion;
         this.pasos = pasos;
         this.contador_visitas = 0;
+
     }
 
     public String getTitulo() {
