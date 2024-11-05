@@ -17,7 +17,7 @@ public class Receta {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
-    @OneToMany (mappedBy = "receta", fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "receta", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Ingrediente> ingredientes = new ArrayList<>();
 
     private String titulo;

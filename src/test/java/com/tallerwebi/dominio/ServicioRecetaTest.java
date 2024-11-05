@@ -19,12 +19,13 @@ public class ServicioRecetaTest {
 
     @Mock
     private RepositorioReceta repositorioReceta;
+    private RepositorioIngrediente repositorioIngrediente;
     private ServicioReceta servicioReceta;
 
     @BeforeEach
     public void inicializar(){
         this.repositorioReceta = mock(RepositorioReceta.class);
-        this.servicioReceta = new ServicioRecetaImpl(repositorioReceta);
+        this.servicioReceta = new ServicioRecetaImpl(repositorioReceta, repositorioIngrediente);
     }
 
     private List<Ingrediente> unosIngredientes(){

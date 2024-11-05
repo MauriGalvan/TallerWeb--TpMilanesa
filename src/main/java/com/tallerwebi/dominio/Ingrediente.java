@@ -33,6 +33,10 @@ public class Ingrediente {
         this.tipo = tipo;
     }
 
+    public int getId() { return this.id; }
+
+    public void setId(int id) { this.id = id; }
+
     public String getNombre() { return nombre; }
 
     public void setNombre(String nombre) {
@@ -61,6 +65,10 @@ public class Ingrediente {
 
     public void setTipo(Tipo_Ingrediente tipo) {
         this.tipo = tipo;
+    }
+
+    public void setReceta(Receta receta){
+        this.receta = receta;
     }
 
 //    public Boolean isDisponible() {

@@ -10,10 +10,12 @@ import java.util.*;
 public class ServicioRecetaImpl implements ServicioReceta {
 
     private final RepositorioReceta repositorioReceta;
+    private final RepositorioIngrediente repositorioIngrediente;
 
     @Autowired
-    public ServicioRecetaImpl(RepositorioReceta repositorioReceta) {
+    public ServicioRecetaImpl(RepositorioReceta repositorioReceta, RepositorioIngrediente repositorioIngrediente) {
         this.repositorioReceta = repositorioReceta;
+        this.repositorioIngrediente = repositorioIngrediente;
     }
 
     @Override
@@ -60,9 +62,22 @@ public class ServicioRecetaImpl implements ServicioReceta {
         if (recetaExistente != null) {
             recetaExistente.setTitulo(receta.getTitulo());
             recetaExistente.setTiempo_preparacion(receta.getTiempo_preparacion());
-            recetaExistente.setIngredientes(receta.getIngredientes());
             recetaExistente.setPasos(receta.getPasos());
             recetaExistente.setImagen(receta.getImagen());
+
+            for (Ingrediente ingrediente : recetaExistente.getIngredientes()){
+                repositorioIngrediente.eliminar(ingrediente);
+            }
+            recetaExistente.getIngredientes().clear();
+
+            for (Ingrediente ingrediente : receta.getIngredientes()){
+                if (ingrediente.getNombre() != null && !ingrediente.getNombre().isEmpty() && ingrediente.getCantidad() > 0.0 && ingrediente.getUnidad_de_medida() != null && ingrediente.getTipo() != null){
+                    ingrediente.setReceta(recetaExistente);
+                    recetaExistente.getIngredientes().add(ingrediente);
+                    repositorioIngrediente.guardar(ingrediente);
+                }
+            }
+
             repositorioReceta.actualizar(recetaExistente);
         }
     }
