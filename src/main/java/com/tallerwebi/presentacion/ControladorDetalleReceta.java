@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -28,27 +29,31 @@ public class ControladorDetalleReceta {
     public ModelAndView mostrarDetalleReceta(Integer id) {
         ModelMap modelo = new ModelMap();
         Receta receta = servicioReceta.getUnaRecetaPorId(id);
-        List<Ingrediente> ingredientes = servicioReceta.getIngredientesDeRecetaPorId(id);
+
+        //este método para ver si funcionaba con .LAZY
+        //List<Ingrediente> ingredientes = servicioReceta.getIngredientesDeRecetaPorId(id);
+
 
         //cuenta las visitas
         servicioReceta.actualizarVisitasDeReceta(receta);
 
         modelo.put("unaReceta", receta);
-        modelo.put("ingredientes", ingredientes);
+        //modelo.put("ingredientes", ingredientes);
         return new ModelAndView("detalleReceta", modelo);
     }
 
-    @PostMapping("/confirmarEliminarReceta")
-    public ModelAndView confirmarEliminarReceta(int id) {
-        ModelMap modelo = new ModelMap();
-        Receta receta = servicioReceta.getUnaRecetaPorId(id);
-        modelo.put("unaReceta", receta);
-        modelo.put("mostrarConfirmacion", true);
-        return new ModelAndView("detalleReceta", modelo);
-    }
+//    @PostMapping("/confirmarEliminarReceta")
+//    public ModelAndView confirmarEliminarReceta(int id) {
+//        ModelMap modelo = new ModelMap();
+//        Receta receta = servicioReceta.getUnaRecetaPorId(id);
+//        modelo.put("unaReceta", receta);
+//        modelo.put("mostrarConfirmacion", true);
+//        return new ModelAndView("detalleReceta", modelo);
+//    }
 
     @PostMapping("/eliminarReceta")
-    public ModelAndView eliminarReceta(@ModelAttribute Receta receta) {
+    public ModelAndView eliminarReceta(@RequestParam("id") int id) {
+        Receta receta = servicioReceta.getUnaRecetaPorId(id);
         servicioReceta.eliminarReceta(receta);
         return new ModelAndView("redirect:/vista-receta");
     }

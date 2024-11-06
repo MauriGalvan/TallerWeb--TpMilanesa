@@ -19,12 +19,15 @@ public class ServicioRecetaTest {
 
     @Mock
     private RepositorioReceta repositorioReceta;
+    @Mock
     private RepositorioIngrediente repositorioIngrediente;
+
     private ServicioReceta servicioReceta;
 
     @BeforeEach
     public void inicializar(){
         this.repositorioReceta = mock(RepositorioReceta.class);
+        this.repositorioIngrediente = mock(RepositorioIngrediente.class);
         this.servicioReceta = new ServicioRecetaImpl(repositorioReceta, repositorioIngrediente);
     }
 
@@ -132,10 +135,12 @@ public class ServicioRecetaTest {
     @Test
     public void queSePuedaEliminarUnaReceta() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        Ingrediente ingrediente = receta.getIngredientes().get(0);
 
         servicioReceta.eliminarReceta(receta);
 
         Mockito.verify(repositorioReceta, times(1)).eliminar(receta);
+        Mockito.verify(repositorioIngrediente, times(1)).eliminar(ingrediente);
     }
 
     @Test

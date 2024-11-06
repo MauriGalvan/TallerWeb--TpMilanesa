@@ -90,7 +90,7 @@ public class ControladorDetalleTest {
         recetaMock.setId(1);
 
         //CUANDO
-        ModelAndView modelAndView = controlador.eliminarReceta(recetaMock);
+        ModelAndView modelAndView = controlador.eliminarReceta(recetaMock.getId());
 
         //ENTONCES
         verify(servicioRecetaMock, times(1)).eliminarReceta(recetaMock);
