@@ -82,6 +82,54 @@ public class ControladorReceta {
 
 
     //Funciona
+//    @RequestMapping("/vista-receta")
+//    public ModelAndView irARecetas(
+//            @RequestParam(value = "categoria", required = false) String categoria,
+//            @RequestParam(value = "tiempo", required = false) String tiempo,
+//            @SessionAttribute(value = "usuarioNombre", required = false) String usuarioNombre,
+//            HttpServletRequest request) {
+//
+//        ModelMap modelo = new ModelMap();
+//        List<Receta> recetas;
+//
+//        Categoria categoriaEnum = null;
+//        TiempoDePreparacion tiempoEnum = null;
+//
+//        if (categoria != null && !categoria.equals("todos")) {
+//            categoriaEnum = Categoria.valueOf(categoria);
+//        }
+//
+//        if (tiempo != null && !tiempo.equals("-")) {
+//            tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
+//        }
+//
+//        if (categoriaEnum != null) {
+//            if (tiempoEnum != null) {
+//                recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoriaEnum, tiempoEnum);
+//            } else {
+//                recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
+//            }
+//        } else if (tiempoEnum != null) {
+//            recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoEnum);
+//        } else {
+//            recetas = servicioReceta.getTodasLasRecetas();
+//        }
+//
+//
+//        Rol rolUsuario = (Rol) request.getSession().getAttribute("ROL");
+//        boolean esProfesional = rolUsuario != null && (rolUsuario.equals(Rol.PROFESIONAL) || rolUsuario.equals(Rol.USUARIO_PREMIUM));
+//
+//
+//
+//        modelo.put("todasLasRecetas", recetas);
+//        modelo.put("usuarioNombre", usuarioNombre);
+//        modelo.put("categoriaSeleccionada", categoria);
+//        modelo.put("tiempoSeleccionado", tiempo);
+//        modelo.put("esProfesional", Boolean.valueOf(esProfesional));
+//
+//
+//        return new ModelAndView("vistaReceta", modelo);
+//    }
     @RequestMapping("/vista-receta")
     public ModelAndView irARecetas(
             @RequestParam(value = "categoria", required = false) String categoria,
@@ -115,20 +163,18 @@ public class ControladorReceta {
             recetas = servicioReceta.getTodasLasRecetas();
         }
 
-
         Rol rolUsuario = (Rol) request.getSession().getAttribute("ROL");
-        boolean esProfesional = rolUsuario != null && rolUsuario.equals(Rol.PROFESIONAL);
-
+        boolean esProfesionalOPremium = rolUsuario != null && (rolUsuario.equals(Rol.PROFESIONAL) || rolUsuario.equals(Rol.USUARIO_PREMIUM));
 
         modelo.put("todasLasRecetas", recetas);
         modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("categoriaSeleccionada", categoria);
         modelo.put("tiempoSeleccionado", tiempo);
-        modelo.put("esProfesional", Boolean.valueOf(esProfesional));
-
+        modelo.put("esProfesionalOPremium", esProfesionalOPremium);
 
         return new ModelAndView("vistaReceta", modelo);
     }
+
 
 
 

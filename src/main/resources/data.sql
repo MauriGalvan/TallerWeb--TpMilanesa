@@ -22,4 +22,4 @@ VALUES
 
 ('Hamburguesas de Lentejas', 'TREINTA_MIN', 'ALMUERZO_CENA', 'https://i.postimg.cc/GpF91CcP/hamburguesa-de-lentejas.jpg', 'Lentejas, Ajo, Cebolla, Pan rallado, Especias, Lechuga, Tomate, Pan de hamburguesa', 'Sabrosas y llenas de proteínas, perfectas para una cena sustanciosa.', 'Cocina las lentejas y aplástalas. Mezcla con ajo, cebolla picada, pan rallado y especias. Forma hamburguesas y cocina en una sartén hasta dorar. Sirve en pan con lechuga y tomate.', 0);
 
-
+INSERT INTO Usuario(id, email, password, rol, activo) VALUES(2, 'usuario@mail.com', '123', 'USUARIO', true);

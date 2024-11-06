@@ -96,12 +96,20 @@
                     <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
                   </div>
 
-                  <!-- Botones de eliminar y modificar -->
-                  <div class="mt-4">
-                    <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar </button>
-                    <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar </button>
-                  </div>
-              </div>
+<!--                  &lt;!&ndash; Botones de eliminar y modificar &ndash;&gt;-->
+<!--                  <div class="mt-4">-->
+<!--                    <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar </button>-->
+<!--                    <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar </button>-->
+<!--                  </div> -->
+                    <div class="mt-4"
+                         th:if="${session.usuarioActual != null and (session.usuarioActual.rol.name() == 'PROFESIONAL' or session.usuarioActual.rol.name() == 'USUARIO_PREMIUM')}">
+                        <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar</button>
+                        <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar</button>
+                    </div>
+
+
+
+                </div>
             </section>
 
             <!-- Modal de Eliminar Receta -->

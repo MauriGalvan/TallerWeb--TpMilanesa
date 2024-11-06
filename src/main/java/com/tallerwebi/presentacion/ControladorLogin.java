@@ -38,16 +38,15 @@ public class ControladorLogin {
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
-            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
-            request.getSession().setAttribute("usuarioNombre", usuarioBuscado.getUsername()); // Guardar el nombre del usuario
+            request.getSession().setAttribute("usuarioActual", usuarioBuscado); // Guardar el usuario completo en la sesión
+            request.getSession().setAttribute("ROL", usuarioBuscado.getRol()); // Guardar el rol del usuario
+            request.getSession().setAttribute("usuarioNombre", usuarioBuscado.getUsername()); // Guardar el nombre de usuario
             return new ModelAndView("redirect:/vista-receta");
         } else {
             model.put("error", "Usuario o clave incorrecta");
         }
         return new ModelAndView("login", model);
     }
-
-
 
 
 

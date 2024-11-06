@@ -8,5 +8,8 @@ public interface ServicioLogin {
 
     void registrar(Usuario usuario) throws UsuarioExistente;
 
+    Usuario obtenerUsuarioActual();
+
+    void actualizarUsuario(Usuario usuario);
 
 }
