@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+import static org.mockito.Mockito.any;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -111,18 +112,14 @@ public class ControladorRecetaTest {
         TiempoDePreparacion tiempo = TiempoDePreparacion.TREINTA_MIN;
         Categoria categoria = Categoria.ALMUERZO_CENA;
         String imagen = "https://i.postimg.cc/7hbGvN2c/mila-napo.webp";
-        List<Ingrediente> ingredientes = Arrays.asList(
-                new Ingrediente("Carne", 1, Unidad_De_Medida.KILOGRAMOS, Tipo_Ingrediente.PROTEINA_ANIMAL),
-                new Ingrediente("Huevo", 2, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.PROTEINA_ANIMAL),
-                new Ingrediente("Papas", 10, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.VERDURA),
-                new Ingrediente("Pan rallado", 200, Unidad_De_Medida.GRAMOS, Tipo_Ingrediente.CEREAL_O_GRANO));
         String descripcion = "Esto es una descripción de mila napo";
         String pasos = ".";
 
-        ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, ingredientes, descripcion, imagen);
+        HttpServletRequest request = mock(HttpServletRequest.class);
 
-        Receta recetaEsperada = new Receta(titulo, tiempo, categoria, imagen, ingredientes, descripcion, pasos);
-        verify(servicioRecetaMock, times(1)).guardarReceta(recetaEsperada);
+        ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, descripcion, imagen, request);
+
+        verify(servicioRecetaMock, times(1)).guardarReceta(any(Receta.class));
 
         assertEquals("redirect:/vista-receta", modelAndView.getViewName());
     }

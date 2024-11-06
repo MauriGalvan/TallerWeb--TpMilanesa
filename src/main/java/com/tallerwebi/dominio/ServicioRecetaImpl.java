@@ -25,6 +25,9 @@ public class ServicioRecetaImpl implements ServicioReceta {
 
     @Override
     public void guardarReceta(Receta receta) {
+        for (Ingrediente ingrediente : receta.getIngredientes()) {
+            ingrediente.setReceta(receta);
+        }
         this.repositorioReceta.guardar(receta);
     }
 

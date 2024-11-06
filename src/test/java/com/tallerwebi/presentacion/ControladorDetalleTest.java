@@ -89,10 +89,13 @@ public class ControladorDetalleTest {
         Receta recetaMock = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         recetaMock.setId(1);
 
+        when(servicioRecetaMock.getUnaRecetaPorId(1)).thenReturn(recetaMock);
+
         //CUANDO
         ModelAndView modelAndView = controlador.eliminarReceta(recetaMock.getId());
 
         //ENTONCES
+        verify(servicioRecetaMock, times(1)).getUnaRecetaPorId(recetaMock.getId());
         verify(servicioRecetaMock, times(1)).eliminarReceta(recetaMock);
         assertThat(modelAndView.getViewName(), equalTo("redirect:/vista-receta"));
     }

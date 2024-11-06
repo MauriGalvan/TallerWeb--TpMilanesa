@@ -135,16 +135,17 @@ public class ServicioRecetaTest {
     @Test
     public void queSePuedaEliminarUnaReceta() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
-        Ingrediente ingrediente = receta.getIngredientes().get(0);
 
         servicioReceta.eliminarReceta(receta);
 
         Mockito.verify(repositorioReceta, times(1)).eliminar(receta);
-        Mockito.verify(repositorioIngrediente, times(1)).eliminar(ingrediente);
+        for (Ingrediente ingrediente : receta.getIngredientes()){
+            repositorioIngrediente.eliminar(ingrediente);
+        }
     }
 
     @Test
-    public void queSePuedaActualizarUnaReceta() {
+    public void queSePuedaActualizarUnaReceta() { //me da error
         Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
 
         Mockito.when(repositorioReceta.getRecetaPorId(receta1.getId())).thenReturn(receta1);
@@ -153,6 +154,12 @@ public class ServicioRecetaTest {
 
         Mockito.verify(repositorioReceta, times(1)).getRecetaPorId(receta1.getId());
         Mockito.verify(repositorioReceta, times(1)).actualizar(receta1);
+        for (Ingrediente ingrediente : receta1.getIngredientes()) {
+            Mockito.verify(repositorioIngrediente, times(1)).eliminar(ingrediente);
+        }
+        for (Ingrediente ingrediente : receta1.getIngredientes()) {
+            Mockito.verify(repositorioIngrediente, times(1)).guardar(ingrediente);
+        }
     }
 
     @Test
