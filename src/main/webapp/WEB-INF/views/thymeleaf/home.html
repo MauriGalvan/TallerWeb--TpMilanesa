@@ -28,7 +28,7 @@
     </button>
 
     <button type="button" class="planificador">
-      <a href="http://localhost:8080/spring/login" class="link-receta" ><i class="fas fa-calendar-alt"></i>Planificá tu menu</a>
+      <a th:href="${usuarioNombre != null ? '/spring/vista-planificador' : '/spring/login'}" class="link-receta" ><i class="fas fa-calendar-alt"></i>Planificá tu menu</a>
     </button>
 
 <!--    <div th:if="${usuarioNombre != null ? usuarioNombre : 'Usuario'}">-->
@@ -57,15 +57,6 @@
         <a href="http://localhost:8080/spring/nuevo-usuario">  <i class="fa-solid fa-user-plus"></i>Registrate</a>
       </button>
     </div>
-
-
-<!--    <button type="button" class="Iniciar Sesion">-->
-<!--      <a href="http://localhost:8080/spring/login" ><i class="fa-solid fa-right-to-bracket"></i>Iniciar sesión</a>-->
-<!--    </button>-->
-
-<!--    <button type="button" class="Registrarme">-->
-<!--      <a href="http://localhost:8080/spring/nuevo-usuario">  <i class="fa-solid fa-user-plus"></i>Registrate</a>-->
-<!--    </button>-->
   </section>
 </nav>
 <main>
@@ -84,27 +75,33 @@
     <h2>NUESTROS PROFESIONALES</h2>
     <article class="profesionales-card">
       <div class="profesional">
+        <a th:href="@{/profesionales/Martitegui}">
         <img src="https://i.postimg.cc/9FbmNx9g/martiteguichef.jpg" alt="chef">
         <div class="info-profesional">
           <span class="nombre-chef">Las Recetas de Martitegui</span>
           <p class="descripcion-chef">Sabores únicos, recetas inolvidables, directo de la cocina del maestro gastronomico</p>
         </div>
+        </a>
       </div>
 
       <div class="profesional">
+        <a th:href="@{/profesionales/Christophe}">
         <img src="https://i.postimg.cc/wjCs6qqb/christophe-masterchef.jpg" alt="chef">
         <div class="info-profesional">
           <span class="nombre-chef">Las Recetas de Christophe</span>
           <p class="descripcion-chef">Descubre los delicias y la pasion de la cocina del maestro gastronomico</p>
         </div>
+          </a>
       </div>
 
       <div class="profesional">
+        <a th:href="@{/profesionales/Betular}">
         <img src="https://i.postimg.cc/W1F2b0ts/betular.png" alt="chef">
         <div class="info-profesional">
           <span class="nombre-chef">Las Recetas de Betular</span>
           <p class="descripcion-chef">Descubre los secretos dulces del chef maestro en pastelería</p>
         </div>
+        </a>
       </div>
     </article>
   </section>
@@ -128,25 +125,29 @@
     <h2>CATEGORÍAS POPULARES</h2>
     <article class="categorias-container">
       <div class="categoria">
+        <a th:href="@{/categorias/{nombreCategoria}(nombreCategoria='DESAYUNO_MERIENDA')}" class="categoria-link">
         <img src="https://i.postimg.cc/3ND97r29/desayuno.jpg" alt="Desayuno/Almuerzo">
         <div class="categoria-info">
-          <span>Desayuno/Almuerzo</span>
-          <a href="/categorias/desayuno" class="categoria-link"></a>
+            <span>Desayuno/Merienda</span>
         </div>
+        </a>
       </div>
       <div class="categoria">
+        <a th:href="@{/categorias/{nombreCategoria}(nombreCategoria='ALMUERZO_CENA')}" class="categoria-link">
         <img src="https://i.postimg.cc/mkcN8y1J/almuerzo.jpg" alt="Almuerzo/Cena">
         <div class="categoria-info">
           <span>Almuerzo/Cena</span>
-          <a href="/categorias/almuerzo" class="categoria-link"></a>
         </div>
+        </a>
       </div>
       <div class="categoria">
+        <a th:href="@{/categorias/{nombreCategoria}(nombreCategoria='POSTRE')}" class="categoria-link">
         <img src="https://i.postimg.cc/cJ0Q3Sxv/postre.jpg" alt="Postre">
         <div class="categoria-info">
           <span>Postre</span>
-          <a href="" class="categoria-link"></a>
+
         </div>
+        </a>
       </div>
     </article>
 

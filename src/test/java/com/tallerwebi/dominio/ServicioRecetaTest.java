@@ -307,4 +307,36 @@ public class ServicioRecetaTest {
         assertThat(todasLasRecetas, hasItem(receta1));
         assertThat(todasLasRecetas, hasItem(receta2));
     }
+
+    @Test
+    public void queSePuedanEncontrarLasRecetasDeCadaAutor(){
+        Receta receta = new Receta();
+        receta.setTitulo("milanesa");
+        receta.setAutor("mauri");
+        repositorioReceta.guardar(receta);
+
+        Receta receta2 = new Receta();
+        receta2.setTitulo("pure");
+        receta2.setAutor("mauri");
+        repositorioReceta.guardar(receta2);
+        Receta receta3 = new Receta();
+        receta3.setTitulo("pure");
+        receta3.setAutor("betular");
+        repositorioReceta.guardar(receta2);
+
+        String autorBuscado = "mauri";
+
+        List<Receta> todasLasRecetas = new ArrayList<>();
+        todasLasRecetas.add(receta);
+        todasLasRecetas.add(receta2);
+
+        Mockito.when(repositorioReceta.buscarPorAutor(autorBuscado)).thenReturn(todasLasRecetas);
+        List<Receta> recetasEncontradas = servicioReceta.buscarRecetaPorAutor(autorBuscado);
+        Mockito.verify(repositorioReceta, Mockito.times(1)).buscarPorAutor(autorBuscado);
+
+        assertEquals(2, recetasEncontradas.size());
+        assertThat(recetasEncontradas, hasItem(hasProperty("titulo", equalTo("milanesa"))));
+        assertThat(recetasEncontradas, hasItem(hasProperty("titulo", equalTo("pure"))));
+    }
+
 }

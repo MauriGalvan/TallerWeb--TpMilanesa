@@ -33,4 +33,6 @@ public interface ServicioReceta {
     List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempoEnum);
 
    List<Receta> obtenerRecetasRecomendadas();
+
+    List<Receta> buscarRecetaPorAutor(String autor);
 }

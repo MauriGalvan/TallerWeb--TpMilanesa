@@ -117,4 +117,10 @@ public class ServicioRecetaImpl implements ServicioReceta {
         return repositorioReceta.listRecetaRecomendadas(titulosRecomendados);
     }
 
+    @Override
+    public List<Receta> buscarRecetaPorAutor(String autor) {
+        return repositorioReceta.buscarPorAutor(autor);
+    }
+
+
 }

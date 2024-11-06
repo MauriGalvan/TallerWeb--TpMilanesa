@@ -3,7 +3,9 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +42,28 @@ public class ControladorHome {
     }
 
 
+    @GetMapping("/categorias/{nombreCategoria}")
+    public ModelAndView verRecetasPorCategoria(@PathVariable String nombreCategoria) {
+        Categoria categoria = Categoria.valueOf(nombreCategoria.toUpperCase());
+        List<Receta> recetas = servicioReceta.getRecetasPorCategoria(categoria);
+
+        ModelAndView mav = new ModelAndView("recetasPorCategoria");
+        mav.addObject("recetas", recetas);
+        mav.addObject("categoria", categoria);
+
+        return mav;
+    }
+
+    @GetMapping("/profesionales/{nombreAutor}")
+    public ModelAndView verRecetasPorAutor(@PathVariable String nombreAutor) {
+        List<Receta> recetas = servicioReceta.buscarRecetaPorAutor(nombreAutor);
+
+        ModelAndView mav = new ModelAndView("recetasPorAutor");
+        mav.addObject("recetas", recetas);
+        mav.addObject("autor", nombreAutor);
+
+        return mav;
+    }
 
 
 }

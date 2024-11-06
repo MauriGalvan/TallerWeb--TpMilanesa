@@ -38,38 +38,41 @@ public class RepositorioRecetaImplTest {
     private RepositorioReceta repositorioReceta;
 
     @BeforeEach
-    public void inicializar(){
+    public void inicializar() {
         this.repositorioReceta = new RepositorioRecetaImpl(sessionFactory);
     }
 
-    private Receta recetaTartaJamonYQuesoDeVeinteMinCreada(){
+    private Receta recetaTartaJamonYQuesoDeVeinteMinCreada() {
         return new Receta("Tarta de jamón y queso", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
                 "https://i.postimg.cc/tarta.jpg", ".", "Deliciosa tarta de jamón y queso.", ".");
     }
-    private Receta recetaMilanesaNapolitanaDeTreintaMinCreada(){
-        return new Receta ("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+
+    private Receta recetaMilanesaNapolitanaDeTreintaMinCreada() {
+        return new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
                 "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", ".", "Esto es una descripción de mila napo", ".");
     }
-    private Receta recetaMilanesaConPapasDeVeinteMinCreada(){
-        return new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+
+    private Receta recetaMilanesaConPapasDeVeinteMinCreada() {
+        return new Receta("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
                 "https://i.postimg.cc/mila-papas.jpg", ".", "Milanesa con guarnición de papas fritas", ".");
     }
-    private Receta recetaCafeConLecheDeDiezMinCreada(){
-        return new Receta ("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
+
+    private Receta recetaCafeConLecheDeDiezMinCreada() {
+        return new Receta("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
                 "https://i.postimg.cc/90QVFGGj/cafe-tostada.jpg", ".", "Un clásico de las mañanas.", ".");
     }
 
     @Test
     @Rollback
     @Transactional
-    public void dadoQueExisteUnRepositorioRecetaCuandoGuardoUnaRecetaEntoncesLoEncuentroEnLaBaseDeDatos(){
+    public void dadoQueExisteUnRepositorioRecetaCuandoGuardoUnaRecetaEntoncesLoEncuentroEnLaBaseDeDatos() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
 
         this.repositorioReceta.guardar(receta);
 
         String hql = "FROM Receta";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        Receta recetaObtenida = (Receta)query.getSingleResult();
+        Receta recetaObtenida = (Receta) query.getSingleResult();
 
         assertEquals(receta, recetaObtenida);
 
@@ -78,7 +81,7 @@ public class RepositorioRecetaImplTest {
     @Test
     @Rollback
     @Transactional
-    public void dadoQueExisteUnRepositorioRecetaCuandoGuardoVariasRecetasEntoncesLasEncuentroEnLaBaseDeDatos(){
+    public void dadoQueExisteUnRepositorioRecetaCuandoGuardoVariasRecetasEntoncesLasEncuentroEnLaBaseDeDatos() {
         Receta receta1 = this.recetaTartaJamonYQuesoDeVeinteMinCreada();
         Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
 
@@ -97,7 +100,7 @@ public class RepositorioRecetaImplTest {
     @Test
     @Rollback
     @Transactional
-    public void dadoQueExisteDosRecetasCuandoEliminoUnaEntoncesSoloHayUnaEnLaBaseDeDatos(){
+    public void dadoQueExisteDosRecetasCuandoEliminoUnaEntoncesSoloHayUnaEnLaBaseDeDatos() {
         Receta receta1 = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
 
@@ -124,7 +127,7 @@ public class RepositorioRecetaImplTest {
     @Test
     @Rollback
     @Transactional
-    public void dadoQueSeGuardanDosRecetasCuandoConsultoEntoncesObtengoLasDosRecetas(){
+    public void dadoQueSeGuardanDosRecetasCuandoConsultoEntoncesObtengoLasDosRecetas() {
         Receta receta1 = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();
 
@@ -140,7 +143,7 @@ public class RepositorioRecetaImplTest {
     @Test
     @Rollback
     @Transactional
-    public void dadoQueNoExistenRecetasCuandoConsultoEntoncesObtengoUnaListaVacia(){
+    public void dadoQueNoExistenRecetasCuandoConsultoEntoncesObtengoUnaListaVacia() {
         List<Receta> recetas = this.repositorioReceta.getRecetas();
 
         assertThat(recetas.size(), equalTo(0));
@@ -149,7 +152,7 @@ public class RepositorioRecetaImplTest {
     @Test
     @Rollback
     @Transactional
-    public void dadoQueSeGuardaUnaRecetaCuandoConsultoPorSuIdEntoncesObtengoLaReceta(){
+    public void dadoQueSeGuardaUnaRecetaCuandoConsultoPorSuIdEntoncesObtengoLaReceta() {
         Receta receta = this.recetaMilanesaConPapasDeVeinteMinCreada();
 
         this.sessionFactory.getCurrentSession().save(receta);
@@ -170,7 +173,7 @@ public class RepositorioRecetaImplTest {
 
         String hql = "FROM Receta";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        Receta recetaObtenida = (Receta)query.getSingleResult();
+        Receta recetaObtenida = (Receta) query.getSingleResult();
 
         assertEquals(receta, recetaObtenida);
 
@@ -181,7 +184,7 @@ public class RepositorioRecetaImplTest {
 
         String hql1 = "FROM Receta";
         Query query1 = this.sessionFactory.getCurrentSession().createQuery(hql1);
-        Receta recetaModificada = (Receta)query1.getSingleResult();
+        Receta recetaModificada = (Receta) query1.getSingleResult();
 
         assertThat(recetaModificada.getTitulo(), equalTo("Pizza Napolitana"));
         assertThat(recetaModificada.getIngredientes(), equalTo("Harina, Queso, Tomate, Anchoas"));
@@ -287,6 +290,39 @@ public class RepositorioRecetaImplTest {
         assertThat(recetasFiltradas, hasItem(receta1));
         assertThat(recetasFiltradas, hasItem(receta3));
         assertThat(recetasFiltradas, not(hasItem(receta2)));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenRecetasCuandoBuscoPorAutorEntoncesObtengoRecetasCuyoAutorCoincide() {
+
+        Receta receta1 = new Receta();
+        receta1.setAutor("mauri");
+        receta1.setTitulo("Milanesa napolitana");
+
+        Receta receta2 = new Receta();
+        receta2.setAutor("juan");
+        receta2.setTitulo("Tortilla de papas");
+
+        Receta receta3 = new Receta();
+        receta3.setAutor("mauri");
+        receta3.setTitulo("Milanesa con papas fritas");
+        this.sessionFactory.getCurrentSession().save(receta1);
+        this.sessionFactory.getCurrentSession().save(receta2);
+        this.sessionFactory.getCurrentSession().save(receta3);
+
+        List<Receta> recetasFiltradas = this.repositorioReceta.buscarPorAutor("mauri");
+
+        assertThat(recetasFiltradas.size(), equalTo(2));
+
+        assertThat(recetasFiltradas, hasItem(receta1));
+        assertThat(recetasFiltradas, hasItem(receta3));
+
+        assertThat(recetasFiltradas, not(hasItem(receta2)));
+
         assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
         assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
     }

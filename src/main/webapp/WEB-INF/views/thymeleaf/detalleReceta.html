@@ -95,7 +95,12 @@
                     <h5 class="intrucciones">Preparación:</h5>
                     <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
                   </div>
-
+                    <!-- autor-->
+                    <div class="mt-2">
+                        <h6 class="autor">Creado por:
+                            <a th:href="@{/profesionales/{nombre}(nombre=${unaReceta.autor})}" th:text="${unaReceta.autor}">Nombre del Autor</a>
+                        </h6>
+                    </div>
                   <!-- Botones de eliminar y modificar -->
                   <div class="mt-4">
                     <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar </button>
