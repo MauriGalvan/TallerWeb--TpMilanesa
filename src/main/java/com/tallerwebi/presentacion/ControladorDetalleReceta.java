@@ -8,7 +8,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.IOException;
+import java.util.Base64;
 
 @Controller
 public class ControladorDetalleReceta {
@@ -28,6 +33,11 @@ public class ControladorDetalleReceta {
 
         //cuenta las visitas
         servicioReceta.actualizarVisitasDeReceta(receta);
+
+        if (receta.getImagen() != null && receta.getImagen().length > 0) {
+            String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
+            receta.setImagenBase64(imagenBase64);
+        }
 
         modelo.put("unaReceta", receta);
         return new ModelAndView("detalleReceta", modelo);
@@ -49,7 +59,8 @@ public class ControladorDetalleReceta {
     }
 
     @PostMapping("/modificarReceta")
-    public ModelAndView modificarReceta(@ModelAttribute Receta receta) {
+    public ModelAndView modificarReceta(@ModelAttribute Receta receta,
+                                        @RequestParam(value = "imagenArchivo", required = false) MultipartFile imagenArchivo) {
         ModelMap modelo = new ModelMap();
 
         System.out.println("Receta recibida: " + receta.getTitulo());
@@ -64,7 +75,25 @@ public class ControladorDetalleReceta {
             return new ModelAndView("detalleReceta", modelo);
         }
 
+        if (imagenArchivo != null && !imagenArchivo.isEmpty()) {
+            try {
+                receta.setImagen(imagenArchivo.getBytes());
+            } catch (IOException e) {
+                modelo.put("unaReceta", receta);
+                modelo.put("mensajeError", "Hubo un problema al cargar la imagen.");
+                return new ModelAndView("detalleReceta", modelo);
+            }
+        } else {
+            Receta recetaExistente = servicioReceta.getUnaRecetaPorId(receta.getId());
+            receta.setImagen(recetaExistente.getImagen());
+        }
+
         servicioReceta.actualizarReceta(receta);
+
+        if (receta.getImagen() != null && receta.getImagen().length > 0) {
+            String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
+            receta.setImagenBase64(imagenBase64);
+        }
 
         modelo.put("unaReceta", receta);
         modelo.put("mensajeExito", "La receta fue modificada correctamente.");

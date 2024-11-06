@@ -22,6 +22,7 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
     @Override
     public void guardar(Receta receta) {
         sessionFactory.getCurrentSession().save(receta);

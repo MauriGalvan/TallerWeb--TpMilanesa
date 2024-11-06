@@ -153,7 +153,7 @@ public class ControladorRecetaTest {
         ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, ingredientes, descripcion, imagen);
 
         Receta recetaEsperada = new Receta(titulo, tiempo, categoria, imagen.getBytes(), ingredientes, descripcion, pasos);
-        verify(servicioRecetaMock, times(1)).guardarReceta(recetaEsperada);
+        verify(servicioRecetaMock, times(1)).guardarReceta(recetaEsperada, imagen);
 
         assertEquals("redirect:/vista-receta", modelAndView.getViewName());
     }

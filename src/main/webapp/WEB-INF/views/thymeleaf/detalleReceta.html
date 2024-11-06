@@ -71,7 +71,7 @@
             <section class="row">
               <!-- Imagen -->
                 <div class="col-md-4">
-                  <img th:src="${unaReceta.imagen}" alt="Foto de la comida" class="img-fluid receta-img">
+                    <img th:src="${'data:image/jpeg;base64,' + unaReceta.imagenBase64}" alt="Foto de la comida" class="img-fluid receta-img">
                 </div>
                 <!-- Detalles -->
                 <div class="col-md-8">
@@ -125,7 +125,7 @@
                 <div class="modal-content">
                   <span class="close" onclick="document.getElementById('modalModificar').checked=false;">&times;</span>
                   <h2>Modificar Receta</h2>
-                  <form th:action="@{/modificarReceta}" method="post" accept-charset="UTF-8">
+                  <form th:action="@{/modificarReceta}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
                       <input type="hidden" name="id" th:value="${unaReceta.id}" />
                       <label for="titulo">Título</label>
                       <input type="text" id="titulo" name="titulo" class="form-control" th:value="${unaReceta.titulo}" />
@@ -144,8 +144,8 @@
                       <label for="pasos">Pasos</label>
                       <textarea id="pasos" name="pasos" rows="4" class="form-control" th:text="${unaReceta.pasos}"></textarea>
 
-                      <label for="imagen">Imagen URL</label>
-                      <input type="text" id="imagen" name="imagen" class="form-control" th:value="${unaReceta.imagen}" />
+                      <label for="imagen">Imagen</label>
+                      <input type="file" id="imagen" name="imagenArchivo" class="form-control" />
 
                       <div class="form-buttons mt-3">
                           <button type="submit" class="btn btn-success">Guardar Cambios</button>

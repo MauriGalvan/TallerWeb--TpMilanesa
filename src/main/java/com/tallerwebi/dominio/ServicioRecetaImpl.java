@@ -2,8 +2,10 @@ package com.tallerwebi.dominio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -22,7 +24,14 @@ public class ServicioRecetaImpl implements ServicioReceta {
     }
 
     @Override
-    public void guardarReceta(Receta receta) {
+    public void guardarReceta(Receta receta, MultipartFile imagen) {
+        if (imagen != null && !imagen.isEmpty()){
+            try {
+                receta.setImagen(imagen.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException("Error al procesar la imagen", e);
+            }
+        }
         this.repositorioReceta.guardar(receta);
     }
 
@@ -44,7 +53,14 @@ public class ServicioRecetaImpl implements ServicioReceta {
 
     @Override
     public Receta getUnaRecetaPorId(int id) {
-        return this.repositorioReceta.getRecetaPorId(id);
+        Receta receta = this.repositorioReceta.getRecetaPorId(id);
+
+        if (receta != null && receta.getImagen() != null && receta.getImagen().length > 0) {
+            String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
+            receta.setImagenBase64(imagenBase64);
+        }
+
+        return receta;
     }
 
     @Transactional

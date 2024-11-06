@@ -166,7 +166,7 @@
                                         <h2 class="titulo" th:text="${receta.titulo}">Nombre comida</h2>
                                         <p class="desc" th:text="${receta.descripcion}">Descripción</p>
                                     </div>
-                                    <img class="foto" th:src="${receta.imagen}" alt="Imagen receta">
+                                    <img class="foto" th:src="'data:image/jpeg;base64,' + ${receta.imagenBase64}" alt="Imagen receta">
                                 </a>
                             </article>
                         </section>

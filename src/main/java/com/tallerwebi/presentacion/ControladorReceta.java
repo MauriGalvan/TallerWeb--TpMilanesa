@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -121,6 +122,13 @@ public class ControladorReceta {
             recetas = servicioReceta.getTodasLasRecetas();
         }
 
+        recetas.forEach(receta -> {
+            if (receta.getImagen() != null) {
+                String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
+                receta.setImagenBase64(imagenBase64);
+            }
+        });
+
         modelo.put("todasLasRecetas", recetas);
         modelo.put("categoriaSeleccionada", categoria);
         modelo.put("tiempoSeleccionado", tiempo);
@@ -130,21 +138,28 @@ public class ControladorReceta {
 
     @RequestMapping(value = "/guardarReceta", method = RequestMethod.POST)
     public ModelAndView guardarReceta(
-            @RequestParam("titulo") String titulo,
-            @RequestParam("pasos") String pasos,
-            @RequestParam("tiempoPreparacion") TiempoDePreparacion tiempoPreparacion,
-            @RequestParam("categoria") Categoria categoria,
-            @RequestParam("ingredientes") String ingredientes,
-            @RequestParam("descripcion") String descripcion,
-            @RequestParam("imagen") MultipartFile imagen) throws IOException {
+            @RequestParam(value = "titulo", required = false) String titulo,
+            @RequestParam(value = "pasos", required = false) String pasos,
+            @RequestParam(value = "tiempoPreparacion", required = false) TiempoDePreparacion tiempoPreparacion,
+            @RequestParam(value = "categoria", required = false) Categoria categoria,
+            @RequestParam(value = "ingredientes", required = false) String ingredientes,
+            @RequestParam(value = "descripcion", required = false) String descripcion,
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen) {
 
-      //  if (!imagen.isEmpty() && imagen.getContentType().startsWith("image")) {
-            Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen.getBytes(), ingredientes, descripcion, pasos);
-            servicioReceta.guardarReceta(nuevaReceta);
+        ModelMap model = new ModelMap();
+        try {
+            byte[] imagenBytes = null;
+            if (imagen != null && !imagen.isEmpty()) {
+                imagenBytes = imagen.getBytes();
+            }
+            Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagenBytes, ingredientes, descripcion, pasos);
+            servicioReceta.guardarReceta(nuevaReceta, imagen);
 
             return new ModelAndView("redirect:/vista-receta");
-//        } else {
-//        }
+        } catch (Exception e) {
+            model.put("error", "Error al cargar receta.");
+            return new ModelAndView("redirect:/vista-receta", model);
+        }
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)

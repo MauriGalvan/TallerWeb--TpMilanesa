@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +47,9 @@ public class ServicioRecetaTest {
     public void queSePuedaGuardarUnaReceta() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         int idBuscado = receta.getId();
+        MultipartFile imagenMock = mock(MultipartFile.class);
 
-        servicioReceta.guardarReceta(receta);
+        servicioReceta.guardarReceta(receta, imagenMock);
 
         Mockito.when(repositorioReceta.getRecetaPorId(idBuscado)).thenReturn(receta);
         Mockito.verify(repositorioReceta, times(1)).guardar(receta);

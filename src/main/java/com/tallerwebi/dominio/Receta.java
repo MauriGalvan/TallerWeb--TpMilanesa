@@ -18,6 +18,9 @@ public class Receta {
     @Lob
     private byte[] imagen;
 
+    @Transient
+    private String imagenBase64;
+
     private String titulo;
     private String ingredientes;
     private String descripcion;
@@ -102,6 +105,14 @@ public class Receta {
     public int getContadorVisitas() {return this.contador_visitas; }
 
     public void incrementarVisitas() { this.contador_visitas++; }
+
+    public String getImagenBase64() {
+        return imagenBase64;
+    }
+
+    public void setImagenBase64(String imagenBase64) {
+        this.imagenBase64 = imagenBase64;
+    }
 
     @Override
     public boolean equals(Object o) {
