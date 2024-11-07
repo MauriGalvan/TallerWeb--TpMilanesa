@@ -24,6 +24,7 @@ public class ControladorPlanificador {
     public ControladorPlanificador(ServicioReceta servicioReceta) {
         this.servicioReceta = servicioReceta;
     }
+
     @RequestMapping("/vista-planificador")
     public ModelAndView irAPlanificador() {
         List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" , "Domingo");
@@ -70,6 +71,11 @@ public class ControladorPlanificador {
         modelo.put("dia", dia);
 
         return new ModelAndView("recetasModal", modelo);
+    }
+
+    @RequestMapping("/vista-lista-compra")
+    public ModelAndView irAListaCompra() {
+        return new ModelAndView("vistaLista");
     }
 
 

@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,28 +20,40 @@ public class ServicioRecetaTest {
 
     @Mock
     private RepositorioReceta repositorioReceta;
+    @Mock
+    private RepositorioIngrediente repositorioIngrediente;
+
     private ServicioReceta servicioReceta;
 
     @BeforeEach
     public void inicializar(){
         this.repositorioReceta = mock(RepositorioReceta.class);
-        this.servicioReceta = new ServicioRecetaImpl(repositorioReceta);
+        this.repositorioIngrediente = mock(RepositorioIngrediente.class);
+        this.servicioReceta = new ServicioRecetaImpl(repositorioReceta, repositorioIngrediente);
     }
 
+    private List<Ingrediente> unosIngredientes(){
+        return Arrays.asList(
+                new Ingrediente("Carne", 1, Unidad_De_Medida.KILOGRAMOS, Tipo_Ingrediente.PROTEINA_ANIMAL),
+                new Ingrediente("Huevo", 2, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.PROTEINA_ANIMAL),
+                new Ingrediente("Papas", 10, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.VERDURA),
+                new Ingrediente("Pan rallado", 200, Unidad_De_Medida.GRAMOS, Tipo_Ingrediente.CEREAL_O_GRANO)
+        );
+    }
     private Receta recetaMilanesaNapolitanaDeTreintaMinCreada(){
         byte[] imagen = new byte[]{0, 1};
         return new Receta ("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
-                imagen, ".", "Esto es una descripción de mila napo", ".");
+                imagen, this.unosIngredientes(), "Esto es una descripción de mila napo", ".");
     }
     private Receta recetaMilanesaConPapasDeVeinteMinCreada(){
         byte[] imagen = new byte[]{0, 1};
         return new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
-                imagen, ".", "Milanesa con guarnición de papas fritas", ".");
+                imagen, this.unosIngredientes(), "Milanesa con guarnición de papas fritas", ".");
     }
     private Receta recetaCafeConLecheDeDiezMinCreada(){
         byte[] imagen = new byte[]{0, 1};
         return new Receta ("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
-                imagen, ".", "Un clásico de las mañanas.", ".");
+                imagen, this.unosIngredientes(), "Un clásico de las mañanas.", ".");
     }
 
     @Test
@@ -116,6 +129,38 @@ public class ServicioRecetaTest {
     }
 
     @Test
+    public void queSePuedaObtenerUnaRecetaPorId(){
+        Receta receta = this.recetaCafeConLecheDeDiezMinCreada();
+
+        Mockito.when(repositorioReceta.getRecetaPorId(receta.getId())).thenReturn(receta);
+
+        servicioReceta.getUnaRecetaPorId(receta.getId());
+
+        Mockito.verify(repositorioReceta, times(1)).getRecetaPorId(receta.getId());
+    }
+
+    @Test
+    public void queSePuedaEliminarUnaReceta() {
+        // Crea la receta de prueba y configura el mock
+        Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+
+        // Configura el mock para que devuelva la receta cuando se llame a getRecetaPorId
+        Mockito.when(repositorioReceta.getRecetaPorId(receta.getId())).thenReturn(receta);
+
+        // Llama al método que queremos probar
+        servicioReceta.eliminarReceta(receta);
+
+        // Verifica que se haya llamado a getRecetaPorId y luego a eliminar en repositorioReceta
+        Mockito.verify(repositorioReceta, times(1)).getRecetaPorId(receta.getId());
+        Mockito.verify(repositorioReceta, times(1)).eliminar(receta);
+
+        // Verifica que se eliminen los ingredientes de la receta
+        for (Ingrediente ingrediente : receta.getIngredientes()) {
+            Mockito.verify(repositorioIngrediente, times(1)).eliminar(ingrediente);
+        }
+    }
+
+    @Test
     public void queSePuedaBuscarRecetasPorTituloYSeEncuentrenLasCorrectas() {
         // Definir algunos títulos y recetas
         String tituloBuscado = "Milanesa";
@@ -153,7 +198,7 @@ public class ServicioRecetaTest {
     }
 
     @Test
-    public void queSePuedanActualizarLosClicksOVisitasDeLasRecetas() {
+    public void queSePuedanActualizarLasVisitasDeLasRecetas() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
 
@@ -269,7 +314,7 @@ public class ServicioRecetaTest {
     }
 
     @Test
-    public void queSePuedanFiltrarLasRecetasPorTituloYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
+    public void queSePuedanBuscarLasRecetasPorTituloYSePuedanOrdenarPorPopularidadDependiendoLaCantidadDeVisitas() {
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         Receta receta1 = this.recetaCafeConLecheDeDiezMinCreada();
         Receta receta2 = this.recetaMilanesaConPapasDeVeinteMinCreada();

@@ -1,25 +1,22 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Receta;
-import com.tallerwebi.dominio.ServicioReceta;
-import com.tallerwebi.dominio.TiempoDePreparacion;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Transactional
@@ -101,7 +98,9 @@ public class ControladorReceta {
     @RequestMapping("/vista-receta")
     public ModelAndView irARecetas(
             @RequestParam(value = "categoria", required = false) String categoria,
-            @RequestParam(value = "tiempo", required = false) String tiempo){
+            @RequestParam(value = "tiempo", required = false) String tiempo,
+            @SessionAttribute(value = "usuarioNombre", required = false) String usuarioNombre,
+            HttpServletRequest request) {
 
         ModelMap modelo = new ModelMap();
         List<Receta> recetas;
@@ -117,13 +116,13 @@ public class ControladorReceta {
             tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
         }
 
-        if (categoriaEnum != null){
-            if (tiempoEnum != null){
+        if (categoriaEnum != null) {
+            if (tiempoEnum != null) {
                 recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoriaEnum, tiempoEnum);
             } else {
                 recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
             }
-        } else if (tiempoEnum != null){
+        } else if (tiempoEnum != null) {
             recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoEnum);
         } else {
             recetas = servicioReceta.getTodasLasRecetas();
@@ -136,22 +135,42 @@ public class ControladorReceta {
             }
         });
 
+        Rol rolUsuario = (Rol) request.getSession().getAttribute("ROL");
+        boolean esProfesionalOPremium = rolUsuario != null && (rolUsuario.equals(Rol.PROFESIONAL) || rolUsuario.equals(Rol.USUARIO_PREMIUM));
+
         modelo.put("todasLasRecetas", recetas);
+        modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("categoriaSeleccionada", categoria);
         modelo.put("tiempoSeleccionado", tiempo);
+        modelo.put("esProfesionalOPremium", esProfesionalOPremium);
+
 
         return new ModelAndView("vistaReceta", modelo);
     }
 
     @RequestMapping(value = "/guardarReceta", method = RequestMethod.POST)
     public ModelAndView guardarReceta(
-            @RequestParam(value = "titulo", required = false) String titulo,
-            @RequestParam(value = "pasos", required = false) String pasos,
-            @RequestParam(value = "tiempoPreparacion", required = false) TiempoDePreparacion tiempoPreparacion,
-            @RequestParam(value = "categoria", required = false) Categoria categoria,
-            @RequestParam(value = "ingredientes", required = false) String ingredientes,
-            @RequestParam(value = "descripcion", required = false) String descripcion,
-            @RequestParam(value = "imagen", required = false) MultipartFile imagen) {
+            @RequestParam("titulo") String titulo,
+            @RequestParam("pasos") String pasos,
+            @RequestParam("tiempoPreparacion") TiempoDePreparacion tiempoPreparacion,
+            @RequestParam("categoria") Categoria categoria,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("imagen") MultipartFile imagen,
+            HttpServletRequest request) { //se pasan los ingredientes por este parámetro, porque hay errores con el List<>
+
+        List<Ingrediente> ingredientes = new ArrayList<>();
+
+        int index = 0;
+        while (request.getParameter("ingredientes[" + index + "].nombre") != null) {
+            String nombre = request.getParameter("ingredientes[" + index + "].nombre");
+            double cantidad = Double.parseDouble(request.getParameter("ingredientes[" + index + "].cantidad"));
+            Unidad_De_Medida unidad_de_medida = Unidad_De_Medida.valueOf(request.getParameter("ingredientes[" + index + "].unidad_de_medida"));
+            Tipo_Ingrediente tipo = Tipo_Ingrediente.valueOf(request.getParameter("ingredientes[" + index + "].tipo"));
+
+            Ingrediente ingrediente = new Ingrediente(nombre, cantidad, unidad_de_medida, tipo);
+            ingredientes.add(ingrediente);
+            index++;
+        }
 
         ModelMap model = new ModelMap();
         try {

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Paso a Premium</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+  <style>
+    .card-form {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .form-select, .form-control {
+      border-radius: 8px;
+    }
+    .btn-submit {
+      width: 100%;
+      border-radius: 8px;
+      font-size: 1.1em;
+    }
+    .icon-row img {
+      width: 40px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar fondo-verde">
+      <div class="sidebar-content">
+        <a href="#" class="logo-link">
+          <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" alt="Logo de la Web" class="logo">
+        </a>
+        <nav>
+          <ul>
+            <li><a href="http://localhost:8080/spring/vista-receta" class="nav-link"><i class="fa-solid fa-utensils"></i> Recetas</a></li>
+            <li><a href="http://localhost:8080/spring/vista-planificador" class="nav-link"><i class="fas fa-calendar-alt"></i> Planificador</a></li>
+            <li onclick="mostrarPopup()"><a href="#" class="nav-link"><i class="fas fa-shopping-cart"></i> Lista de compras</a></li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <div class="contenido-general">
+      <header>
+        <div class="header-container">
+          <h1 class="titulo-header">Paso a Premium</h1>
+          <div class="user-menu">
+            <div class="dropdown">
+              <a href="#" id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
+                <span th:text="${usuarioNombre != null ? usuarioNombre : 'Usuario'}">usuario</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a th:href="@{/perfil}" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a href="http://localhost:8080/spring/login" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="section">
+        <div class="container mt-4">
+          <div class="card-form bg-light">
+            <h2 class="text-center mb-4">Tarjeta de crédito o débito</h2>
+            <p class="text-center text-muted" th:text="${mensaje}"></p>
+
+            <form th:action="@{/pago-premium}" method="post">
+              <!-- Formulario de pago -->
+              <div class="mb-3">
+                <label for="numeroTarjeta" class="form-label">Número de tarjeta</label>
+                <input type="text" id="numeroTarjeta" name="numeroTarjeta" class="form-control" required placeholder="0000 0000 0000 0000">
+              </div>
+              <div class="mb-3">
+                <label for="titularTarjeta" class="form-label">Titular de la tarjeta</label>
+                <input type="text" id="titularTarjeta" name="titularTarjeta" class="form-control" required placeholder="Nombre en la tarjeta">
+              </div>
+              <div class="row">
+                <div class="col-6 mb-3">
+                  <label for="fechaExpiracion" class="form-label">Vencimiento (MM/AA)</label>
+                  <input type="text" id="fechaExpiracion" name="fechaExpiracion" class="form-control" required placeholder="MM/AA">
+                </div>
+                <div class="col-6 mb-3">
+                  <label for="cvv" class="form-label">CVV</label>
+                  <input type="text" id="cvv" name="cvv" class="form-control" required placeholder="123">
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="metodoPago" class="form-label">Cuotas</label>
+                <select id="metodoPago" name="metodoPago" class="form-select" required>
+                  <option value="1">1x $40.000,00</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="documento" class="form-label">Documento</label>
+                <div class="row">
+                  <div class="col-4">
+                    <select id="documento" name="documento" class="form-select" required>
+                      <option value="DNI">DNI</option>
+                      <option value="Pasaporte">Pasaporte</option>
+                      <option value="RUT">RUT</option>
+                    </select>
+                  </div>
+                  <div class="col-8">
+                    <input type="text" id="documentoTitular" name="documentoTitular" class="form-control" required placeholder="Documento del titular">
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-4 icon-row">
+                <span>Tarjetas aceptadas:</span>
+                <img src="https://img.icons8.com/color/48/000000/visa.png"/>
+                <img src="https://img.icons8.com/color/48/000000/mastercard.png"/>
+                <img src="https://img.icons8.com/color/48/000000/amex.png"/>
+                <img src="https://img.icons8.com/color/48/000000/diners-club.png"/>
+              </div>
+
+              <button type="submit" class="btn btn-success btn-submit mt-4">Pagar y Convertirse en Premium</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function mostrarPopup() { alert("Funcionalidad en desarrollo!"); }
+</script>
+</body>
+</html>
