@@ -38,16 +38,15 @@ public class ControladorLogin {
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
+            request.getSession().setAttribute("usuarioActual", usuarioBuscado);
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
-            request.getSession().setAttribute("usuarioNombre", usuarioBuscado.getUsername()); // Guardar el nombre del usuario
+            request.getSession().setAttribute("usuarioNombre", usuarioBuscado.getUsername());
             return new ModelAndView("redirect:/vista-receta");
         } else {
             model.put("error", "Usuario o clave incorrecta");
         }
         return new ModelAndView("login", model);
     }
-
-
 
 
 
@@ -70,7 +69,7 @@ public class ControladorLogin {
     public ModelAndView nuevoUsuario() {
         ModelMap model = new ModelMap();
         model.put("usuario", new Usuario());
-        model.put("roles", Rol.values()); // Enviar enum de roles a la vista
+        model.put("roles", Rol.values());
         return new ModelAndView("nuevo-usuario", model);
     }
 
@@ -81,8 +80,8 @@ public class ControladorLogin {
 
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request) {
-        request.getSession().invalidate(); // Invalidar la sesión
-        return "redirect:/login"; // Redirigir a la página de inicio de sesión
+        request.getSession().invalidate();
+        return "redirect:/login";
     }
 }
 

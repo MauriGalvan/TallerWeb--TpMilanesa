@@ -40,20 +40,17 @@
         <header>
           <div class="header-container">
             <h1 class="titulo-header" ></h1>
-            <div class="user-menu">
               <div class="dropdown">
-                <a href="#" id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
-                  <span>usuario</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
-                  <li  onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-gear"></i>Ajustes</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i>Salir</a></li>
-                </ul>
+                  <a href="#" id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                      <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
+                      <span th:text="${usuarioNombre != null ? usuarioNombre : 'Usuario'}">usuario</span>
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li><a th:href="@{/perfil}" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a href="http://localhost:8080/spring/login" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a></li>
+                  </ul>
               </div>
-            </div>
           </div>
         </header>
 
@@ -96,12 +93,20 @@
                     <p th:each="paso : ${unaReceta.pasos}" th:text="${paso}"></p>
                   </div>
 
-                  <!-- Botones de eliminar y modificar -->
-                  <div class="mt-4">
-                    <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar </button>
-                    <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar </button>
-                  </div>
-              </div>
+<!--                  &lt;!&ndash; Botones de eliminar y modificar &ndash;&gt;-->
+<!--                  <div class="mt-4">-->
+<!--                    <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar </button>-->
+<!--                    <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar </button>-->
+<!--                  </div> -->
+                    <div class="mt-4"
+                         th:if="${session.usuarioActual != null and (session.usuarioActual.rol.name() == 'PROFESIONAL' or session.usuarioActual.rol.name() == 'USUARIO_PREMIUM')}">
+                        <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar</button>
+                        <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar</button>
+                    </div>
+
+
+
+                </div>
             </section>
 
             <!-- Modal de Eliminar Receta -->

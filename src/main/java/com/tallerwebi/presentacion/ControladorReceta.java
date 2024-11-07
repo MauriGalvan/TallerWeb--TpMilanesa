@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Transactional
@@ -81,7 +82,6 @@ public class ControladorReceta {
     }
 
 
-    //Funciona
     @RequestMapping("/vista-receta")
     public ModelAndView irARecetas(
             @RequestParam(value = "categoria", required = false) String categoria,
@@ -115,20 +115,18 @@ public class ControladorReceta {
             recetas = servicioReceta.getTodasLasRecetas();
         }
 
-
         Rol rolUsuario = (Rol) request.getSession().getAttribute("ROL");
-        boolean esProfesional = rolUsuario != null && rolUsuario.equals(Rol.PROFESIONAL);
-
+        boolean esProfesionalOPremium = rolUsuario != null && (rolUsuario.equals(Rol.PROFESIONAL) || rolUsuario.equals(Rol.USUARIO_PREMIUM));
 
         modelo.put("todasLasRecetas", recetas);
         modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("categoriaSeleccionada", categoria);
         modelo.put("tiempoSeleccionado", tiempo);
-        modelo.put("esProfesional", Boolean.valueOf(esProfesional));
-
+        modelo.put("esProfesionalOPremium", Optional.of(esProfesionalOPremium));
 
         return new ModelAndView("vistaReceta", modelo);
     }
+
 
 
 

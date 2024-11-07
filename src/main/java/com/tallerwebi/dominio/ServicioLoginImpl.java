@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 @Service("servicioLogin")
@@ -11,6 +12,9 @@ import javax.transaction.Transactional;
 public class ServicioLoginImpl implements ServicioLogin {
 
     private RepositorioUsuario repositorioUsuario;
+
+    @Autowired
+    private HttpSession session;
 
     @Autowired
     public ServicioLoginImpl(RepositorioUsuario repositorioUsuario){
@@ -31,6 +35,18 @@ public class ServicioLoginImpl implements ServicioLogin {
         repositorioUsuario.guardar(usuario);
     }
 
+    @Override
+    public Usuario obtenerUsuarioActual() {
+        // Devuelve el usuario guardado en la sesión
+        return (Usuario) session.getAttribute("usuarioActual");
+    }
+
+    @Override
+    public void actualizarUsuario(Usuario usuario) {
+        repositorioUsuario.modificar(usuario);  // Llama a modificar para actualizar en BD
+        // Actualiza el usuario en la sesión si es el usuario actual
+        session.setAttribute("usuarioActual", usuario);
+    }
 
 }
 

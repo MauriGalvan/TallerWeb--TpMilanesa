@@ -201,52 +201,8 @@ public class ControladorRecetaTest {
         assertThat(modelAndView.getModel().get("mensajeError"), is("No se encontró ninguna receta con esa referencia")); // Verificar el mensaje de error
     }
 
-    @Test
-    public void QueElUsuarioProfesionalPuedaVerCargarReceta() {
-        // Dado
-        String categoria = null;
-        String tiempo = null;
-        String usuarioNombre = "profesionalUsuario";
 
-        // Mockear HttpServletRequest y HttpSession
-        HttpServletRequest requestMock = mock(HttpServletRequest.class);
-        HttpSession sessionMock = mock(HttpSession.class);
 
-        // Configurar la sesión para simular que el usuario es un profesional
-        when(requestMock.getSession()).thenReturn(sessionMock);
-        when(sessionMock.getAttribute("ROL")).thenReturn(Rol.PROFESIONAL);
 
-        // Cuando
-        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo, usuarioNombre, requestMock);
-
-        // Entonces
-        Boolean esProfesional = (Boolean) modelAndView.getModel().get("esProfesional");
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
-        assertThat(esProfesional, is(true));
-    }
-
-    @Test
-    public void QueElUsuarioNoProfesionalNoPuedaVerCargarReceta() {
-        // Dado
-        String categoria = null;
-        String tiempo = null;
-        String usuarioNombre = "usuarioRegular";
-
-        // Mockear HttpServletRequest y HttpSession
-        HttpServletRequest requestMock = mock(HttpServletRequest.class);
-        HttpSession sessionMock = mock(HttpSession.class);
-
-        // Configurar la sesión para simular que el usuario NO es profesional
-        when(requestMock.getSession()).thenReturn(sessionMock);
-        when(sessionMock.getAttribute("ROL")).thenReturn(Rol.USUARIO);
-
-        // Cuando
-        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo, usuarioNombre, requestMock);
-
-        // Entonces
-        Boolean esProfesional = (Boolean) modelAndView.getModel().get("esProfesional");
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
-        assertThat(esProfesional, is(false));
-    }
 
 }

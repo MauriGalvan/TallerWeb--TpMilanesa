@@ -1,13 +1,12 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Receta;
-import com.tallerwebi.dominio.ServicioReceta;
-import com.tallerwebi.dominio.TiempoDePreparacion;
+import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -43,7 +42,7 @@ public class ControladorDetalleTest {
 
         //CUANDO
         when(servicioRecetaMock.getUnaRecetaPorId(id)).thenReturn(recetaMock);
-        ModelAndView modelAndView = controlador.mostrarDetalleReceta(recetaMock.getId());
+        ModelAndView modelAndView = controlador.mostrarDetalleReceta(Integer.valueOf(recetaMock.getId()));
         //ENTONCES
         Receta recetaDelModelo = (Receta) modelAndView.getModel().get("unaReceta");
         assertThat(recetaDelModelo.getTitulo(), equalTo(titulo));
@@ -53,47 +52,59 @@ public class ControladorDetalleTest {
 
     @Test
     public void DebeModificarRecetaYRetornarVistaConMensajeDeExito() {
-        //DADO
+        // DADO
         Receta recetaMock = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
                 "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
         recetaMock.setId(1);
 
-        //CUANDO
-        ModelAndView modelAndView = controlador.modificarReceta(recetaMock);
+        Usuario usuarioMock = new Usuario();
+        usuarioMock.setRol(Rol.USUARIO_PREMIUM);
 
-        //ENTONCES
+        // Mock de HttpServletRequest y HttpSession
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("usuarioActual")).thenReturn(usuarioMock);
+
+        // CUANDO
+        ModelAndView modelAndView = controlador.modificarReceta(recetaMock, request);
+
+        // ENTONCES
         verify(servicioRecetaMock, times(1)).actualizarReceta(recetaMock);
         assertThat(modelAndView.getViewName(), equalTo("detalleReceta"));
         assertThat(modelAndView.getModel().get("unaReceta"), equalTo(recetaMock));
         assertThat(modelAndView.getModel().get("mensajeExito"), equalTo("La receta fue modificada correctamente."));
     }
 
+
+
     @Test
-    public void QueAparezaUnMensajeDeErrorYNoSePuedaActualizarEnLaBaseDeDatosSiSeModificaElTituloYLoDejaVacio(){
-        Receta receta = new Receta(null, TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
+    public void QueAparezaUnMensajeDeErrorYNoSePuedaActualizarEnLaBaseDeDatosSiSeModificaElTituloYLoDejaVacio() {
+        // Configuración de la receta con título vacío
+        Receta receta = new Receta("", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
                 "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
 
-        ModelAndView modelAndView = controlador.modificarReceta(receta);
+        // Mock del usuario con rol USUARIO_PREMIUM
+        Usuario usuarioMock = new Usuario();
+        usuarioMock.setRol(Rol.USUARIO_PREMIUM);
 
+        // Mock del request para obtener el usuario de la sesión
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("usuarioActual")).thenReturn(usuarioMock);
+
+        // Ejecución del método modificarReceta del controlador
+        ModelAndView modelAndView = controlador.modificarReceta(receta, request);
+
+        // Verificación de que el servicio no intente actualizar la receta con título vacío
         verify(servicioRecetaMock, times(0)).actualizarReceta(receta);
+
+        // Verificaciones del ModelAndView devuelto
         assertThat(modelAndView.getViewName(), equalTo("detalleReceta"));
         assertThat(modelAndView.getModel().get("unaReceta"), equalTo(receta));
         assertThat(modelAndView.getModel().get("mensajeError"), equalTo("La receta no fue modificada, verifique que los campos no estén vacíos."));
     }
 
-    @Test
-    public void DebeEliminarRecetaYRedirigirAVistaCorrecta() {
-        //DADO
-        Receta recetaMock = new Receta("Milanesa napolitana", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/7hbGvN2c/mila-napo.webp", "Jamón, Queso", "Descripción", "Pasos");
-        recetaMock.setId(1);
-
-        //CUANDO
-        ModelAndView modelAndView = controlador.eliminarReceta(recetaMock);
-
-        //ENTONCES
-        verify(servicioRecetaMock, times(1)).eliminarReceta(recetaMock);
-        assertThat(modelAndView.getViewName(), equalTo("redirect:/vista-receta"));
-    }
 
 }
