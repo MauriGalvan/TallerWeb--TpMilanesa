@@ -80,6 +80,13 @@ public class ControladorReceta {
             }
         }
 
+        recetas.forEach(receta -> {
+            if (receta.getImagen() != null) {
+                String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
+                receta.setImagenBase64(imagenBase64);
+            }
+        });
+
         modelo.put("todasLasRecetas", recetas);
         modelo.put("tituloBuscado", titulo);
         modelo.put("categoriaSeleccionada", categoria);
