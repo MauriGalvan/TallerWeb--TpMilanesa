@@ -23,9 +23,9 @@
                         </a>
                         <nav>
                             <ul>
-                                <li><a href="http://localhost:8080/spring/vista-receta" class="nav-link"><i class="fa-solid fa-utensils"></i> Recetas</a></li>
-                                <li><a href="http://localhost:8080/spring/vista-planificador" class="nav-link"><i class="fas fa-calendar-alt"></i> Planificador</a></li>
-                                <li onclick="mostrarPopup()"><a href="#" class="nav-link"><i class="fas fa-shopping-cart" ></i> Lista de compras</a></li>
+                                <li><a th:href="@{/vista-receta}" class="nav-link"><i class="fa-solid fa-utensils"></i> Recetas</a></li>
+                                <li><a th:href="@{/vista-planificador}" class="nav-link"><i class="fas fa-calendar-alt"></i> Planificador</a></li>
+                                <li><a th:href="@{/listaCompras}" class="nav-link"><i class="fas fa-shopping-cart" ></i> Lista de compras</a></li>
                             </ul>
                         </nav>
                     </div>
