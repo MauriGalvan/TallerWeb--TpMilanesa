@@ -201,8 +201,73 @@ public class ControladorRecetaTest {
         assertThat(modelAndView.getModel().get("mensajeError"), is("No se encontró ninguna receta con esa referencia")); // Verificar el mensaje de error
     }
 
+    @Test
+    public void QueElUsuarioProfesionalPuedaVerCargarReceta() {
+        // Dado
+        String categoria = "ALMUERZO_CENA";
+        String tiempo = "UNA_HORA";
 
+        // Mockear HttpServletRequest y HttpSession
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
+        // Configurar el valor que retorna el atributo "ROL" en la sesión
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("ROL")).thenReturn(Rol.PROFESIONAL);
 
+        // Cuando
+        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo, null, requestMock);
+
+        // Entonces
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
+        assertThat(modelAndView.getModel().get("esProfesionalOPremium"), is(true));
+        assertThat(modelAndView.getModel().containsKey("todasLasRecetas"), is(true));
+    }
+
+    @Test
+    public void QueElUsuarioPremiumPuedaVerCargarReceta() {
+        // Dado
+        String categoria = "ALMUERZO_CENA";
+        String tiempo = "UNA_HORA";
+
+        // Mockear HttpServletRequest y HttpSession
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        // Configurar el valor que retorna el atributo "ROL" en la sesión
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("ROL")).thenReturn(Rol.USUARIO_PREMIUM);
+
+        // Cuando
+        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo, null, requestMock);
+
+        // Entonces
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
+        assertThat(modelAndView.getModel().get("esProfesionalOPremium"), is(true));
+        assertThat(modelAndView.getModel().containsKey("todasLasRecetas"), is(true));
+    }
+
+    @Test
+    public void QueElUsuarioNoPuedaVerCargarReceta() {
+        // Dado
+        String categoria = "ALMUERZO_CENA";
+        String tiempo = "UNA_HORA";
+
+        // Mockear HttpServletRequest y HttpSession
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        // Configurar el valor que retorna el atributo "ROL" en la sesión
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("ROL")).thenReturn(Rol.USUARIO);
+
+        // Cuando
+        ModelAndView modelAndView = controladorReceta.irARecetas(categoria, tiempo, null, requestMock);
+
+        // Entonces
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
+        assertThat(modelAndView.getModel().get("esProfesionalOPremium"), is(false));
+        assertThat(modelAndView.getModel().containsKey("todasLasRecetas"), is(true));
+    }
 
 }
