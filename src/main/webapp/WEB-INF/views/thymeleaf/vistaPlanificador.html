@@ -84,13 +84,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <!-- Reemplaza el form fuera del each para que envíe cada receta individualmente -->
-                                                        <div th:each="receta : ${recetas}">
-                                                            <form th:action="@{guardarPlanificador}" method="post" id="formGuardarReceta">
-                                                                <input type="hidden" name="dia" id="inputDia" />
-                                                                <input type="hidden" name="categoria" id="inputCategoria" />
-                                                                <input type="hidden" name="recetaId" id="inputRecetaId" />
-                                                            </form>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -98,6 +92,11 @@
                                     </div>
                                 </th:block>
                             </th:block>
+                        </div>
+                        <div class="text-center">
+                            <form id="formPlanificador" method="POST" th:action="@{/guardarPlanificador}">
+                                <button type="submit" id="guardarPlanificadorBtn">Guardar Planificador</button>
+                            </form>
                         </div>
                      </main>
 

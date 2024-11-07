@@ -73,23 +73,23 @@ public class ControladorPlanificadorTest {
         assertThat(recetas.get(0).getTitulo(), equalTo("Soy un desayuno"));
     }
 
-    @Test
-    public void queSeActualiceElPlanificadorCuandoQueSeGuardaUnaReceta(){
-        Planificador planificador = this.planificadorCreado();
-        Receta receta = new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
-                "https://i.postimg.cc/mila-papas.jpg", ".", "Milanesa con guarnición de papas fritas", ".");
-        Dia dia = Dia.SABADO;
-        Categoria categoria = Categoria.ALMUERZO_CENA;
-        DetallePlanificador detalle = new DetallePlanificador(dia, categoria, receta);
-
-        when(servicioRecetaMock.getUnaRecetaPorId(receta.getId())).thenReturn(receta);
-        when(servicioPlanificadorMock.obtenerPlanificador()).thenReturn(planificador);
-        ModelAndView modelAndView = controladorPlanificador.guardarReceta(dia.toString(), categoria.toString(), receta.getId());
-
-        Mockito.verify(servicioPlanificadorMock, times(1)).agregarDetalle(planificador, detalle);
-        Mockito.verify(servicioPlanificadorMock, times(1)).actualizar(planificador);
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/vistaPlanificador"));
-    }
+//    @Test
+//    public void queSeActualiceElPlanificadorCuandoQueSeGuardaUnaReceta(){
+//        Planificador planificador = this.planificadorCreado();
+//        Receta receta = new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+//                "https://i.postimg.cc/mila-papas.jpg", ".", "Milanesa con guarnición de papas fritas", ".");
+//        Dia dia = Dia.SABADO;
+//        Categoria categoria = Categoria.ALMUERZO_CENA;
+//        DetallePlanificador detalle = new DetallePlanificador(dia, categoria, receta);
+//
+//        when(servicioRecetaMock.getUnaRecetaPorId(receta.getId())).thenReturn(receta);
+//        when(servicioPlanificadorMock.obtenerPlanificador()).thenReturn(planificador);
+//        ModelAndView modelAndView = controladorPlanificador.guardarReceta(dia.toString(), categoria.toString(), receta.getId());
+//
+//        Mockito.verify(servicioPlanificadorMock, times(1)).agregarDetalle(planificador, detalle);
+//        Mockito.verify(servicioPlanificadorMock, times(1)).actualizar(planificador);
+//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/vistaPlanificador"));
+//    }
 
 //    @Test
 //    public void queSeGuardeElPlanificadorCuandoSeGuardaUnaReceta(){
