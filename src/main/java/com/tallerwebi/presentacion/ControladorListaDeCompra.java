@@ -28,18 +28,23 @@ public class ControladorListaDeCompra {
         modelo.put("dias", dias);
 
         List<String> recetas = new ArrayList<>();
-        recetas.add("Torta de manzana");
-        recetas.add("Ensalada");
-        recetas.add("Yogurt");
-        recetas.add("Pizza");
+        recetas.add("ensalada 1");
+        recetas.add("ensalada 2");
+        recetas.add("ensalada 3");
+        recetas.add("ensalada 4");
+
         modelo.put("recetas", recetas);
 
         List<String> ingredientes = new ArrayList<>();
-        ingredientes.add("Harina");
         ingredientes.add("lechuga");
         ingredientes.add("sal");
         ingredientes.add("Tomate");
         modelo.put("ingredientes", ingredientes);
+
+        if (recetas.isEmpty()) {
+            modelo.put("mensajeError", "Tu lista de compras está vacía.");
+            return new ModelAndView("vistaListaDeCompras", modelo);
+        }
 
 
         return new ModelAndView("vistaListaDeCompras", modelo);

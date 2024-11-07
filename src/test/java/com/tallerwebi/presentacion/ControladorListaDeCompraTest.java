@@ -41,12 +41,7 @@ public class ControladorListaDeCompraTest {
     @Test
     public void debeMostrarLosNombresDeLaRecetas(){
         //dado
-        List<String> recetas = new ArrayList<>();
-        recetas.add("Torta de manzana");
-        recetas.add("Ensalada");
-        recetas.add("Yogurt");
-        recetas.add("Pizza");
-        
+
         //cuando
         ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras();
         //entonces
@@ -57,17 +52,22 @@ public class ControladorListaDeCompraTest {
     @Test
     public void seDebeMostrarLosIngredientesParaCadaReceta(){
         //dado
-        List<String> ingredientes = new ArrayList<>();
-        ingredientes.add("Harina");
-        ingredientes.add("lechuga");
-        ingredientes.add("sal");
-        ingredientes.add("Tomate");
 
         //cuando
         ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras();
         //entonces
         List<String> ingredientesTodos= (List<String>) modelAndView.getModel().get("ingredientes");
         assertThat(ingredientesTodos, hasItems("Harina", "lechuga","sal","Tomate"));
+    }
+
+    @Test
+    public void queRetorneUnMensajeDeErrorCuandoNoSeEncuentranRecetasDeLaPlanificacion(){
+        //dado
+        //cuando
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras();
+        //entonces
+        String mensaje = (String) modelAndView.getModel().get("mensajeError");
+        assertThat(mensaje, is("Tu lista de compras está vacía."));
     }
 
 }
