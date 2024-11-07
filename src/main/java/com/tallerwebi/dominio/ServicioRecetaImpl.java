@@ -10,10 +10,12 @@ import java.util.*;
 public class ServicioRecetaImpl implements ServicioReceta {
 
     private final RepositorioReceta repositorioReceta;
+    private final RepositorioIngrediente repositorioIngrediente;
 
     @Autowired
-    public ServicioRecetaImpl(RepositorioReceta repositorioReceta) {
+    public ServicioRecetaImpl(RepositorioReceta repositorioReceta, RepositorioIngrediente repositorioIngrediente) {
         this.repositorioReceta = repositorioReceta;
+        this.repositorioIngrediente = repositorioIngrediente;
     }
 
     @Override
@@ -23,6 +25,9 @@ public class ServicioRecetaImpl implements ServicioReceta {
 
     @Override
     public void guardarReceta(Receta receta) {
+        for (Ingrediente ingrediente : receta.getIngredientes()) {
+            ingrediente.setReceta(receta);
+        }
         this.repositorioReceta.guardar(receta);
     }
 
@@ -50,22 +55,106 @@ public class ServicioRecetaImpl implements ServicioReceta {
     @Transactional
     @Override
     public void eliminarReceta(Receta receta) {
-        this.repositorioReceta.eliminar(receta);
+        Receta recetaExistente = repositorioReceta.getRecetaPorId(receta.getId());
+
+        if (recetaExistente != null) {
+            // Eliminar los ingredientes relacionados con la receta
+            for (Ingrediente ingrediente : recetaExistente.getIngredientes()) {
+                repositorioIngrediente.eliminar(ingrediente);
+            }
+
+            // Luego eliminar la receta en sí
+            repositorioReceta.eliminar(recetaExistente);
+        }
     }
+
+
+//    @Transactional
+//    @Override
+//    public void actualizarReceta(Receta receta) {
+//        Receta recetaExistente = repositorioReceta.getRecetaPorId(receta.getId());
+//        if (recetaExistente != null) {
+//            recetaExistente.setTitulo(receta.getTitulo());
+//            recetaExistente.setTiempo_preparacion(receta.getTiempo_preparacion());
+//            recetaExistente.setPasos(receta.getPasos());
+//            recetaExistente.setImagen(receta.getImagen());
+//
+//            for (Ingrediente ingrediente : recetaExistente.getIngredientes()){
+//                repositorioIngrediente.eliminar(ingrediente);
+//            }
+//            recetaExistente.getIngredientes().clear();
+//
+//            for (Ingrediente ingrediente : receta.getIngredientes()){
+//                if (ingrediente.getNombre() != null && !ingrediente.getNombre().isEmpty() && ingrediente.getCantidad() > 0.0 && ingrediente.getUnidad_de_medida() != null && ingrediente.getTipo() != null){
+//                    ingrediente.setReceta(recetaExistente);
+//                    recetaExistente.getIngredientes().add(ingrediente);
+//                    repositorioIngrediente.guardar(ingrediente);
+//                }
+//            }
+//
+//            repositorioReceta.actualizar(recetaExistente);
+//        }
+//    }
 
     @Transactional
     @Override
     public void actualizarReceta(Receta receta) {
         Receta recetaExistente = repositorioReceta.getRecetaPorId(receta.getId());
+
         if (recetaExistente != null) {
+            // Actualizar atributos principales de la receta
             recetaExistente.setTitulo(receta.getTitulo());
             recetaExistente.setTiempo_preparacion(receta.getTiempo_preparacion());
-            recetaExistente.setIngredientes(receta.getIngredientes());
             recetaExistente.setPasos(receta.getPasos());
             recetaExistente.setImagen(receta.getImagen());
+
+            // Crear un mapa de ingredientes existentes para búsqueda rápida
+            Map<String, Ingrediente> ingredientesExistentes = new HashMap<>();
+            for (Ingrediente ingredienteExistente : recetaExistente.getIngredientes()) {
+                ingredientesExistentes.put(ingredienteExistente.getNombre(), ingredienteExistente);
+            }
+
+            // Lista para nuevos ingredientes que se agregarán a la receta
+            List<Ingrediente> nuevosIngredientes = new ArrayList<>();
+
+            for (Ingrediente ingredienteNuevo : receta.getIngredientes()) {
+                if (ingredienteNuevo.getNombre() != null && !ingredienteNuevo.getNombre().isEmpty() &&
+                        ingredienteNuevo.getCantidad() > 0.0 && ingredienteNuevo.getUnidad_de_medida() != null &&
+                        ingredienteNuevo.getTipo() != null) {
+
+                    Ingrediente ingredienteExistente = ingredientesExistentes.get(ingredienteNuevo.getNombre());
+
+                    if (ingredienteExistente != null) {
+                        // Actualizar los detalles del ingrediente existente
+                        ingredienteExistente.setCantidad(ingredienteNuevo.getCantidad());
+                        ingredienteExistente.setUnidad_de_medida(ingredienteNuevo.getUnidad_de_medida());
+                        ingredienteExistente.setTipo(ingredienteNuevo.getTipo());
+                        ingredienteExistente.setReceta(recetaExistente);  // Actualizar la referencia a la receta
+                        ingredientesExistentes.remove(ingredienteNuevo.getNombre());
+                    } else {
+                        // Si el ingrediente no existe, agregarlo como nuevo
+                        ingredienteNuevo.setReceta(recetaExistente);
+                        nuevosIngredientes.add(ingredienteNuevo);
+                    }
+                }
+            }
+
+            // Eliminar los ingredientes que no están en la lista de nuevos ingredientes
+            for (Ingrediente ingredienteRestante : ingredientesExistentes.values()) {
+                repositorioIngrediente.eliminar(ingredienteRestante);
+            }
+
+            // Agregar los nuevos ingredientes
+            for (Ingrediente ingredienteNuevo : nuevosIngredientes) {
+                recetaExistente.getIngredientes().add(ingredienteNuevo);
+                repositorioIngrediente.guardar(ingredienteNuevo);
+            }
+
+            // Guardar la receta actualizada en el repositorio
             repositorioReceta.actualizar(recetaExistente);
         }
     }
+
 
     @Override
     public List<Receta> buscarRecetasPorTitulo(String titulo) {
@@ -105,6 +194,12 @@ public class ServicioRecetaImpl implements ServicioReceta {
     @Override
     public List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempoEnum) {
         return repositorioReceta.buscarRecetasPorTituloYTiempo(titulo, tiempoEnum);
+    }
+
+    @Transactional
+    @Override
+    public List<Ingrediente> getIngredientesDeRecetaPorId(int id) {
+        return repositorioReceta.getIngredientesDeRecetaPorId(id);
     }
 
 }

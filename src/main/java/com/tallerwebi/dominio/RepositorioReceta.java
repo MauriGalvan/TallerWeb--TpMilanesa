@@ -27,4 +27,8 @@ public interface RepositorioReceta {
     List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempo);
 
     List<Receta> buscarRecetasPorTituloCategoriaYTiempo(String titulo, Categoria categoria, TiempoDePreparacion tiempo);
+
+    List<Ingrediente> getIngredientesDeRecetaPorId(int id);
+
+
 }

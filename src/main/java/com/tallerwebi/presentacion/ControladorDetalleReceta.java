@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.Ingrediente;
 import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.Rol;
 import com.tallerwebi.dominio.ServicioReceta;
@@ -10,10 +11,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
+
+import java.util.List;
 
 @Controller
 public class ControladorDetalleReceta {
@@ -31,10 +35,15 @@ public class ControladorDetalleReceta {
         ModelMap modelo = new ModelMap();
         Receta receta = servicioReceta.getUnaRecetaPorId(id);
 
+        //este método para ver si funcionaba con .LAZY
+        //List<Ingrediente> ingredientes = servicioReceta.getIngredientesDeRecetaPorId(id);
+
+
         //cuenta las visitas
         servicioReceta.actualizarVisitasDeReceta(receta);
 
         modelo.put("unaReceta", receta);
+        //modelo.put("ingredientes", ingredientes);
         return new ModelAndView("detalleReceta", modelo);
     }
 
@@ -68,6 +77,8 @@ public class ControladorDetalleReceta {
         return new ModelAndView("redirect:/vista-receta");
     }
 
+
+
     @PostMapping("/modificarReceta")
     public ModelAndView modificarReceta(@ModelAttribute Receta receta, HttpServletRequest request) {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioActual");
@@ -91,6 +102,9 @@ public class ControladorDetalleReceta {
             modelo.put("unaReceta", receta);
             modelo.put("mensajeError", "La receta no fue modificada, verifique que los campos no estén vacíos.");
             return new ModelAndView("detalleReceta", modelo);
+        }
+        for(Ingrediente ingrediente : receta.getIngredientes()){
+            System.out.println(ingrediente.getNombre() + ", su id: " + ingrediente.getId());
         }
 
         servicioReceta.actualizarReceta(receta);

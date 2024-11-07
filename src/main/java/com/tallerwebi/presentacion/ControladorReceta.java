@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -139,9 +140,23 @@ public class ControladorReceta {
             @RequestParam("pasos") String pasos,
             @RequestParam("tiempoPreparacion") TiempoDePreparacion tiempoPreparacion,
             @RequestParam("categoria") Categoria categoria,
-            @RequestParam("ingredientes") String ingredientes,
             @RequestParam("descripcion") String descripcion,
-            @RequestParam("imagen") String imagen) {
+            @RequestParam("imagen") String imagen,
+            HttpServletRequest request) { //se pasan los ingredientes por este parámetro, porque hay errores con el List<>
+
+        List<Ingrediente> ingredientes = new ArrayList<>();
+
+        int index = 0;
+        while (request.getParameter("ingredientes[" + index + "].nombre") != null) {
+            String nombre = request.getParameter("ingredientes[" + index + "].nombre");
+            double cantidad = Double.parseDouble(request.getParameter("ingredientes[" + index + "].cantidad"));
+            Unidad_De_Medida unidad_de_medida = Unidad_De_Medida.valueOf(request.getParameter("ingredientes[" + index + "].unidad_de_medida"));
+            Tipo_Ingrediente tipo = Tipo_Ingrediente.valueOf(request.getParameter("ingredientes[" + index + "].tipo"));
+
+            Ingrediente ingrediente = new Ingrediente(nombre, cantidad, unidad_de_medida, tipo);
+            ingredientes.add(ingrediente);
+            index++;
+        }
 
         Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen, ingredientes, descripcion, pasos);
         servicioReceta.guardarReceta(nuevaReceta);
