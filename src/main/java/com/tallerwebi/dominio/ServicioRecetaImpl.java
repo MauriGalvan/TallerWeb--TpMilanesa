@@ -190,4 +190,18 @@ public class ServicioRecetaImpl implements ServicioReceta {
         return repositorioReceta.getIngredientesDeRecetaPorId(id);
     }
 
+    @Transactional
+    @Override
+    public List<Receta> obtenerRecetasRecomendadas() {
+        // Definir los títulos de las recetas que deseas recomendar
+        List<String> titulosRecomendados = Arrays.asList("Milanesa napolitana", "Tortas fritas", "Tarta de Verduras");
+        return repositorioReceta.listRecetaRecomendadas(titulosRecomendados);
+    }
+
+    @Override
+    public List<Receta> buscarRecetaPorAutor(String autor) {
+        return repositorioReceta.buscarPorAutor(autor);
+    }
+
+
 }

@@ -4,32 +4,160 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Taller Web I</title>
-
+  <title>Home</title>
   <!-- Boostrap core css -->
   <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
-
+  <!--  font-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- custom style -->
-  <link rel="stylesheet" th:href="@{/css/main.css}"/>
+  <link rel="stylesheet" th:href="@{/css/home.css}">
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">UNLAM</a>
-</nav>
-
-<main role="main" class="container">
-  <div class = "container">
-    <h1>Bienvenidos a Taller Web 1</h1>
-
-    <a href="login.html" class="btn btn-lg btn-primary btn-block">Volver</a>
+<nav >
+  <div class="logo">
+    <a href="http://localhost:8080/spring/inicio">
+      <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" width="200px" alt="logo">
+    </a>
   </div>
-</main>
-<!-- /.container -->
+  <section class="botones">
+    <button type="button" class="recetas">
+      <a href="http://localhost:8080/spring/vista-receta" class="link-receta"> <i class="fa-solid fa-utensils"></i>Recetas</a>
+    </button>
 
-<!-- Boostrap core js -->
+    <button type="button" class="planificador">
+      <a th:href="${usuarioNombre != null ? '/spring/vista-planificador' : '/spring/login'}" class="link-receta" ><i class="fas fa-calendar-alt"></i>Planificá tu menu</a>
+    </button>
+
+    <!--    <div th:if="${usuarioNombre != null ? usuarioNombre : 'Usuario'}">-->
+
+    <div th:if="${usuarioNombre != null}" class="usuario-conectado">
+      <div class="usermenu">
+        <div class="dropdown">
+          <button id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
+            <span th:text="${usuarioNombre}">Usuario</span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownUser">
+            <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
+            <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-gear"></i>Ajustes</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a href="http://localhost:8080/spring/login" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div th:if="${usuarioNombre == null}" class="usuario">
+      <button type="button" class="Iniciar Sesion">
+        <a href="http://localhost:8080/spring/login" ><i class="fa-solid fa-right-to-bracket"></i>Iniciar sesión</a>
+      </button>
+      <button type="button" class="Registrarme">
+        <a href="http://localhost:8080/spring/nuevo-usuario">  <i class="fa-solid fa-user-plus"></i>Registrate</a>
+      </button>
+    </div>
+  </section>
+</nav>
+<main>
+  <section class="image-container">
+    <img src="https://wallpapers.com/images/hd/food-4k-1pf6px6ryqfjtnyr.jpg" alt="foto de fondo" >
+    <form method="post" th:action="@{/buscar-receta-titulo}" class="search-overlay">
+      <label for="tituloBusqueda" class="tituloBuscador">Que te gustaria cocinar hoy? </label>
+      <div class="buscar-container">
+        <input type="text" id="tituloBusqueda" name="titulo" placeholder="Buscar recetas" th:value="${tituloBuscado}" class="search-input"/>
+        <button type="submit" class="search-button">Buscar</button>
+      </div>
+    </form>
+
+  </section>
+  <section class="profesionales-container">
+    <h2>NUESTROS PROFESIONALES</h2>
+    <article class="profesionales-card">
+      <div class="profesional">
+        <a th:href="@{/profesionales/Martitegui}">
+          <img src="https://i.postimg.cc/9FbmNx9g/martiteguichef.jpg" alt="chef">
+          <div class="info-profesional">
+            <span class="nombre-chef">Las Recetas de Martitegui</span>
+            <p class="descripcion-chef">Sabores únicos, recetas inolvidables, directo de la cocina del maestro gastronomico</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="profesional">
+        <a th:href="@{/profesionales/Christophe}">
+          <img src="https://i.postimg.cc/wjCs6qqb/christophe-masterchef.jpg" alt="chef">
+          <div class="info-profesional">
+            <span class="nombre-chef">Las Recetas de Christophe</span>
+            <p class="descripcion-chef">Descubre los delicias y la pasion de la cocina del maestro gastronomico</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="profesional">
+        <a th:href="@{/profesionales/Betular}">
+          <img src="https://i.postimg.cc/W1F2b0ts/betular.png" alt="chef">
+          <div class="info-profesional">
+            <span class="nombre-chef">Las Recetas de Betular</span>
+            <p class="descripcion-chef">Descubre los secretos dulces del chef maestro en pastelería</p>
+          </div>
+        </a>
+      </div>
+    </article>
+  </section>
+
+
+  <section class="container-recomendacion">
+    <h2>RECOMENDACIONES</h2>
+    <article class="recetasRecomendadas categorias-container">
+      <div th:each="receta : ${recetasRecomendadas}" class="receta categoria">
+        <a th:href="@{/detalleReceta(id=${receta.id})}" class="receta-link">
+          <img class="foto" th:src="'data:image/jpeg;base64,' + ${receta.imagenBase64}" alt="Imagen receta">
+          <div class="receta-info">
+            <h3 class="titulo" th:text="${receta.titulo}"></h3>
+            <span class="tiempo" th:text="'Tiempo ' + ${receta.tiempo_preparacion.getTiempo()}"></span>
+          </div>
+        </a>
+      </div>
+    </article>
+  </section>
+  <section class="categoriasRecetas">
+    <h2>CATEGORÍAS POPULARES</h2>
+    <article class="categorias-container">
+      <div class="categoria">
+        <a th:href="@{/categorias/{nombreCategoria}(nombreCategoria='DESAYUNO_MERIENDA')}" class="categoria-link">
+          <img src="https://i.postimg.cc/3ND97r29/desayuno.jpg" alt="Desayuno/Almuerzo">
+          <div class="categoria-info">
+            <span>Desayuno/Merienda</span>
+          </div>
+        </a>
+      </div>
+      <div class="categoria">
+        <a th:href="@{/categorias/{nombreCategoria}(nombreCategoria='ALMUERZO_CENA')}" class="categoria-link">
+          <img src="https://i.postimg.cc/mkcN8y1J/almuerzo.jpg" alt="Almuerzo/Cena">
+          <div class="categoria-info">
+            <span>Almuerzo/Cena</span>
+          </div>
+        </a>
+      </div>
+      <div class="categoria">
+        <a th:href="@{/categorias/{nombreCategoria}(nombreCategoria='POSTRE')}" class="categoria-link">
+          <img src="https://i.postimg.cc/cJ0Q3Sxv/postre.jpg" alt="Postre">
+          <div class="categoria-info">
+            <span>Postre</span>
+
+          </div>
+        </a>
+      </div>
+    </article>
+
+  </section>
+
+</main>
+<footer>
+  <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
+</footer>
+
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
 </html>
