@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import java.util.List;
 
 @Repository
 public class RepositorioPlanificadorImpl implements RepositorioPlanificador {
@@ -21,7 +22,9 @@ public class RepositorioPlanificadorImpl implements RepositorioPlanificador {
     public Planificador obtenerPlanificador() {
         String hql = "FROM Planificador";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        return (Planificador)query.getSingleResult();
+        List<Planificador> resultados = query.getResultList();
+
+        return resultados.isEmpty() ? null : resultados.get(0);
     }
 
     @Override

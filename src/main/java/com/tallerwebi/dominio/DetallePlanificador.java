@@ -25,6 +25,9 @@ public class DetallePlanificador {
         this.receta = receta;
     }
 
+    public DetallePlanificador() {
+    }
+
     public int getId() {
         return id;
     }
@@ -51,7 +54,7 @@ public class DetallePlanificador {
 
     public Receta getReceta() { return receta; }
 
-    public void setRecetas(Receta recetas) { this.receta = receta; }
+    public void setReceta(Receta recetas) { this.receta = receta; }
 
     @Override
     public boolean equals(Object o) {

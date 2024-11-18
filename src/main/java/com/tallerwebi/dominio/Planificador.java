@@ -11,7 +11,7 @@ public class Planificador {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DetallePlanificador> detallesPlanificador = new ArrayList<>();
 
     public Planificador() {

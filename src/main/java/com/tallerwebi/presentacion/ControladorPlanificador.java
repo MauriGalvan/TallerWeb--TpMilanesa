@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,11 +31,21 @@ public class ControladorPlanificador {
     }
     @RequestMapping("/vista-planificador")
     public ModelAndView irAPlanificador() {
-        List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" , "Domingo");
+        List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" , "Domingo");
         List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
+
+        Planificador planificador = servicioPlanificador.obtenerPlanificadorConDetalles();
+
         ModelMap modelo = new ModelMap();
         modelo.put("dias", dias);
         modelo.put("categorias", categorias);
+
+        if (planificador == null || planificador.obtenerDetalles() == null) {
+            modelo.put("planificador", new Planificador());
+        } else {
+            modelo.put("planificador", planificador);
+        }
+
         return new ModelAndView("vistaPlanificador", modelo);
     }
 
@@ -68,32 +79,84 @@ public class ControladorPlanificador {
 
         return new ModelAndView("recetasModal", modelo);
     }
+//    @RequestMapping(value = "/guardarPlanificador", method = RequestMethod.POST)
+//    public ModelAndView guardarPlanificador(@RequestParam List<String> dias, List<String> recetas) {
+//        System.out.println("Recibido: dias=" + dias + ", recetas=" + recetas);
+//
+//        Planificador planificador = servicioPlanificador.obtenerPlanificador();
+//        if(planificador == null){
+//            planificador = new Planificador();
+//            servicioPlanificador.guardar(planificador);
+//        }
+//
+//        for (int i = 0; i < dias.size(); i++) {
+//            String diaString = dias.get(i);
+//            Dia diaEnum = Dia.valueOf(diaString);  // Convierte el string a enum
+//            int recetaId = Integer.parseInt(recetas.get(i));  // Convierte el ID a int
+//
+//            Receta receta = servicioReceta.getUnaRecetaPorId(recetaId);
+//
+//            DetallePlanificador nuevoDetalle = new DetallePlanificador(diaEnum, receta.getCategoria(), receta);
+//
+//            servicioPlanificador.agregarDetalle(planificador, nuevoDetalle);
+//        }
+//
+//        servicioPlanificador.actualizar(planificador);
+//
+//        return new ModelAndView("redirect:/vistaPlanificador");
+//    }
+
     @RequestMapping(value = "/guardarPlanificador", method = RequestMethod.POST)
-    public ModelAndView guardarPlanificador(@RequestParam List<String> dias, List<String> recetas) {
-        System.out.println("Recibido: dias=" + dias + ", recetas=" + recetas);
+    public ModelAndView guardarPlanificador(@RequestParam("dias") String diasStr, @RequestParam("recetas") String recetasStr) {
+        List<String> dias = Arrays.asList(diasStr.split(","));
+        List<String> recetas = Arrays.asList(recetasStr.split(","));
+
+        // Verificar que la cantidad de días y recetas coincidan
+        if (dias.size() != recetas.size()) {
+            throw new IllegalArgumentException("La cantidad de días y recetas no coincide.");
+        }
 
         Planificador planificador = servicioPlanificador.obtenerPlanificador();
-        if(planificador == null){
+        if (planificador == null) {
             planificador = new Planificador();
             servicioPlanificador.guardar(planificador);
         }
 
         for (int i = 0; i < dias.size(); i++) {
-            String diaString = dias.get(i);
-            Dia diaEnum = Dia.valueOf(diaString);  // Convierte el string a enum
-            int recetaId = Integer.parseInt(recetas.get(i));  // Convierte el ID a int
+            Dia diaEnum;
+            try {
+                // Convertir a mayúsculas antes de buscar en el enum
+                diaEnum = Dia.valueOf(dias.get(i).toUpperCase().trim());
+            } catch (IllegalArgumentException e) {
+                // Lanza un error con información más específica
+                throw new IllegalArgumentException("Valor de día no válido: " + dias.get(i), e);
+            }
 
+            int recetaId;
+            try {
+                recetaId = Integer.parseInt(recetas.get(i));
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("El valor de receta no es un número válido: " + recetas.get(i), e);
+            }
+
+            // Obtener la receta
             Receta receta = servicioReceta.getUnaRecetaPorId(recetaId);
+            if (receta == null) {
+                throw new IllegalArgumentException("No se encontró una receta con el ID: " + recetaId);
+            }
 
+            // Crear el detalle y agregarlo al planificador
             DetallePlanificador nuevoDetalle = new DetallePlanificador(diaEnum, receta.getCategoria(), receta);
-
             servicioPlanificador.agregarDetalle(planificador, nuevoDetalle);
         }
 
+        // Guardar los cambios en el planificador
         servicioPlanificador.actualizar(planificador);
 
-        return new ModelAndView("redirect:/vistaPlanificador");
+        return new ModelAndView("redirect:vista-planificador");
     }
+
+
 
 //    @RequestMapping(value = "/guardarPlanificador", method = RequestMethod.POST)
 //    public ModelAndView guardarReceta(@RequestParam("detallePlanificador") String detallePlanificadorJson) {

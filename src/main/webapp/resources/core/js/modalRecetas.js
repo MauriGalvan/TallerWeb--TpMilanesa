@@ -57,61 +57,29 @@ function seleccionarReceta(titulo, modalId, categoria, dia, recetaId) {
     // Cierra el modal después de seleccionar la receta
     const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
     if (modal) modal.hide();
-    console.log(detallePlanificadorData);
+    console.log('detallePlanificadorData', detallePlanificadorData);
+
+
+    const dias = detallePlanificadorData.map(item => item.dia.toUpperCase().trim()); // Convertir a mayúsculas y eliminar espacios
+    const recetas = detallePlanificadorData.map(item => item.recetaId);
+    console.log('dias', dias);
+    console.log('recetas', recetas);
+
+// Obtener los campos ocultos para días y recetas
+const diasInput = document.getElementById('diasSeleccionados');
+const recetasInput = document.getElementById('recetasSeleccionadas');
+
+// Convertimos los arrays a strings separados por comas
+if (diasInput && recetasInput) {
+    diasInput.value = dias.join(',');
+    recetasInput.value = recetas.join(',');
+    console.log('Dias enviados:', diasInput.value);
+    console.log('Recetas enviadas:', recetasInput.value);
 }
 
-    const dias = detallePlanificadorData.map(item => item.dia);
-    const recetas = detallePlanificadorData.map(item => item.recetaId);
-    console.log(dias);
-    console.log(recetas);
-
-// Al hacer clic en el botón de "Guardar Planificador"
-document.getElementById('guardarPlanificadorBtn').addEventListener('click', function() {
-
-    // Convertimos el array a listas de días y recetas (en lugar de JSON)
-    const dias = detallePlanificadorData.map(item => item.dia);
-    const recetas = detallePlanificadorData.map(item => item.recetaId);
-    console.log(dias);
-    console.log(recetas);
-
-
-    // Obtener el formulario
-    const form = document.getElementById('formPlanificador');
-
-    // Vaciar el formulario antes de agregar nuevos inputs
-    form.innerHTML = '';
-
-    // Agregar los datos al formulario como inputs ocultos (para enviar las listas)
-    dias.forEach((dia, index) => {
-        let inputDia = document.createElement('input');
-        inputDia.type = 'hidden';
-        inputDia.name = `dias[${index}]`; // Nombre para que sea un array
-        inputDia.value = dia;
-
-        let inputRecetaId = document.createElement('input');
-        inputRecetaId.type = 'hidden';
-        inputRecetaId.name = `recetas[${index}]`; // Nombre para que sea un array
-        inputRecetaId.value = recetas[index];
-
-        // Agregar los inputs al formulario
-        form.appendChild(inputDia);
-        form.appendChild(inputRecetaId);
-
-        console.log("Días a enviar:", inputDia.value);
-        console.log("Recetas a enviar:", inputRecetaId.value);
-
-    });
-
-    console.log("Días a enviar:", dias);
-    console.log("Recetas a enviar:", recetas);
-
-    // Enviar el formulario
-    form.submit();
-});
-
-
-
-
+// Enviar el formulario
+form.submit();
+}
 
 /*let detallePlanificadorData = [];
 

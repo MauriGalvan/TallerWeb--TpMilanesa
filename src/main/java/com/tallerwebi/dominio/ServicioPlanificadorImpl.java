@@ -3,7 +3,10 @@ package com.tallerwebi.dominio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class ServicioPlanificadorImpl implements ServicioPlanificador{
 
     private RepositorioPlanificador repositorioPlanificador;
@@ -14,6 +17,18 @@ public class ServicioPlanificadorImpl implements ServicioPlanificador{
     @Override
     public Planificador obtenerPlanificador() {
         return this.repositorioPlanificador.obtenerPlanificador();
+    }
+
+    @Transactional
+    public Planificador obtenerPlanificadorConDetalles() {
+        Planificador planificador = repositorioPlanificador.obtenerPlanificador();
+        if (planificador == null) {
+            planificador = new Planificador();
+            repositorioPlanificador.guardar(planificador);
+        }
+
+        planificador.obtenerDetalles().size();
+        return planificador;
     }
 
     @Override

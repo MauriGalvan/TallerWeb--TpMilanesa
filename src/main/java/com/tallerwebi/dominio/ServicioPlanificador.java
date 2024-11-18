@@ -4,6 +4,8 @@ public interface ServicioPlanificador {
 
     Planificador obtenerPlanificador();
 
+    Planificador obtenerPlanificadorConDetalles();
+
     void guardar(Planificador planificador);
 
     void eliminar(Planificador planificador);
