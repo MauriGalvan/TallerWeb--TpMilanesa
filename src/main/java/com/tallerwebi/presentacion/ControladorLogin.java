@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.Usuario;
+import com.tallerwebi.dominio.Rol;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,11 +26,11 @@ public class ControladorLogin {
 
     @RequestMapping("/login")
     public ModelAndView irALogin() {
-
         ModelMap modelo = new ModelMap();
         modelo.put("datosLogin", new DatosLogin());
         return new ModelAndView("login", modelo);
     }
+
 
     @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest request) {
@@ -37,13 +38,17 @@ public class ControladorLogin {
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
+            request.getSession().setAttribute("usuarioActual", usuarioBuscado);
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
-            return new ModelAndView("redirect:/home");
+            request.getSession().setAttribute("usuarioNombre", usuarioBuscado.getUsername());
+            return new ModelAndView("redirect:/vista-receta");
         } else {
             model.put("error", "Usuario o clave incorrecta");
         }
         return new ModelAndView("login", model);
     }
+
+
 
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
     public ModelAndView registrarme(@ModelAttribute("usuario") Usuario usuario) {
@@ -64,6 +69,7 @@ public class ControladorLogin {
     public ModelAndView nuevoUsuario() {
         ModelMap model = new ModelMap();
         model.put("usuario", new Usuario());
+        model.put("roles", Rol.values());
         return new ModelAndView("nuevo-usuario", model);
     }
 
@@ -72,9 +78,10 @@ public class ControladorLogin {
         return new ModelAndView("home");
     }
 
-//    @RequestMapping(path = "/", method = RequestMethod.GET)
-//    public ModelAndView inicio() {
-//        return new ModelAndView("redirect:/login");
-//    }
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "redirect:/login";
+    }
 }
 

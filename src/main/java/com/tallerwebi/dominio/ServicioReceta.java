@@ -1,12 +1,14 @@
 package com.tallerwebi.dominio;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 public interface ServicioReceta {
 
     List<Receta> getTodasLasRecetas();
 
-    void guardarReceta(Receta receta);
+    void guardarReceta(Receta receta, MultipartFile imagen);
 
     List<Receta> getRecetasPorCategoria(Categoria categoria);
 
@@ -31,4 +33,6 @@ public interface ServicioReceta {
     List<Receta> buscarRecetasPorTituloYCategoria(String titulo, Categoria categoriaEnum);
 
     List<Receta> buscarRecetasPorTituloYTiempo(String titulo, TiempoDePreparacion tiempoEnum);
+
+    List<Ingrediente> getIngredientesDeRecetaPorId(int id);
 }

@@ -52,7 +52,6 @@ ul, ol {
     color: #666;
 }
 
-
 .modal {
     display: none;
     position: fixed;
@@ -64,12 +63,12 @@ ul, ol {
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .modal-content {
     background-color: white;
-    margin: 15% auto;
+    margin: auto;
     padding: 20px;
     border-radius: 10px;
     width: 90%;

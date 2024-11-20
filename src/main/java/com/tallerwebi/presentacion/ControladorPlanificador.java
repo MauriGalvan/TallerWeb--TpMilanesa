@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -63,11 +64,23 @@ public class ControladorPlanificador {
 
         List<Receta> recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
 
+        for (Receta receta : recetas) {
+            if (receta.getImagen() != null) {
+                String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
+                receta.setImagenBase64(imagenBase64);
+            }
+        }
+
         modelo.put("recetas", recetas);
         modelo.put("categoriaSeleccionada", categoriaEnum);
         modelo.put("dia", dia);
 
         return new ModelAndView("recetasModal", modelo);
+    }
+
+    @RequestMapping("/vista-lista-compra")
+    public ModelAndView irAListaCompra() {
+        return new ModelAndView("vistaLista");
     }
 
     @RequestMapping(value = "/guardarPlanificador", method = RequestMethod.POST)

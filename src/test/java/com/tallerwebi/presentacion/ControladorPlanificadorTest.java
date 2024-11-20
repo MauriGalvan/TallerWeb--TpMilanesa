@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -60,19 +61,24 @@ public class ControladorPlanificadorTest {
         // Dado
         List<Receta> recetasMock = new ArrayList<>();
         Receta desayuno = new Receta();
-        desayuno.setTitulo("Soy un desayuno");
+        desayuno.setTitulo("Budin de chocolate");
         desayuno.setCategoria(Categoria.DESAYUNO_MERIENDA);
         recetasMock.add(desayuno);
 
-        // Cuando
         when(servicioRecetaMock.getRecetasPorCategoria(Categoria.DESAYUNO_MERIENDA)).thenReturn(recetasMock);
-        ModelAndView modelAndView = controladorReceta.irARecetas("DESAYUNO_MERIENDA", null);
+
+        // Simular HttpServletRequest
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.getSession().setAttribute("ROL", null);  // Simular que el usuario no tiene rol
+
+        // Cuando
+        ModelAndView modelAndView = controladorReceta.irARecetas("DESAYUNO_MERIENDA", null, null, request);
 
         // Entonces
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
 
         assertThat(recetas, hasSize(1));
-        assertThat(recetas.get(0).getTitulo(), equalTo("Soy un desayuno"));
+        assertThat(recetas.get(0).getTitulo(), equalTo("Budin de chocolate"));
     }
 
     @Test

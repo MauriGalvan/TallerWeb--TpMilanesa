@@ -1,22 +1,22 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Receta;
-import com.tallerwebi.dominio.ServicioReceta;
-import com.tallerwebi.dominio.TiempoDePreparacion;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Transactional
@@ -77,6 +77,13 @@ public class ControladorReceta {
             }
         }
 
+        recetas.forEach(receta -> {
+            if (receta.getImagen() != null) {
+                String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
+                receta.setImagenBase64(imagenBase64);
+            }
+        });
+
         modelo.put("todasLasRecetas", recetas);
         modelo.put("tituloBuscado", titulo);
         modelo.put("categoriaSeleccionada", categoria);
@@ -91,7 +98,9 @@ public class ControladorReceta {
     @RequestMapping("/vista-receta")
     public ModelAndView irARecetas(
             @RequestParam(value = "categoria", required = false) String categoria,
-            @RequestParam(value = "tiempo", required = false) String tiempo){
+            @RequestParam(value = "tiempo", required = false) String tiempo,
+            @SessionAttribute(value = "usuarioNombre", required = false) String usuarioNombre,
+            HttpServletRequest request) {
 
         ModelMap modelo = new ModelMap();
         List<Receta> recetas;
@@ -107,21 +116,34 @@ public class ControladorReceta {
             tiempoEnum = TiempoDePreparacion.valueOf(tiempo);
         }
 
-        if (categoriaEnum != null){
-            if (tiempoEnum != null){
+        if (categoriaEnum != null) {
+            if (tiempoEnum != null) {
                 recetas = servicioReceta.getRecetasPorCategoriaYTiempoDePreparacion(categoriaEnum, tiempoEnum);
             } else {
                 recetas = servicioReceta.getRecetasPorCategoria(categoriaEnum);
             }
-        } else if (tiempoEnum != null){
+        } else if (tiempoEnum != null) {
             recetas = servicioReceta.getRecetasPorTiempoDePreparacion(tiempoEnum);
         } else {
             recetas = servicioReceta.getTodasLasRecetas();
         }
 
+        recetas.forEach(receta -> {
+            if (receta.getImagen() != null) {
+                String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
+                receta.setImagenBase64(imagenBase64);
+            }
+        });
+
+        Rol rolUsuario = (Rol) request.getSession().getAttribute("ROL");
+        boolean esProfesionalOPremium = rolUsuario != null && (rolUsuario.equals(Rol.PROFESIONAL) || rolUsuario.equals(Rol.USUARIO_PREMIUM));
+
         modelo.put("todasLasRecetas", recetas);
+        modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("categoriaSeleccionada", categoria);
         modelo.put("tiempoSeleccionado", tiempo);
+        modelo.put("esProfesionalOPremium", esProfesionalOPremium);
+
 
         return new ModelAndView("vistaReceta", modelo);
     }
@@ -132,14 +154,38 @@ public class ControladorReceta {
             @RequestParam("pasos") String pasos,
             @RequestParam("tiempoPreparacion") TiempoDePreparacion tiempoPreparacion,
             @RequestParam("categoria") Categoria categoria,
-            @RequestParam("ingredientes") String ingredientes,
             @RequestParam("descripcion") String descripcion,
-            @RequestParam("imagen") String imagen) {
+            @RequestParam("imagen") MultipartFile imagen,
+            HttpServletRequest request) { //se pasan los ingredientes por este parámetro, porque hay errores con el List<>
 
-        Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagen, ingredientes, descripcion, pasos);
-        servicioReceta.guardarReceta(nuevaReceta);
+        List<Ingrediente> ingredientes = new ArrayList<>();
 
-        return new ModelAndView("redirect:/vista-receta");
+        int index = 0;
+        while (request.getParameter("ingredientes[" + index + "].nombre") != null) {
+            String nombre = request.getParameter("ingredientes[" + index + "].nombre");
+            double cantidad = Double.parseDouble(request.getParameter("ingredientes[" + index + "].cantidad"));
+            Unidad_De_Medida unidad_de_medida = Unidad_De_Medida.valueOf(request.getParameter("ingredientes[" + index + "].unidad_de_medida"));
+            Tipo_Ingrediente tipo = Tipo_Ingrediente.valueOf(request.getParameter("ingredientes[" + index + "].tipo"));
+
+            Ingrediente ingrediente = new Ingrediente(nombre, cantidad, unidad_de_medida, tipo);
+            ingredientes.add(ingrediente);
+            index++;
+        }
+
+        ModelMap model = new ModelMap();
+        try {
+            byte[] imagenBytes = null;
+            if (imagen != null && !imagen.isEmpty()) {
+                imagenBytes = imagen.getBytes();
+            }
+            Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagenBytes, ingredientes, descripcion, pasos);
+            servicioReceta.guardarReceta(nuevaReceta, imagen);
+
+            return new ModelAndView("redirect:/vista-receta");
+        } catch (Exception e) {
+            model.put("error", "Error al cargar receta.");
+            return new ModelAndView("redirect:/vista-receta", model);
+        }
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
