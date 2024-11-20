@@ -70,6 +70,15 @@
                         <th:block th:each="categoria : ${categorias}">
                             <div class="planificador-item">
                                 <h6 class="text-center p-2" th:id="'nombreRecetaSeleccionada' + ${categoria} + ${dia}"></h6>
+                                <!-- para que muestre el nombre cada vez que ingresa en vistaPlanificador -->
+                                <th:block th:if="${detalles != null}">
+                                    <th:block th:each="detalle : ${detalles}">
+                                        <span th:if="${detalle.dia != null and detalle.dia.name() == dia.toUpperCase() and detalle.categoriaDelPlanificador == categoria}">
+                                            <span th:class="'receta-' + ${categoria} + '-' + ${dia}" th:text="${detalle.receta != null ? detalle.receta.titulo : ''}"></span>
+                                        </span>
+                                    </th:block>
+                                </th:block>
+
                                 <button class="btn btn-sm btn-outline-success" th:data-categoria="${categoria}" th:data-dia="${dia}" data-bs-toggle="modal" th:attr="data-bs-target='#modal' + ${categoria} + ${dia}">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
@@ -106,6 +115,7 @@
                         <!-- Campos ocultos para días y recetas -->
                         <input type="hidden" id="diasSeleccionados" name="dias" />
                         <input type="hidden" id="recetasSeleccionadas" name="recetas" />
+                        <input type="hidden" id="categoriasSeleccionadas" name="categorias" />
                         <button type="submit" id="guardarPlanificadorBtn">Guardar Planificador</button>
                     </form>
                 </div>

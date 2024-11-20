@@ -16,13 +16,16 @@ public class DetallePlanificador {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    private String categoriaDelPlanificador;
+
     @OneToOne
     private Receta receta;
 
-    public DetallePlanificador(Dia dia, Categoria categoria, Receta receta) {
+    public DetallePlanificador(Dia dia, Categoria categoria, Receta receta, String categoriaDelPlanificador) {
         this.dia = dia;
         this.categoria = categoria;
         this.receta = receta;
+        this.categoriaDelPlanificador = categoriaDelPlanificador;
     }
 
     public DetallePlanificador() {
@@ -56,17 +59,21 @@ public class DetallePlanificador {
 
     public void setReceta(Receta recetas) { this.receta = receta; }
 
+    public String getCategoriaDelPlanificador() { return categoriaDelPlanificador; }
+
+    public void setCategoriaDelPlanificador(String categoriaDelPlanificador) { this.categoriaDelPlanificador = categoriaDelPlanificador; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DetallePlanificador that = (DetallePlanificador) o;
-        return id == that.id && dia == that.dia && categoria == that.categoria && Objects.equals(receta, that.receta);
+        return id == that.id && dia == that.dia && categoria == that.categoria && Objects.equals(categoriaDelPlanificador, that.categoriaDelPlanificador) && Objects.equals(receta, that.receta);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dia, categoria, receta);
+        return Objects.hash(id, dia, categoria, categoriaDelPlanificador, receta);
     }
 }
 

@@ -1,14 +1,12 @@
 let detallePlanificadorData = [];
 
-// Función que se llama cuando el usuario hace clic en un botón para abrir el modal
 document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
     button.addEventListener('click', function() {
         const categoria = this.getAttribute('data-categoria');
         const dia = this.getAttribute('data-dia');
         const modalId = `modal${categoria}${dia}`;
-        console.log(`Modal seleccionado - Categoria: ${categoria}, Dia: ${dia}, ID: ${modalId}`);
 
-        // Realiza una solicitud al backend para obtener las recetas y las inserta en el modal
+        //solicitud al backend para obtener las recetas y las inserta en el modal
         fetch(`/spring/recetasModal?categoria=${categoria}&dia=${dia}`)
             .then(response => response.text())
             .then(html => {
@@ -17,175 +15,55 @@ document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
                     const modalBody = modal.querySelector('.modal-body');
                     if (modalBody) {
                         modalBody.innerHTML = html;
-                        console.log('Contenido HTML insertado en el modal');
                         agregarEventListenersRecetas(modalId, categoria, dia);
                     }
-                } else {
-                    console.error('Modal no encontrado:', modalId);
                 }
             });
     });
 });
 
-// Agrega eventos de clic a cada tarjeta de receta en el modal
 function agregarEventListenersRecetas(modalId, categoria, dia) {
     document.querySelectorAll(`#${modalId} .receta-card`).forEach(card => {
         card.addEventListener('click', function() {
             const titulo = this.querySelector('.card-title').textContent;
-            const recetaId = this.getAttribute('data-receta-id'); // Captura el ID de la receta
-            console.log(`Receta seleccionada - Título: ${titulo}, ID: ${recetaId}`);
+            const recetaId = this.getAttribute('data-receta-id');
             seleccionarReceta(titulo, modalId, categoria, dia, recetaId);
         });
     });
 }
 
-// Función para procesar la selección de una receta
 function seleccionarReceta(titulo, modalId, categoria, dia, recetaId) {
-    console.log(`Receta seleccionada - Título: ${titulo}, ID: ${recetaId}, Día: ${dia}, Categoría: ${categoria}`);
 
-    // Crear un objeto DetallePlanificador y agregarlo al array de detalles
-    const detallePlanificador = { dia, recetaId };
-    detallePlanificadorData.push(detallePlanificador);
-
-    // Mostrar el título de la receta seleccionada en la interfaz
-    const nombreRecetaSeleccionada = document.getElementById(`nombreRecetaSeleccionada${categoria}${dia}`);
-    if (nombreRecetaSeleccionada) {
-        nombreRecetaSeleccionada.innerText = titulo;
-        console.log('Título actualizado');
-    }
-
-    // Cierra el modal después de seleccionar la receta
-    const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
-    if (modal) modal.hide();
-    console.log('detallePlanificadorData', detallePlanificadorData);
-
-
-    const dias = detallePlanificadorData.map(item => item.dia.toUpperCase().trim()); // Convertir a mayúsculas y eliminar espacios
-    const recetas = detallePlanificadorData.map(item => item.recetaId);
-    console.log('dias', dias);
-    console.log('recetas', recetas);
-
-// Obtener los campos ocultos para días y recetas
-const diasInput = document.getElementById('diasSeleccionados');
-const recetasInput = document.getElementById('recetasSeleccionadas');
-
-// Convertimos los arrays a strings separados por comas
-if (diasInput && recetasInput) {
-    diasInput.value = dias.join(',');
-    recetasInput.value = recetas.join(',');
-    console.log('Dias enviados:', diasInput.value);
-    console.log('Recetas enviadas:', recetasInput.value);
-}
-
-// Enviar el formulario
-form.submit();
-}
-
-/*let detallePlanificadorData = [];
-
-// Función que se llama cuando el usuario hace clic en un botón para abrir el modal
-document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
-    button.addEventListener('click', function() {
-        const categoria = this.getAttribute('data-categoria');
-        const dia = this.getAttribute('data-dia');
-        const modalId = `modal${categoria}${dia}`;
-        console.log(`Modal seleccionado - Categoria: ${categoria}, Dia: ${dia}, ID: ${modalId}`);
-
-        // Realiza una solicitud al backend para obtener las recetas y las inserta en el modal
-        fetch(`/spring/recetasModal?categoria=${categoria}&dia=${dia}`)
-            .then(response => response.text())
-            .then(html => {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    const modalBody = modal.querySelector('.modal-body');
-                    if (modalBody) {
-                        modalBody.innerHTML = html;
-                        console.log('Contenido HTML insertado en el modal');
-                        agregarEventListenersRecetas(modalId, categoria, dia);
-                    }
-                } else {
-                    console.error('Modal no encontrado:', modalId);
-                }
-            });
-    });
-});
-
-// Agrega eventos de clic a cada tarjeta de receta en el modal
-function agregarEventListenersRecetas(modalId, categoria, dia) {
-    document.querySelectorAll(`#${modalId} .receta-card`).forEach(card => {
-        card.addEventListener('click', function() {
-            const titulo = this.querySelector('.card-title').textContent;
-            const recetaId = this.getAttribute('data-receta-id'); // Captura el ID de la receta
-            console.log(`Receta seleccionada - Título: ${titulo}, ID: ${recetaId}`);
-            seleccionarReceta(titulo, modalId, categoria, dia, recetaId);
-        });
-    });
-}
-
-// Función para procesar la selección de una receta
-function seleccionarReceta(titulo, modalId, categoria, dia, recetaId) {
-    console.log(`Receta seleccionada - Título: ${titulo}, ID: ${recetaId}, Día: ${dia}, Categoría: ${categoria}`);
-
-    // Crear un objeto DetallePlanificador y agregarlo al array de detalles
     const detallePlanificador = { dia, categoria, recetaId };
     detallePlanificadorData.push(detallePlanificador);
 
-    // Mostrar el título de la receta seleccionada en la interfaz
+    //muestra el título de la receta seleccionada dinámicamente
     const nombreRecetaSeleccionada = document.getElementById(`nombreRecetaSeleccionada${categoria}${dia}`);
+    const spanReceta = document.querySelector(`.receta-${categoria}-${dia}`);
     if (nombreRecetaSeleccionada) {
+    if (spanReceta){
+    spanReceta.innerText = "";
+    }
         nombreRecetaSeleccionada.innerText = titulo;
-        console.log('Título actualizado');
     }
 
-    // Cierra el modal después de seleccionar la receta
+    //cierra el modal después de seleccionar la receta
     const modal = bootstrap.Modal.getInstance(document.getElementById(modalId));
     if (modal) modal.hide();
-    console.log(detallePlanificadorData)
-}
-document.getElementById('guardarPlanificadorBtn').addEventListener('click', function() {
 
-     // Convertimos el array a JSON como un string
-     const detallePlanificadorJson = JSON.stringify(detallePlanificadorData);
+    const dias = detallePlanificadorData.map(item => item.dia.toUpperCase().trim());
+    const categorias = detallePlanificadorData.map(item => item.categoria);
+    const recetas = detallePlanificadorData.map(item => item.recetaId);
 
-     // Asignamos este string al input oculto
-     document.getElementById('detallePlanificadorInput').value = detallePlanificadorJson;
+    const diasInput = document.getElementById('diasSeleccionados');
+    const recetasInput = document.getElementById('recetasSeleccionadas');
+    const categoriasInput = document.getElementById('categoriasSeleccionadas');
 
-     // Enviamos el formulario
-     document.getElementById('formPlanificador').submit();
- });
-*/
+    if (diasInput && recetasInput && categoriasInput) {
+        diasInput.value = dias.join(',');
+        recetasInput.value = recetas.join(',');
+        categoriasInput.value = categorias.join(',');
+    }
 
-// Función para enviar el array de DetallePlanificador al backend
-/*function guardarPlanificador() {
-console.log(detallePlanificadorData)
-    fetch('/spring/guardarPlanificador', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'  // Especifica que estás enviando JSON
-        },
-        body: JSON.stringify(detallePlanificadorData)  // Convierte el objeto a una cadena JSON
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al guardar el planificador');
-        }
-        return response.json();  // Si la respuesta es JSON, la procesas aquí
-    })
-    .then(data => {
-        console.log('Planificador guardado correctamente:', data);
-    })
-    .catch(error => {
-        console.error('Error al guardar el planificador:', error);
-    });
-}*/
-
-
-
-
-
-
-
-
-
-
-
+    form.submit();
+    }
