@@ -117,5 +117,15 @@ public class ControladorPlanificador {
 
         return new ModelAndView("redirect:vista-planificador");
     }
+    @RequestMapping(value = "/borrarPlanificador", method = RequestMethod.POST)
+    public ModelAndView borrarPlanificador() {
+        Planificador planificador = servicioPlanificador.obtenerPlanificador();
+
+        planificador.obtenerDetalles().clear();
+
+        servicioPlanificador.actualizar(planificador);
+
+        return new ModelAndView("redirect:vista-planificador");
+    }
 
 }

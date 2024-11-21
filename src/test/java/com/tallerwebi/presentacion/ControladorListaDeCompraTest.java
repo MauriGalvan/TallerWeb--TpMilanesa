@@ -34,6 +34,7 @@ public class ControladorListaDeCompraTest {
 
         // Entonces
         Boolean accesoDenegado = (Boolean) modelAndView.getModel().get("accesoDenegado");
+
         assertThat(accesoDenegado, equalTo(true));
         assertThat(modelAndView.getViewName(), equalTo("vistaPlanificador"));
     }

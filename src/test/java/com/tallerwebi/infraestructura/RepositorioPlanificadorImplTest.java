@@ -126,8 +126,7 @@ public class RepositorioPlanificadorImplTest {
         assertEquals(2, planificadorObtenido1.obtenerDetalles().size());
 
         byte[] imagen = new byte[]{0, 1};
-        Receta receta = new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
-                imagen, this.unosIngredientes(), "Milanesa con guarnición de papas fritas", ".");
+        Receta receta = new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA, imagen, this.unosIngredientes(), "Milanesa con guarnición de papas fritas", ".");
         this.sessionFactory.getCurrentSession().save(receta);
         DetallePlanificador detalle = new DetallePlanificador(Dia.LUNES, Categoria.ALMUERZO_CENA, receta, "Almuerzo");
         planificador.agregarDetalle(detalle);
@@ -140,5 +139,25 @@ public class RepositorioPlanificadorImplTest {
 
         assertEquals(planificador, planificadorObtenido2);
         assertEquals(3, planificadorObtenido2.obtenerDetalles().size());
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExisteUnPlanificadorConDetallesQueSePuedanObtenerLosDetalles(){
+        Planificador planificador = this.planificadorCreado();
+        List<DetallePlanificador> detalles = planificador.obtenerDetalles();
+
+        this.sessionFactory.getCurrentSession().save(planificador);
+
+        String hql = "FROM Planificador";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        Planificador planificadorObtenido = (Planificador)query.getSingleResult();
+
+        assertEquals(planificador, planificadorObtenido);
+
+        List<DetallePlanificador> detallesObtenidos = this.repositorioPlanificador.obtenerDetallesDelPlanificador();
+
+        assertEquals(detalles, detallesObtenidos);
     }
 }
