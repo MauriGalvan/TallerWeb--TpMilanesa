@@ -50,8 +50,9 @@ public class VistaReceta extends VistaWeb {
         this.escribirEnElElemento("#descripcion", descripcion);
         this.seleccionarOpcion("#tiempoPreparacion", tiempoPreparacion);
         this.seleccionarOpcion("#categoria", categoria);
-        this.escribirEnElElemento("#ingredientesContainer .ingrediente input[name='ingredientes[0].nombre']", ingrediente);
-        this.escribirEnElElemento("#ingredientesContainer .ingrediente input[name='ingredientes[0].cantidad']", cantidad);
+        this.page.locator("button:has-text('Añadir Ingrediente')").click();
+        this.page.locator("input[name='ingredientes[0].nombre']").fill(ingrediente);
+        this.page.locator("input[name='ingredientes[0].cantidad']").fill(cantidad);
         this.cargarArchivo("#imagen", nombreArchivo);
     }
 
