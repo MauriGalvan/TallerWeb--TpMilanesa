@@ -110,13 +110,10 @@ public class ControladorPlanificador {
     public ModelAndView borrarPlanificador() {
         Planificador planificador = servicioPlanificador.obtenerPlanificador();
 
-        // Elimina todos los detalles del planificador
         planificador.obtenerDetalles().clear();
 
-        // Actualiza el planificador en la base de datos
         servicioPlanificador.actualizar(planificador);
 
-        // Redirige a la vista del planificador
         return new ModelAndView("redirect:vista-planificador");
     }
 
