@@ -1,10 +1,13 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.Ingrediente;
+import com.tallerwebi.dominio.Receta;
 import com.tallerwebi.dominio.RepositorioIngrediente;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.Query;
 
 @Repository
 public class RepositorioIngredienteImpl implements RepositorioIngrediente {

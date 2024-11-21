@@ -50,20 +50,35 @@ public class ControladorLogin {
 
 
 
+
+
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
     public ModelAndView registrarme(@ModelAttribute("usuario") Usuario usuario) {
         ModelMap model = new ModelMap();
-        try{
+
+        try {
+            // Intenta registrar el usuario
             servicioLogin.registrar(usuario);
-        } catch (UsuarioExistente e){
-            model.put("error", "El usuario ya existe");
+        } catch (UsuarioExistente e) {
+            // Si el email ya está registrado, muestra un error específico
+            model.put("error", "Mail ya registrado, intente ingresando uno nuevo.");
+            model.put("usuario", usuario); // Mantiene los datos ingresados en el formulario
+            model.put("roles", Rol.values()); // Para el select de roles
             return new ModelAndView("nuevo-usuario", model);
-        } catch (Exception e){
+        } catch (Exception e) {
+            // Manejo genérico de errores
             model.put("error", "Error al registrar el nuevo usuario");
+            model.put("usuario", usuario); // Mantiene los datos ingresados en el formulario
+            model.put("roles", Rol.values());
             return new ModelAndView("nuevo-usuario", model);
         }
+
+        // Redirige al login si el registro fue exitoso
         return new ModelAndView("redirect:/login");
     }
+
+
+
 
     @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
     public ModelAndView nuevoUsuario() {

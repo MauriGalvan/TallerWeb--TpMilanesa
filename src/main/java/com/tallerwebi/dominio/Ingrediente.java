@@ -22,7 +22,6 @@ public class Ingrediente {
 
     private String nombre;
     private double cantidad;
-//    private Boolean disponible;
 
     public Ingrediente(){
     }
@@ -70,12 +69,4 @@ public class Ingrediente {
     public void setReceta(Receta receta){
         this.receta = receta;
     }
-
-//    public Boolean isDisponible() {
-//        return disponible;
-//    }
-//
-//    public void setDisponible(Boolean disponible) {
-//        this.disponible = disponible;
-//    }
 }
