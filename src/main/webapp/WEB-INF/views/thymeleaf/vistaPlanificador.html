@@ -122,7 +122,7 @@
                         <button type="submit" id="guardarPlanificadorBtn">Guardar Planificador</button>
                     </form>
                 </div>
-                <div class="text-center mt-4">
+                <div th:unless="${accesoDenegado}" class="seccion-planificador">
                     <form id="formBorrarPlanificador" method="POST" th:action="@{/borrarPlanificador}">
                         <button type="submit" class="btn btn-danger">Borrar Planificador</button>
                     </form>
