@@ -204,3 +204,14 @@ button[type="button"]:hover {
 .btn-modificar:hover {
     background-color: #0056b3;
 }
+
+.accordion-header .accordion-button {
+    font-size: 0.875rem;  /* 14px */
+    padding: 0.5rem 1rem;
+    font-weight: normal;  /* quita el peso extra de la fuente */
+}
+
+.accordion-header {
+    margin: 0;
+    font-size: 0.875rem;
+}
