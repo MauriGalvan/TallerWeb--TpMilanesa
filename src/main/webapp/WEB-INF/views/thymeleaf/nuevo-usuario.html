@@ -15,6 +15,11 @@
 <body>
 <div class="container">
   <h1 class="text-center mt-5">Registro de Nuevo Usuario</h1>
+
+  <div th:if="${error}" class="alert alert-danger" role="alert">
+    <span th:text="${error}"></span>
+  </div>
+
   <form th:action="@{/registrarme}" method="post" class="mt-4">
 
   <div class="mb-3">

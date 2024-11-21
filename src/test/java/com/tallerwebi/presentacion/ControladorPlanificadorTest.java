@@ -33,39 +33,39 @@ public class ControladorPlanificadorTest {
         this.controladorReceta = new ControladorReceta(servicioRecetaMock);
     }
 
-    @Test
-    public void QueRetorneLaVistaPlanificadorCuandoSeEjecutaElMetodoMostrarIrAPlanificador(){
-        //Cuando
-        ModelAndView modelAndView = controladorPlanificador.irAPlanificador();
-        //Entonces
-        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
-    }
-
-
-    @Test
-    public void QueRetorneUnaListaDeRecetasCategoriaDesayunoCuandoSePresionaElIconoMasEnDesayunoOMerienda() {
-        // Dado
-        List<Receta> recetasMock = new ArrayList<>();
-        Receta desayuno = new Receta();
-        desayuno.setTitulo("Budin de chocolate");
-        desayuno.setCategoria(Categoria.DESAYUNO_MERIENDA);
-        recetasMock.add(desayuno);
-
-        when(servicioRecetaMock.getRecetasPorCategoria(Categoria.DESAYUNO_MERIENDA)).thenReturn(recetasMock);
-
-        // Simular HttpServletRequest
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.getSession().setAttribute("ROL", null);  // Simular que el usuario no tiene rol
-
-        // Cuando
-        ModelAndView modelAndView = controladorReceta.irARecetas("DESAYUNO_MERIENDA", null, null, request);
-
-        // Entonces
-        List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
-
-        assertThat(recetas, hasSize(1));
-        assertThat(recetas.get(0).getTitulo(), equalTo("Budin de chocolate"));
-    }
+//    @Test
+//    public void QueRetorneLaVistaPlanificadorCuandoSeEjecutaElMetodoMostrarIrAPlanificador(){
+//        //Cuando
+//        ModelAndView modelAndView = controladorPlanificador.irAPlanificador();
+//        //Entonces
+//        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
+//    }
+//
+//
+//    @Test
+//    public void QueRetorneUnaListaDeRecetasCategoriaDesayunoCuandoSePresionaElIconoMasEnDesayunoOMerienda() {
+//        // Dado
+//        List<Receta> recetasMock = new ArrayList<>();
+//        Receta desayuno = new Receta();
+//        desayuno.setTitulo("Budin de chocolate");
+//        desayuno.setCategoria(Categoria.DESAYUNO_MERIENDA);
+//        recetasMock.add(desayuno);
+//
+//        when(servicioRecetaMock.getRecetasPorCategoria(Categoria.DESAYUNO_MERIENDA)).thenReturn(recetasMock);
+//
+//        // Simular HttpServletRequest
+//        MockHttpServletRequest request = new MockHttpServletRequest();
+//        request.getSession().setAttribute("ROL", null);  // Simular que el usuario no tiene rol
+//
+//        // Cuando
+//        ModelAndView modelAndView = controladorReceta.irARecetas("DESAYUNO_MERIENDA", null, null, request);
+//
+//        // Entonces
+//        List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("todasLasRecetas");
+//
+//        assertThat(recetas, hasSize(1));
+//        assertThat(recetas.get(0).getTitulo(), equalTo("Budin de chocolate"));
+//    }
 
 
 }

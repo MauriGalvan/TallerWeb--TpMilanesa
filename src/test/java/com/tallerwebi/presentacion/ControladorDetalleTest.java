@@ -69,7 +69,7 @@ public class ControladorDetalleTest {
         recetaMock.setId(1);
 
         Usuario usuarioMock = new Usuario();
-        usuarioMock.setRol(Rol.USUARIO_PREMIUM);
+        usuarioMock.setRol(Rol.PROFESIONAL);
 
         MultipartFile imagenMock = mock(MultipartFile.class);
 
@@ -94,7 +94,7 @@ public class ControladorDetalleTest {
 
         // Mock del usuario con rol USUARIO_PREMIUM
         Usuario usuarioMock = new Usuario();
-        usuarioMock.setRol(Rol.USUARIO_PREMIUM);
+        usuarioMock.setRol(Rol.PROFESIONAL);
 
         MultipartFile imagenMock = mock(MultipartFile.class);
 

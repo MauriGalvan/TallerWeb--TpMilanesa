@@ -1,13 +1,12 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Receta;
-import com.tallerwebi.dominio.ServicioReceta;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
@@ -25,15 +24,53 @@ public class ControladorPlanificador {
         this.servicioReceta = servicioReceta;
     }
 
+//    @RequestMapping("/vista-planificador")
+//    public ModelAndView irAPlanificador() {
+//        List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
+//        List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
+//        ModelMap modelo = new ModelMap();
+//        modelo.put("dias", dias);
+//        modelo.put("categorias", categorias);
+//        return new ModelAndView("vistaPlanificador", modelo);
+//    }
+
+//    @RequestMapping("/vista-planificador")
+//    public ModelAndView irAPlanificador(@SessionAttribute(value = "ROL", required = false) String rol) {
+//        if (rol == null || !rol.equals("USUARIO_PREMIUM")) {
+//            return new ModelAndView("accesoDenegado"); // Redirige a una página de acceso denegado
+//        }
+//
+//        List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
+//        List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
+//        ModelMap modelo = new ModelMap();
+//        modelo.put("dias", dias);
+//        modelo.put("categorias", categorias);
+//        return new ModelAndView("vistaPlanificador", modelo);
+//    }
+
     @RequestMapping("/vista-planificador")
-    public ModelAndView irAPlanificador() {
-        List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" , "Domingo");
-        List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
+    public ModelAndView irAPlanificador(@SessionAttribute(value = "ROL", required = false) String rol) {
         ModelMap modelo = new ModelMap();
+
+        if (rol == null || !rol.equals("USUARIO_PREMIUM")) {
+            modelo.put("accesoDenegado", true); // Flag para indicar acceso denegado
+            return new ModelAndView("vistaPlanificador", modelo);
+        }
+
+        List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
+        List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
         modelo.put("dias", dias);
         modelo.put("categorias", categorias);
+        modelo.put("accesoDenegado", false); // Flag desactivado si el acceso es permitido
         return new ModelAndView("vistaPlanificador", modelo);
     }
+
+
+
+
+
+
+
 
     @RequestMapping("/recetasModal")
     public ModelAndView obtenerRecetasPorCategoria(@RequestParam("categoria") String categoria, @RequestParam("dia") String dia) {

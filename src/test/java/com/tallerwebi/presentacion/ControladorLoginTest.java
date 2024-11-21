@@ -73,7 +73,7 @@ public class ControladorLoginTest {
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario ya existe"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Mail ya registrado, intente ingresando uno nuevo."));
 	}
 
 	@Test
@@ -142,7 +142,7 @@ public class ControladorLoginTest {
 
 		// Validación
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
-		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("El usuario ya existe"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Mail ya registrado, intente ingresando uno nuevo."));
 	}
 
 

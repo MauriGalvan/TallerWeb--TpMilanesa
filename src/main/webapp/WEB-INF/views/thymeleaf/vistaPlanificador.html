@@ -56,9 +56,16 @@
                     </header>
 
                     <main class="main-contenido">
+                        <!-- Mostrar Acceso Denegado si corresponde -->
+                        <div th:if="${accesoDenegado}" class="alert alert-danger mt-3 text-center">
+                            <h1>Acceso Denegado</h1>
+                            <p>No tienes permiso para acceder a esta página. Por favor, adquiere una cuenta premium para continuar.</p>
+                            <a th:href="@{/vista-receta}" class="btn btn-primary">Volver a Recetas</a>
+                        </div>
 
-                        <div class="seccion-planificador" >
-                            <div class="categoria-nombre" >Día</div>
+                        <!-- Contenido del Planificador -->
+                        <div th:unless="${accesoDenegado}" class="seccion-planificador">
+                            <div class="categoria-nombre">Día</div>
                             <div class="categoria-nombre">Desayuno</div>
                             <div class="categoria-nombre">Almuerzo</div>
                             <div class="categoria-nombre">Merienda</div>
@@ -69,12 +76,20 @@
                                 <th:block th:each="categoria : ${categorias}">
                                     <div class="planificador-item">
                                         <h6 class="text-center p-2" th:id="'nombreRecetaSeleccionada' + ${categoria} + ${dia}"></h6>
-                                        <button class="btn btn-sm btn-outline-success" th:data-categoria="${categoria}"  th:data-dia="${dia}"  data-bs-toggle="modal" th:attr="data-bs-target='#modal' + ${categoria} + ${dia}">
+                                        <button class="btn btn-sm btn-outline-success"
+                                                th:data-categoria="${categoria}"
+                                                th:data-dia="${dia}"
+                                                data-bs-toggle="modal"
+                                                th:attr="data-bs-target='#modal' + ${categoria} + ${dia}">
                                             <i class="fa-solid fa-plus"></i>
                                         </button>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" th:id="'modal' + ${categoria} + ${dia}" tabindex="-1" th:aria-labelledby="'modalLabel' + ${categoria} + ${dia}" aria-hidden="true">
+                                        <div class="modal fade"
+                                             th:id="'modal' + ${categoria} + ${dia}"
+                                             tabindex="-1"
+                                             th:aria-labelledby="'modalLabel' + ${categoria} + ${dia}"
+                                             aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -83,10 +98,9 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <!-- Aquí se cargarán las recetas -->
-
                                                     </div>
                                                     <div class="modal-footer">
-                                                      <!--  <button type="button" class="btn btn-primary">Guardar</button> -->
+                                                        <!-- Botones adicionales -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -95,7 +109,8 @@
                                 </th:block>
                             </th:block>
                         </div>
-                     </main>
+                    </main>
+
 
                     <footer>
                         <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
