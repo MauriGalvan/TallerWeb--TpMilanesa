@@ -166,9 +166,6 @@ public class ControladorPlanificadorTest {
         String recetasStr = "1,2";
         String categoriasStr = "Desayuno,Cena";
 
-        List<String> diasEsperados = Arrays.asList("MARTES", "DOMINGO");
-        List<String> categoriasEsperadas = Arrays.asList("Desayuno", "Cena");
-
         Planificador planificador = this.planificadorCreado();
         List<DetallePlanificador> detalles = planificador.obtenerDetalles();
         DetallePlanificador detalle1 = detalles.get(0);
