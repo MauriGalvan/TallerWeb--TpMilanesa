@@ -1,131 +1,144 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title th:text="${titulo}">Vista Planificador</title>
-        <!--Bootstrap-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <!--Font Awesome-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <!--CSS-->
-        <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
-        <link rel="stylesheet" th:href="@{/css/planificador.css}">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${titulo}">Vista Planificador</title>
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+    <link rel="stylesheet" th:href="@{/css/planificador.css}">
+</head>
 
-    <body>
-        <div class="container-fluid">
-            <div class="row">
-                <aside id="sidebar" class="sidebar fondo-verde">
-                    <div class="sidebar-content">
-                        <a href="#" class="logo-link">
-                            <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" alt="Logo de la Web" class="logo">
-                        </a>
-                        <nav>
-                            <ul>
-                                <li><a th:href="@{/vista-receta}" class="nav-link"><i class="fa-solid fa-utensils"></i> Recetas</a></li>
-                                <li><a th:href="@{/vista-planificador}" class="nav-link"><i class="fas fa-calendar-alt"></i> Planificador</a></li>
-                                <li><a th:href="@{/listaCompras}" class="nav-link"><i class="fas fa-shopping-cart" ></i> Lista de compras</a></li>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <aside id="sidebar" class="sidebar fondo-verde">
+            <div class="sidebar-content">
+                <a href="#" class="logo-link">
+                    <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" alt="Logo de la Web" class="logo">
+                </a>
+                <nav>
+                    <ul>
+                        <li><a th:href="@{/vista-receta}" class="nav-link"><i class="fa-solid fa-utensils"></i> Recetas</a></li>
+                        <li><a th:href="@{/vista-planificador}" class="nav-link"><i class="fas fa-calendar-alt"></i> Planificador</a></li>
+                        <li><a th:href="@{/listaCompras}" class="nav-link"><i class="fas fa-shopping-cart" ></i> Lista de compras</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="contenido-general">
+            <button class="btn fondo-verde d-lg-none btn-nav" type="button" id="sidebarToggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <header>
+                <div class="header-container">
+                    <h1 class="titulo-header">Planificador Semanal</h1>
+                    <div class="user-menu">
+                        <div class="dropdown">
+                            <a href="#" id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
+                                <span>usuario</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/perfil}" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i>Salir</a></li>
                             </ul>
-                        </nav>
+                        </div>
                     </div>
-                </aside>
+                </div>
+            </header>
 
-                <div class="contenido-general">
-                    <button class="btn fondo-verde d-lg-none btn-nav" type="button" id="sidebarToggle" aria-label="Toggle navigation">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <header>
-                        <div class="header-container">
-                            <h1 class="titulo-header">Planificador Semanal</h1>
-                            <div class="user-menu">
-                                <div class="dropdown">
-                                    <a href="#" id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
-                                        <span>usuario</span>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a th:href="@{/perfil}" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li onclick="mostrarPopup()"><a href="#" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i>Salir</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
+            <main class="main-contenido">
+                <!-- Mostrar Acceso Denegado si corresponde -->
+                <div th:if="${accesoDenegado}" class="alert alert-danger mt-3 text-center">
+                    <h1>Acceso Denegado</h1>
+                    <p>No tienes permiso para acceder a esta página. Por favor, adquiere una cuenta premium para continuar.</p>
+                    <a th:href="@{/vista-receta}" class="btn btn-primary">Volver a Recetas</a>
+                </div>
 
-                    <main class="main-contenido">
-                        <!-- Mostrar Acceso Denegado si corresponde -->
-                        <div th:if="${accesoDenegado}" class="alert alert-danger mt-3 text-center">
-                            <h1>Acceso Denegado</h1>
-                            <p>No tienes permiso para acceder a esta página. Por favor, adquiere una cuenta premium para continuar.</p>
-                            <a th:href="@{/vista-receta}" class="btn btn-primary">Volver a Recetas</a>
-                        </div>
+                <div th:unless="${accesoDenegado}" class="seccion-planificador">
+                    <div class="categoria-nombre">Día</div>
+                    <div class="categoria-nombre">Desayuno</div>
+                    <div class="categoria-nombre">Almuerzo</div>
+                    <div class="categoria-nombre">Merienda</div>
+                    <div class="categoria-nombre">Cena</div>
 
-                        <!-- Contenido del Planificador -->
-                        <div th:unless="${accesoDenegado}" class="seccion-planificador">
-                            <div class="categoria-nombre">Día</div>
-                            <div class="categoria-nombre">Desayuno</div>
-                            <div class="categoria-nombre">Almuerzo</div>
-                            <div class="categoria-nombre">Merienda</div>
-                            <div class="categoria-nombre">Cena</div>
+                    <th:block th:each="dia : ${dias}">
+                        <div class="dia-nombre" th:text="${dia}"></div>
+                        <th:block th:each="categoria : ${categorias}">
+                            <div class="planificador-item">
+                                <h6 class="text-center p-2" th:id="'nombreRecetaSeleccionada' + ${categoria} + ${dia}"></h6>
+                                <!-- para que muestre el nombre cada vez que ingresa en vistaPlanificador -->
+                                <th:block th:if="${detalles != null}">
+                                    <th:block th:each="detalle : ${detalles}">
+                                        <span th:if="${detalle.dia != null and detalle.dia.name() == dia.toUpperCase() and detalle.categoriaDelPlanificador == categoria}">
+                                            <span th:class="'receta-' + ${categoria} + '-' + ${dia}" th:text="${detalle.receta != null ? detalle.receta.titulo : ''}"></span>
+                                        </span>
+                                    </th:block>
+                                </th:block>
 
-                            <th:block th:each="dia : ${dias}">
-                                <div class="dia-nombre" th:text="${dia}"></div>
-                                <th:block th:each="categoria : ${categorias}">
-                                    <div class="planificador-item">
-                                        <h6 class="text-center p-2" th:id="'nombreRecetaSeleccionada' + ${categoria} + ${dia}"></h6>
-                                        <button class="btn btn-sm btn-outline-success"
-                                                th:data-categoria="${categoria}"
-                                                th:data-dia="${dia}"
-                                                data-bs-toggle="modal"
-                                                th:attr="data-bs-target='#modal' + ${categoria} + ${dia}">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
+                                <button class="btn btn-sm btn-outline-success" th:data-categoria="${categoria}" th:data-dia="${dia}" data-bs-toggle="modal" th:attr="data-bs-target='#modal' + ${categoria} + ${dia}">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade"
-                                             th:id="'modal' + ${categoria} + ${dia}"
-                                             tabindex="-1"
-                                             th:aria-labelledby="'modalLabel' + ${categoria} + ${dia}"
-                                             aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" th:text="'Recetas para ' + ${categoria} + ' - ' + ${dia}"></h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <!-- Modal -->
+                                <div class="modal fade" th:id="'modal' + ${categoria} + ${dia}" tabindex="-1" th:aria-labelledby="'modalLabel' + ${categoria} + ${dia}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" th:text="'Recetas para ' + ${categoria} + ' - ' + ${dia}"></h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <th:block th:each="receta : ${recetas}">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" th:id="'receta' + ${receta.id}" th:value="${receta.id}" name="recetasSeleccionadas" />
+                                                        <label class="form-check-label" th:for="'receta' + ${receta.id}" th:text="${receta.titulo}"></label>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <!-- Aquí se cargarán las recetas -->
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <!-- Botones adicionales -->
-                                                    </div>
-                                                </div>
+                                                </th:block>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                                             </div>
                                         </div>
                                     </div>
-                                </th:block>
-                            </th:block>
-                        </div>
-                    </main>
-
-
-                    <footer>
-                        <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
-                    </footer>
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
                 </div>
-            </div>
+                <div th:unless="${accesoDenegado}" class="seccion-planificador">                    <div class="categoria-nombre">Día</div>
+                    <form id="formPlanificador" method="POST" th:action="@{/guardarPlanificador}">
+                        <!-- Campos ocultos para días y recetas -->
+                        <input type="hidden" id="diasSeleccionados" name="dias" />
+                        <input type="hidden" id="recetasSeleccionadas" name="recetas" />
+                        <input type="hidden" id="categoriasSeleccionadas" name="categorias" />
+                        <button type="submit" id="guardarPlanificadorBtn">Guardar Planificador</button>
+                    </form>
+                </div>
+            </main>
+
+            <footer>
+                <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
+            </footer>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            function mostrarPopup() {alert("Funcionalidad en desarrollo!");}
-        </script>
-        <script src="js/modalRecetas.js"></script>
-        <script src="js/sidebar.js"></script>
-    </body>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function mostrarPopup() {
+        alert("Funcionalidad en desarrollo!");
+    }
+
+</script>
+<script src="js/modalRecetas.js"></script>
+<script src="js/sidebar.js"></script>
+</body>
 
 </html>
-
-

@@ -57,25 +57,33 @@
                 </div>
             </header>
 
+            <!-- Mostrar Acceso Denegado si corresponde -->
+            <div th:if="${accesoDenegado}" class="alert alert-danger mt-3 text-center">
+                <h1>Acceso Denegado</h1>
+                <p>No tienes permiso para acceder a esta página. Por favor, adquiere una cuenta premium para continuar.</p>
+                <a th:href="@{/vista-receta}" class="btn btn-primary">Volver a Recetas</a>
+            </div>
+
+
             <main class="main-contenido">
                 <section class="semana">
-                    <!-- Iteración de los días -->
                     <div class="dia-div" th:each="dia : ${dias}">
                         <h3 class="nombreDia" th:text="${dia}"></h3>
                         <ul class="lista-recetas">
-                            <!-- Iteración de las recetas dentro de cada día -->
-                            <li class="titulo-receta" th:each="receta : ${recetas}">
-                                <p th:text="${receta}"></p>
-                                <ul class="lista-ingredientes">
-                                    <!-- Iteración de los ingredientes dentro de cada receta -->
-                                    <li th:each="ingrediente, status : ${ingredientes}">
-                                        <p class="item-lista">
-                                            <input type="checkbox" th:id="'ingrediente-' + ${status.index}" class="check-circle" onclick="toggleCheck(this)">
-                                            <label th:for="'ingrediente-' + ${status.index}" th:text="${ingrediente}">Ingrediente</label>
-                                            <span class="cantidad" >1</span>
-                                        </p>
-                                    </li>
-                                </ul>
+                            <li class="titulo-receta" th:each="detalle : ${detalles}">
+                                <div th:if="${detalle.dia.name() == dia.toUpperCase()}">
+                                    <p th:text="${detalle.receta.titulo}"></p>
+
+                                    <ul class="lista-ingredientes">
+                                        <li th:each="ingrediente, status : ${detalle.receta.ingredientes}">
+                                            <p class="item-lista">
+                                                <input type="checkbox" th:id="'ingrediente-' + ${status.index}" class="check-circle" onclick="toggleCheck(this)">
+                                                <label th:for="'ingrediente-' + ${status.index}" th:text="${ingrediente.nombre}">Ingrediente</label>
+                                                <span class="cantidad" th:text="${ingrediente.cantidad} + ${ingrediente.unidad_de_medida.abreviatura}"></span>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -111,6 +119,16 @@
             parentItem.style.backgroundColor = "";
         }
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+    const recetas = document.querySelectorAll(".titulo-receta");
+
+    recetas.forEach(li => {
+        if (!li.textContent.trim()) {
+            li.style.display = "none";
+        }
+    });
+});
 </script>
 </body>
 </body>

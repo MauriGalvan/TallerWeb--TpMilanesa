@@ -1,7 +1,7 @@
 package com.tallerwebi.dominio;
 
 public enum Unidad_De_Medida {
-    UNIDAD ("unidades"),
+    UNIDAD ("un."),
     MILILITROS ("ml"),
     GRAMOS ("g"),
     KILOGRAMOS ("kg");
