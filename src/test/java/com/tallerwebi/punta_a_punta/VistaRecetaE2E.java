@@ -45,12 +45,18 @@ public class VistaRecetaE2E {
 
     @Test
     void deberiaMostrarTituloRecetasEnLaPagina() {
+        vistaReceta.escribirEMAIL("test@unlam.edu.ar");
+        vistaReceta.escribirClave("test");
+        vistaReceta.darClickEnIniciarSesion();
         String titulo = vistaReceta.obtenerTituloDeLaPagina();
         assertThat(titulo, containsStringIgnoringCase("Recetas"));
     }
 
     @Test
     void deberiaAbrirModalAlCargarReceta() {
+        vistaReceta.escribirEMAIL("test@unlam.edu.ar");
+        vistaReceta.escribirClave("test");
+        vistaReceta.darClickEnIniciarSesion();
         vistaReceta.darClickEnCargarReceta();
 
         assertTrue("El modal debería estar visible con el texto 'Cargar nueva receta'", vistaReceta.modalEstaVisible());
@@ -58,16 +64,21 @@ public class VistaRecetaE2E {
 
     @Test
     void deberiaCargarUnaRecetaConImagenYRedirigir() {
+        vistaReceta.escribirEMAIL("test@unlam.edu.ar");
+        vistaReceta.escribirClave("test");
+        vistaReceta.darClickEnIniciarSesion();
         vistaReceta.darClickEnCargarReceta();
         vistaReceta.completarFormularioReceta(
                 "Receta Test con Imagen",
                 "Descripción de prueba con imagen",
                 "DIEZ_MIN",
                 "ALMUERZO_CENA",
+                "Ingrediente 1",
+                "4",
                 "src/test/java/com/tallerwebi/punta_a_punta/imagen/prueba.jpg"
         );
         vistaReceta.confirmarCargaDeReceta();
-        String url = vistaReceta.obtenerURLActual();
-        assertThat(url, containsStringIgnoringCase("/spring/vista-receta"));
+        boolean recetaCargada = vistaReceta.recetaEstaCargada("Receta Test con Imagen");
+        assertTrue("La receta no fue cargada correctamente en la vista.", recetaCargada);
     }
 }
