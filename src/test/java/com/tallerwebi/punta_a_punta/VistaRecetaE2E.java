@@ -22,6 +22,7 @@ public class VistaRecetaE2E {
     @BeforeAll
     static void abrirNavegador() {
         playwright = Playwright.create();
+        //browser = playwright.chromium().launch();
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(600));
     }
 
@@ -51,15 +52,20 @@ public class VistaRecetaE2E {
     @Test
     void deberiaAbrirModalAlCargarReceta() {
         vistaReceta.darClickEnCargarReceta();
-        assertTrue("El modal debería estar visible con el texto 'Cargar nueva receta'", vistaReceta.modalEstaVisible());
 
-        //assertThat(vistaReceta.modalEstaVisible(), containsStringIgnoringCase("Cargar nueva receta"));
+        assertTrue("El modal debería estar visible con el texto 'Cargar nueva receta'", vistaReceta.modalEstaVisible());
     }
 
     @Test
-    void deberiaCargarUnaRecetaYRedirigir() {
+    void deberiaCargarUnaRecetaConImagenYRedirigir() {
         vistaReceta.darClickEnCargarReceta();
-        vistaReceta.completarFormularioReceta("Receta Test", "Descripción de prueba", "DIEZ_MIN", "ALMUERZO");
+        vistaReceta.completarFormularioReceta(
+                "Receta Test con Imagen",
+                "Descripción de prueba con imagen",
+                "DIEZ_MIN",
+                "ALMUERZO_CENA",
+                "src/test/java/com/tallerwebi/punta_a_punta/imagen/prueba.jpg"
+        );
         vistaReceta.confirmarCargaDeReceta();
         String url = vistaReceta.obtenerURLActual();
         assertThat(url, containsStringIgnoringCase("/spring/vista-receta"));

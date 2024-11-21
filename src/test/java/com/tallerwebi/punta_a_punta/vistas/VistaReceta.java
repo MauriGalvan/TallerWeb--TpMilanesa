@@ -22,14 +22,15 @@ public class VistaReceta extends VistaWeb {
         return this.obtenerTextoDelElemento("#modalRecetaLabel").equals("Cargar nueva receta");
     }
 
-    public void completarFormularioReceta(String titulo, String descripcion, String tiempoPreparacion, String categoria) {
+    public void completarFormularioReceta(String titulo, String descripcion, String tiempoPreparacion, String categoria, String nombreArchivo) {
         this.escribirEnElElemento("#titulo", titulo);
         this.escribirEnElElemento("#descripcion", descripcion);
         this.seleccionarOpcion("#tiempoPreparacion", tiempoPreparacion);
         this.seleccionarOpcion("#categoria", categoria);
+        this.cargarArchivo("#imagen", nombreArchivo);
     }
 
     public void confirmarCargaDeReceta() {
-        this.darClickEnElElemento("button[type='submit']");
+        this.page.locator("button:has-text('Aceptar')").click();
     }
 }
