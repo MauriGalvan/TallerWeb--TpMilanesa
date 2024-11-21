@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -26,12 +28,16 @@ public class ControladorPlanificador {
     }
 
     @RequestMapping("/vista-planificador")
-    public ModelAndView irAPlanificador() {
+    public ModelAndView irAPlanificador(HttpServletRequest request) {
         List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" , "Domingo");
         List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
+        // Obtener el usuarioNombre desde la sesión
+        HttpSession session = request.getSession();
+        String usuarioNombre = (String) session.getAttribute("usuarioNombre");
         ModelMap modelo = new ModelMap();
         modelo.put("dias", dias);
         modelo.put("categorias", categorias);
+        modelo.put("usuarioNombre", usuarioNombre);
         return new ModelAndView("vistaPlanificador", modelo);
     }
 

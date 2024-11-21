@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +37,15 @@ public class ControladorPlanificadorTest {
 
     @Test
     public void QueRetorneLaVistaPlanificadorCuandoSeEjecutaElMetodoMostrarIrAPlanificador(){
+
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         //Cuando
-        ModelAndView modelAndView = controladorPlanificador.irAPlanificador();
+        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(requestMock);
         //Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
     }

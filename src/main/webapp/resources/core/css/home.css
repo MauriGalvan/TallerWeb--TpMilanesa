@@ -73,7 +73,10 @@ nav .dropdown-toggle {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: #7A9E7E;
+    color: black;
+}
+nav .dropdown-menu.show {
+    display: block;
 }
 nav .dropdown-menu {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

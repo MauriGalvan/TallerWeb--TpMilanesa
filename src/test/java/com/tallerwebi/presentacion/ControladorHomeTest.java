@@ -5,6 +5,9 @@ import com.tallerwebi.dominio.ServicioReceta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,9 +39,14 @@ public class ControladorHomeTest {
 
         List<Receta> recetasmock = Arrays.asList(receta1, receta2);
         when(servicioRecetaMock.buscarRecetaPorAutor("mauri")).thenReturn(recetasmock);
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
-        //  se llama al controlador con el autor mauri
-        ModelAndView modelAndView = controladorHome.verRecetasPorAutor("mauri");
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
+
+        ModelAndView modelAndView = controladorHome.verRecetasPorAutor("mauri",requestMock);
 
         List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("recetas");
 
