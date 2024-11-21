@@ -82,6 +82,13 @@
                                                     <label for="descripcion" class="col-form-label">Descripción:</label>
                                                     <textarea id="descripcion" name="descripcion" class="form-control" required></textarea>
                                                 </div>
+                                                      <!-- autor-->
+                                                <div class="mb-3">
+                                                    <label for="autor" class="col-form-label">Autor:</label>
+                                                    <input type="text" id="autor" name="autor" class="form-control"
+                                                           th:value="${usuarioNombre}" placeholder="Nombre del autor" required />
+                                                </div>
+
                                                 <div class="mb-3">
                                                     <label for="tiempoPreparacion" class="col-form-label">Tiempo de preparación:</label>
                                                     <select id="tiempoPreparacion" name="tiempoPreparacion" class="form-select" required>

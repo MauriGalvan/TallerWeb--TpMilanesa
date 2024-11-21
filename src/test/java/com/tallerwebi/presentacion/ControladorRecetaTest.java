@@ -114,6 +114,7 @@ public class ControladorRecetaTest {
     @Test
     public void QueSePuedaCargarUnaReceta(){
         String titulo = "Milanesa napolitana";
+        String autor = "UsuarioMock";
         TiempoDePreparacion tiempo = TiempoDePreparacion.TREINTA_MIN;
         Categoria categoria = Categoria.ALMUERZO_CENA;
         MockMultipartFile imagen = new MockMultipartFile(
@@ -126,8 +127,8 @@ public class ControladorRecetaTest {
         String pasos = ".";
 
         HttpServletRequest request = mock(HttpServletRequest.class);
-
-        ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, descripcion, imagen, request);
+        when(request.getParameter("autor")).thenReturn(autor);
+        ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, descripcion, autor,imagen,request);
 
 //        verify(servicioRecetaMock, times(1)).guardarReceta(any(Receta.class));
 
