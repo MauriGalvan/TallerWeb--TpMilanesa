@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Base64;
 import java.util.List;
 
@@ -72,14 +71,8 @@ public class ControladorHome {
     }
 
     @GetMapping("/profesionales/{nombreAutor}")
-    public ModelAndView verRecetasPorAutor(@PathVariable String nombreAutor,
-                                           HttpServletRequest request){
+    public ModelAndView verRecetasPorAutor(@PathVariable String nombreAutor) {
         List<Receta> recetas = servicioReceta.buscarRecetaPorAutor(nombreAutor);
-
-        // Obtener el usuarioNombre desde la sesión
-        HttpSession session = request.getSession();
-        String usuarioNombre = (String) session.getAttribute("usuarioNombre");
-
 
         // Convertir las imágenes a Base64
         recetas.forEach(receta -> {
@@ -92,7 +85,6 @@ public class ControladorHome {
         ModelAndView mav = new ModelAndView("recetasPorAutor");
         mav.addObject("recetas", recetas);
         mav.addObject("autor", nombreAutor);
-        mav.addObject("usuarioNombre", usuarioNombre);
 
         return mav;
     }
