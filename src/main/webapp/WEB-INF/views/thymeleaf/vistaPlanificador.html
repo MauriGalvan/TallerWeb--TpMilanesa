@@ -113,7 +113,7 @@
                         </th:block>
                     </th:block>
                 </div>
-                <div th:unless="${accesoDenegado}" class="seccion-planificador">                    <div class="categoria-nombre">Día</div>
+                <div th:unless="${accesoDenegado}" class="seccion-planificador">
                     <form id="formPlanificador" method="POST" th:action="@{/guardarPlanificador}">
                         <!-- Campos ocultos para días y recetas -->
                         <input type="hidden" id="diasSeleccionados" name="dias" />
