@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -63,6 +64,7 @@ public class ControladorPlanificadorTest {
         //Cuando
         ModelAndView modelAndView = controladorPlanificador.irAPlanificador();
         //Entonces
+        verify(servicioPlanificadorMock, times(1)).obtenerPlanificador();
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
     }
 
@@ -111,4 +113,82 @@ public class ControladorPlanificadorTest {
         verify(servicioPlanificadorMock, times(1)).actualizar(planificador);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:vista-planificador"));
     }
+
+    @Test
+    public void queRetorneUnaListaDeRecetasParaCategoriaDesayunoYMerienda() {
+        // Dado
+        List<Receta> recetasMock = new ArrayList<>();
+        byte[] imagen = new byte[]{0, 1};
+        Receta receta1 = new Receta();
+        receta1.setTitulo("Budín de chocolate");
+        receta1.setCategoria(Categoria.DESAYUNO_MERIENDA);
+        receta1.setImagen(imagen);
+
+        Receta receta2 = new Receta();
+        receta2.setTitulo("Tostadas con mermelada");
+        receta2.setCategoria(Categoria.DESAYUNO_MERIENDA);
+        receta2.setImagen(imagen);
+
+        recetasMock.add(receta1);
+        recetasMock.add(receta2);
+
+        when(servicioRecetaMock.getRecetasPorCategoria(Categoria.DESAYUNO_MERIENDA)).thenReturn(recetasMock);
+
+        ModelAndView modelAndView = controladorPlanificador.obtenerRecetasPorCategoria("DESAYUNO", "Lunes");
+
+        List<Receta> recetas = (List<Receta>) modelAndView.getModel().get("recetas");
+        assertThat(recetas, hasSize(2));
+
+        Categoria categoriaSeleccionada = (Categoria) modelAndView.getModel().get("categoriaSeleccionada");
+        assertThat(categoriaSeleccionada, equalTo(Categoria.DESAYUNO_MERIENDA));
+
+        String dia = (String) modelAndView.getModel().get("dia");
+        assertThat(dia, equalTo("Lunes"));
+    }
+
+    @Test
+    public void debeRetornarLaVistaListaDeComprasCuandoSeEjecuteSuMetodo(){
+        ModelAndView modelAndView = controladorPlanificador.irAListaCompra();
+
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaLista"));
+    }
+
+    @Test
+    public void queSeGuardeElPlanificadorConLosDetallesCorrectos(){
+        String diasStr = "MARTES,DOMINGO";
+        String recetasStr = "1,2";
+        String categoriasStr = "Desayuno,Cena";
+
+        List<String> diasEsperados = Arrays.asList("MARTES", "DOMINGO");
+        List<String> categoriasEsperadas = Arrays.asList("Desayuno", "Cena");
+
+        Planificador planificador = this.planificadorCreado();
+        List<DetallePlanificador> detalles = planificador.obtenerDetalles();
+        DetallePlanificador detalle1 = detalles.get(0);
+        DetallePlanificador detalle2 = detalles.get(1);
+        Receta receta1 = detalle1.getReceta();
+        Receta receta2 = detalle2.getReceta();
+
+        when(servicioPlanificadorMock.obtenerPlanificador()).thenReturn(planificador);
+        when(servicioRecetaMock.getUnaRecetaPorId(1)).thenReturn(receta1);
+        when(servicioRecetaMock.getUnaRecetaPorId(2)).thenReturn(receta2);
+
+        ModelAndView modelAndView = controladorPlanificador.guardarPlanificador(diasStr, recetasStr, categoriasStr);
+
+        verify(servicioPlanificadorMock, times(1)).agregarDetalle(planificador, detalle1);
+        verify(servicioPlanificadorMock, times(1)).agregarDetalle(planificador, detalle2);
+
+        assertThat(detalle1.getDia(), equalTo(Dia.MARTES));
+        assertThat(detalle1.getReceta(), equalTo(receta1));
+        assertThat(detalle1.getCategoriaDelPlanificador(), equalTo("Desayuno"));
+
+        assertThat(detalle2.getDia(), equalTo(Dia.DOMINGO));
+        assertThat(detalle2.getReceta(), equalTo(receta2));
+        assertThat(detalle2.getCategoriaDelPlanificador(), equalTo("Cena"));
+
+        verify(servicioPlanificadorMock).actualizar(planificador);
+
+        assertThat(modelAndView.getViewName(), equalTo("redirect:vista-planificador"));
+    }
+
 }

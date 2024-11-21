@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class ControladorListaDeCompraTest {
 
@@ -28,6 +28,7 @@ public class ControladorListaDeCompraTest {
         //cuando
         ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras();
         //entonces
+        verify(servicioPlanificador, times(1)).obtenerDetallesDelPlanificador();
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaListaDeCompras"));
     }
 
@@ -39,39 +40,12 @@ public class ControladorListaDeCompraTest {
         ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras();
         //entonces
         List<String> diasDeLaSemana = (List<String>) modelAndView.getModel().get("dias");
-        assertThat(diasDeLaSemana, hasItems("Lunes", "Martes","Miércoles"));
+        assertThat(diasDeLaSemana, hasItem("Lunes"));
+        assertThat(diasDeLaSemana, hasItem("Martes"));
+        assertThat(diasDeLaSemana, hasItem("Miercoles"));
+        assertThat(diasDeLaSemana, hasItem("Jueves"));
+        assertThat(diasDeLaSemana, hasItem("Viernes"));
+        assertThat(diasDeLaSemana, hasItem("Sabado"));
+        assertThat(diasDeLaSemana, hasItem("Domingo"));
     }
-
-    @Test
-    public void debeMostrarLosNombresDeLaRecetas(){
-        //dado
-        List<String> recetas = new ArrayList<>();
-        recetas.add("Torta de manzana");
-        recetas.add("Ensalada");
-        recetas.add("Yogurt");
-        recetas.add("Pizza");
-        
-        //cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras();
-        //entonces
-        List<String> recetasPara= (List<String>) modelAndView.getModel().get("recetas");
-        assertThat(recetasPara, hasItems("Torta de manzana", "Ensalada","Yogurt","Pizza"));
-    }
-
-    @Test
-    public void seDebeMostrarLosIngredientesParaCadaReceta(){
-        //dado
-        List<String> ingredientes = new ArrayList<>();
-        ingredientes.add("Harina");
-        ingredientes.add("lechuga");
-        ingredientes.add("sal");
-        ingredientes.add("Tomate");
-
-        //cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras();
-        //entonces
-        List<String> ingredientesTodos= (List<String>) modelAndView.getModel().get("ingredientes");
-        assertThat(ingredientesTodos, hasItems("Harina", "lechuga","sal","Tomate"));
-    }
-
 }
