@@ -87,7 +87,35 @@ public class ControladorUsuario {
     }
 
 
-//    MétodoDeValidaciónSimulado
+    @RequestMapping(value = "/baja-premium", method = RequestMethod.POST)
+    public ModelAndView darDeBajaPremium(HttpServletRequest request) {
+        ModelMap modelo = new ModelMap();
+
+        // Obtener el usuario de la sesión
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioActual");
+
+        if (usuario != null) {
+            usuario.setRol(Rol.USUARIO);
+            servicioLogin.actualizarUsuario(usuario); // Actualiza el usuario en la base de datos
+            request.getSession().setAttribute("usuarioActual", usuario); // Actualiza en la sesión
+            request.getSession().setAttribute("ROL", Rol.USUARIO); // Actualiza el rol en la sesión
+
+            modelo.put("mensaje", "Has sido dado de baja como usuario Premium.");
+            modelo.put("usuario", usuario);
+
+            return new ModelAndView("perfil", modelo);
+        } else {
+            return new ModelAndView("redirect:/login");
+        }
+    }
+
+
+
+
+
+
+
+    //    MétodoDeValidaciónSimulado
     private boolean validarPago(String metodoPago, String numeroTarjeta, String fechaExpiracion, String cvv) {
 
         if (numeroTarjeta.length() != 16 || !numeroTarjeta.matches("\\d+")) {

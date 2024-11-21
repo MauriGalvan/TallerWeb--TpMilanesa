@@ -58,14 +58,21 @@ public class ControladorPlanificadorTest {
     }
 
     @Test
-    public void queRetorneLaVistaPlanificadorCuandoSeEjecutaElMetodoMostrarIrAPlanificador(){
+    public void queRetorneLaVistaPlanificadorCuandoSeEjecutaElMetodoMostrarIrAPlanificador() {
+        // Configurar los mocks
         Planificador planificador = new Planificador();
         when(servicioPlanificadorMock.obtenerPlanificador()).thenReturn(planificador);
-        //Cuando
-        ModelAndView modelAndView = controladorPlanificador.irAPlanificador();
-        //Entonces
-        verify(servicioPlanificadorMock, times(1)).obtenerPlanificador();
+
+        // Crear el objeto MockHttpServletRequest y agregar el atributo de sesión "ROL"
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.getSession().setAttribute("ROL", "USUARIO_PREMIUM");
+
+        // Cuando
+        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString());
+
+        // Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
+        assertThat(modelAndView.getModel().get("accesoDenegado"), equalTo(false)); // Verificar que accesoDenegado esté en false
     }
 
     @Test

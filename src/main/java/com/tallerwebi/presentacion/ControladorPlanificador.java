@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
@@ -27,16 +28,26 @@ public class ControladorPlanificador {
     }
 
     @RequestMapping("/vista-planificador")
-    public ModelAndView irAPlanificador() {
+    public ModelAndView irAPlanificador(@SessionAttribute(value = "ROL", required = false) String rol) {
+
+        ModelMap modelo = new ModelMap();
+
+        if (rol == null || !rol.equals("USUARIO_PREMIUM")) {
+            modelo.put("accesoDenegado", true); // Flag para indicar acceso denegado
+            return new ModelAndView("vistaPlanificador", modelo);
+        }
+
+
         List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" , "Domingo");
         List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
 
         Planificador planificador = servicioPlanificador.obtenerPlanificador();
         List<DetallePlanificador> detalles = planificador.obtenerDetalles();
 
-        ModelMap modelo = new ModelMap();
+
         modelo.put("dias", dias);
         modelo.put("categorias", categorias);
+        modelo.put("accesoDenegado", false);
         modelo.put("planificador", planificador);
         modelo.put("detalles", detalles);
 

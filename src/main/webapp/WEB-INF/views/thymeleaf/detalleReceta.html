@@ -103,12 +103,10 @@
 <!--                    <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar </button>-->
 <!--                  </div> -->
                     <div class="mt-4"
-                         th:if="${session.usuarioActual != null and (session.usuarioActual.rol.name() == 'PROFESIONAL' or session.usuarioActual.rol.name() == 'USUARIO_PREMIUM')}">
+                         th:if="${session.usuarioActual != null and (session.usuarioActual.rol.name() == 'PROFESIONAL')}">
                         <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar</button>
                         <button class="btn btn-primary" onclick="document.getElementById('modalModificar').checked=true;">Modificar</button>
                     </div>
-
-
 
                 </div>
             </section>
@@ -147,39 +145,67 @@
                           <option value="UNA_HORA" th:selected="${unaReceta.tiempo_preparacion.name() == 'UNA_HORA'}">1 hora</option>
                       </select>
 
+
                       <div id="ingredientesContainer">
-                          <div th:each="ingrediente, iter : ${unaReceta.ingredientes}" class="ingrediente">
-                              <label th:for="${'ingredienteNombre' + iter.index}">Ingrediente <br><br> Nombre:</label>
-                              <input type="text" th:id="${'ingredienteNombre' + iter.index}" th:name="${'ingredientes[' + iter.index + '].nombre'}" th:value="${ingrediente.nombre}" />
+                          <div class="accordion" id="accordionIngredientes">
+                              <div th:each="ingrediente, iter : ${unaReceta.ingredientes}" class="accordion-item ingrediente">
+                                  <h3 class="accordion-header">
+                                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                              th:data-bs-target="${'#collapse' + iter.index}"
+                                              th:text="${ingrediente.nombre != null && !ingrediente.nombre.isEmpty() ? ingrediente.nombre : 'Nuevo ingrediente'}">
+                                      </button>
+                                  </h3>
+                                  <div th:id="${'collapse' + iter.index}" class="accordion-collapse collapse" data-bs-parent="#accordionIngredientes">
+                                      <div class="accordion-body">
+                                          <div class="mb-3">
+                                              <label th:for="${'ingredienteNombre' + iter.index}" class="form-label">Nombre:</label>
+                                              <input type="text" class="form-control" th:id="${'ingredienteNombre' + iter.index}"
+                                                     th:name="${'ingredientes[' + iter.index + '].nombre'}" th:value="${ingrediente.nombre}" />
+                                          </div>
 
-                              <label th:for="${'ingredienteCantidad' + iter.index}">Cantidad:</label>
-                              <input type="number" step="0.01" th:id="${'ingredienteCantidad' + iter.index}" th:name="${'ingredientes[' + iter.index + '].cantidad'}" th:value="${ingrediente.cantidad}" />
+                                          <div class="mb-3">
+                                              <label th:for="${'ingredienteCantidad' + iter.index}" class="form-label">Cantidad:</label>
+                                              <input type="number" step="0.01" class="form-control" th:id="${'ingredienteCantidad' + iter.index}"
+                                                     th:name="${'ingredientes[' + iter.index + '].cantidad'}" th:value="${ingrediente.cantidad}" />
+                                          </div>
 
-                              <label th:for="${'unidadDeMedida' + iter.index}">Unidad de medida:</label>
-                              <select th:id="${'unidadDeMedida' + iter.index}" th:name="${'ingredientes[' + iter.index + '].unidad_de_medida'}" class="form-control">
-                                  <option value="UNIDAD" th:selected="${ingrediente.unidad_de_medida?.name() == 'UNIDAD'}">Unidad</option>
-                                  <option value="MILILITROS" th:selected="${ingrediente.unidad_de_medida?.name() == 'MILILITROS'}">Mililitros</option>
-                                  <option value="GRAMOS" th:selected="${ingrediente.unidad_de_medida?.name() == 'GRAMOS'}">Gramos</option>
-                                  <option value="KILOGRAMOS" th:selected="${ingrediente.unidad_de_medida?.name() == 'KILOGRAMOS'}">Kilogramos</option>
-                              </select>
+                                          <div class="mb-3">
+                                              <label th:for="${'unidadDeMedida' + iter.index}" class="form-label">Unidad de medida:</label>
+                                              <select th:id="${'unidadDeMedida' + iter.index}"
+                                                      th:name="${'ingredientes[' + iter.index + '].unidad_de_medida'}"
+                                                      class="form-control">
+                                                  <option value="UNIDAD" th:selected="${ingrediente.unidad_de_medida?.name() == 'UNIDAD'}">Unidad</option>
+                                                  <option value="MILILITROS" th:selected="${ingrediente.unidad_de_medida?.name() == 'MILILITROS'}">Mililitros</option>
+                                                  <option value="GRAMOS" th:selected="${ingrediente.unidad_de_medida?.name() == 'GRAMOS'}">Gramos</option>
+                                                  <option value="KILOGRAMOS" th:selected="${ingrediente.unidad_de_medida?.name() == 'KILOGRAMOS'}">Kilogramos</option>
+                                              </select>
+                                          </div>
 
-                              <label th:for="${'tipoDeIngrediente' + iter.index}">Tipo de ingrediente:</label>
-                              <select th:id="${'tipoDeIngrediente' + iter.index}" th:name="${'ingredientes[' + iter.index + '].tipo'}" class="form-control">
-                                  <option value="PROTEINA_ANIMAL" th:selected="${ingrediente.tipo?.name() == 'PROTEINA_ANIMAL'}">Proteína Animal</option>
-                                  <option value="VERDURA" th:selected="${ingrediente.tipo?.name() == 'VERDURA'}">Verdura</option>
-                                  <option value="FRUTA" th:selected="${ingrediente.tipo?.name() == 'FRUTA'}">Fruta</option>
-                                  <option value="LACTEO" th:selected="${ingrediente.tipo?.name() == 'LACTEO'}">Lácteo</option>
-                                  <option value="CEREAL_O_GRANO" th:selected="${ingrediente.tipo?.name() == 'CEREAL_O_GRANO'}">Cereal o Grano</option>
-                                  <option value="ESPECIA" th:selected="${ingrediente.tipo?.name() == 'ESPECIA'}">Especia</option>
-                                  <option value="CONDIMENTO" th:selected="${ingrediente.tipo?.name() == 'CONDIMENTO'}">Condimento</option>
-                                  <option value="ACEITE" th:selected="${ingrediente.tipo?.name() == 'ACEITE'}">Aceite</option>
-                                  <option value="OTRO" th:selected="${ingrediente.tipo?.name() == 'OTRO'}">Otro</option>
-                              </select>
+                                          <div class="mb-3">
+                                              <label th:for="${'tipoDeIngrediente' + iter.index}" class="form-label">Tipo de ingrediente:</label>
+                                              <select th:id="${'tipoDeIngrediente' + iter.index}"
+                                                      th:name="${'ingredientes[' + iter.index + '].tipo'}"
+                                                      class="form-control">
+                                                  <option value="PROTEINA_ANIMAL" th:selected="${ingrediente.tipo?.name() == 'PROTEINA_ANIMAL'}">Proteína Animal</option>
+                                                  <option value="VERDURA" th:selected="${ingrediente.tipo?.name() == 'VERDURA'}">Verdura</option>
+                                                  <option value="FRUTA" th:selected="${ingrediente.tipo?.name() == 'FRUTA'}">Fruta</option>
+                                                  <option value="LACTEO" th:selected="${ingrediente.tipo?.name() == 'LACTEO'}">Lácteo</option>
+                                                  <option value="CEREAL_O_GRANO" th:selected="${ingrediente.tipo?.name() == 'CEREAL_O_GRANO'}">Cereal o Grano</option>
+                                                  <option value="ESPECIA" th:selected="${ingrediente.tipo?.name() == 'ESPECIA'}">Especia</option>
+                                                  <option value="CONDIMENTO" th:selected="${ingrediente.tipo?.name() == 'CONDIMENTO'}">Condimento</option>
+                                                  <option value="ACEITE" th:selected="${ingrediente.tipo?.name() == 'ACEITE'}">Aceite</option>
+                                                  <option value="OTRO" th:selected="${ingrediente.tipo?.name() == 'OTRO'}">Otro</option>
+                                              </select>
+                                          </div>
 
-                              <button type="button" class="eliminarIngrediente">Eliminar</button>
+                                          <button type="button" class="btn btn-danger eliminarIngrediente">Eliminar</button>
+                                      </div>
+                                  </div>
+                              </div>
                           </div>
-                          <button type="button" id="añadirIngrediente">Añadir Ingrediente</button>
+                          <button type="button" id="añadirIngrediente" class="btn btn-success mt-3">Añadir Ingrediente</button>
                       </div>
+
 
                       <label for="pasos">Pasos</label>
                       <textarea id="pasos" name="pasos" rows="4" class="form-control" th:text="${unaReceta.pasos}"></textarea>
@@ -209,81 +235,108 @@
   <script>function mostrarPopup() {alert("Funcionalidad en desarrollo!");} </script>
   <script>
       let ingredientCount = document.querySelectorAll('.ingrediente').length;
-      let ingredientesArray = [];
-
+    let ingredientesArray = [];
     document.querySelectorAll('.ingrediente').forEach(ingrediente => {
         ingredientesArray.push(ingrediente);
     });
 
     document.getElementById('añadirIngrediente').addEventListener('click', function() {
-        const container = document.getElementById('ingredientesContainer');
+        const accordion = document.getElementById('accordionIngredientes');
         const newIngredient = document.createElement('div');
-        newIngredient.className = 'ingrediente';
+        newIngredient.className = 'accordion-item ingrediente';
 
         newIngredient.innerHTML = `
-            <label for="ingredienteNombre${ingredientCount}">Ingrediente <br><br> Nombre:</label>
-            <input type="text" id="ingredienteNombre${ingredientCount}" name="ingredientes[${ingredientCount}].nombre" />
+           <h3 class="accordion-header">
+               <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                       data-bs-target="#collapse${ingredientCount}">
+                   Nuevo ingrediente
+               </button>
+           </h3>
+           <div id="collapse${ingredientCount}" class="accordion-collapse collapse show" data-bs-parent="#accordionIngredientes">
+               <div class="accordion-body">
+                   <div class="mb-3">
+                       <label for="ingredienteNombre${ingredientCount}" class="form-label">Nombre:</label>
+                       <input type="text" class="form-control" id="ingredienteNombre${ingredientCount}"
+                              name="ingredientes[${ingredientCount}].nombre" />
+                   </div>
 
-            <label for="ingredienteCantidad${ingredientCount}">Cantidad:</label>
-            <input type="number" step="0.01" id="ingredienteCantidad${ingredientCount}" name="ingredientes[${ingredientCount}].cantidad" />
+                   <div class="mb-3">
+                       <label for="ingredienteCantidad${ingredientCount}" class="form-label">Cantidad:</label>
+                       <input type="number" step="0.01" class="form-control" id="ingredienteCantidad${ingredientCount}"
+                              name="ingredientes[${ingredientCount}].cantidad" />
+                   </div>
 
-            <label for="unidadDeMedida${ingredientCount}">Unidad de medida:</label>
-            <select id="unidadDeMedida${ingredientCount}" name="ingredientes[${ingredientCount}].unidad_de_medida" class="form-control">
-                <option value="UNIDAD">Unidad</option>
-                <option value="MILILITROS">Mililitros</option>
-                <option value="GRAMOS">Gramos</option>
-                <option value="KILOGRAMOS">Kilogramos</option>
-            </select>
+                   <div class="mb-3">
+                       <label for="unidadDeMedida${ingredientCount}" class="form-label">Unidad de medida:</label>
+                       <select id="unidadDeMedida${ingredientCount}" name="ingredientes[${ingredientCount}].unidad_de_medida"
+                               class="form-control">
+                           <option value="UNIDAD">Unidad</option>
+                           <option value="MILILITROS">Mililitros</option>
+                           <option value="GRAMOS">Gramos</option>
+                           <option value="KILOGRAMOS">Kilogramos</option>
+                       </select>
+                   </div>
 
-            <label for="tipoDeIngrediente${ingredientCount}">Tipo de ingrediente:</label>
-            <select id="tipoDeIngrediente${ingredientCount}" name="ingredientes[${ingredientCount}].tipo" class="form-control">
-                <option value="PROTEINA_ANIMAL">Proteína Animal</option>
-                <option value="VERDURA">Verdura</option>
-                <option value="FRUTA">Fruta</option>
-                <option value="LACTEO">Lácteo</option>
-                <option value="CEREAL_O_GRANO">Cereal o Grano</option>
-                <option value="ESPECIA">Especia</option>
-                <option value="CONDIMENTO">Condimento</option>
-                <option value="ACEITE">Aceite</option>
-                <option value="OTRO">Otro</option>
-            </select>
+                   <div class="mb-3">
+                       <label for="tipoDeIngrediente${ingredientCount}" class="form-label">Tipo de ingrediente:</label>
+                       <select id="tipoDeIngrediente${ingredientCount}" name="ingredientes[${ingredientCount}].tipo"
+                               class="form-control">
+                           <option value="PROTEINA_ANIMAL">Proteína Animal</option>
+                           <option value="VERDURA">Verdura</option>
+                           <option value="FRUTA">Fruta</option>
+                           <option value="LACTEO">Lácteo</option>
+                           <option value="CEREAL_O_GRANO">Cereal o Grano</option>
+                           <option value="ESPECIA">Especia</option>
+                           <option value="CONDIMENTO">Condimento</option>
+                           <option value="ACEITE">Aceite</option>
+                           <option value="OTRO">Otro</option>
+                       </select>
+                   </div>
 
-            <button type="button" class="eliminarIngrediente">Eliminar</button>
+                   <button type="button" class="btn btn-danger eliminarIngrediente">Eliminar</button>
+               </div>
+           </div>
         `;
 
-        container.appendChild(newIngredient);
-        ingredientesArray.push(newIngredient);
-        ingredientCount++;
+       accordion.appendChild(newIngredient);
+       ingredientesArray.push(newIngredient);
+       ingredientCount++;
 
-        newIngredient.querySelector('.eliminarIngrediente').addEventListener('click', function() {
-            eliminarIngrediente(newIngredient);
-        });
+       newIngredient.querySelector('.eliminarIngrediente').addEventListener('click', function() {
+           eliminarIngrediente(newIngredient);
+       });
+
+       // Actualizar el título del acordeón cuando se cambia el nombre
+       const nombreInput = newIngredient.querySelector(`#ingredienteNombre${ingredientCount-1}`);
+       const accordionButton = newIngredient.querySelector('.accordion-button');
+       nombreInput.addEventListener('input', function() {
+           accordionButton.textContent = this.value || 'Nuevo ingrediente';
+       });
     });
-
     function eliminarIngrediente(ingredienteDiv) {
-        ingredienteDiv.remove();
+            ingredienteDiv.remove();
 
-        ingredientesArray = ingredientesArray.filter(ingrediente => ingrediente !== ingredienteDiv);
+            ingredientesArray = ingredientesArray.filter(ingrediente => ingrediente !== ingredienteDiv);
 
-        ingredientCount = ingredientesArray.length;
+            ingredientCount = ingredientesArray.length;
 
-        for (let i = 0; i < ingredientesArray.length; i++) {
-            const inputNombre = ingredientesArray[i].querySelector('input[type="text"]');
-            const inputCantidad = ingredientesArray[i].querySelector('input[type="number"]');
-            const selectUnidad = ingredientesArray[i].querySelector('select[name*="unidad_de_medida"]');
-            const selectTipo = ingredientesArray[i].querySelector('select[name*="tipo"]');
+            for (let i = 0; i < ingredientesArray.length; i++) {
+                const inputNombre = ingredientesArray[i].querySelector('input[type="text"]');
+                const inputCantidad = ingredientesArray[i].querySelector('input[type="number"]');
+                const selectUnidad = ingredientesArray[i].querySelector('select[name*="unidad_de_medida"]');
+                const selectTipo = ingredientesArray[i].querySelector('select[name*="tipo"]');
 
-            inputNombre.setAttribute('name', `ingredientes[${i}].nombre`);
-            inputCantidad.setAttribute('name', `ingredientes[${i}].cantidad`);
-            selectUnidad.setAttribute('name', `ingredientes[${i}].unidad_de_medida`);
-            selectTipo.setAttribute('name', `ingredientes[${i}].tipo`);
+                inputNombre.setAttribute('name', `ingredientes[${i}].nombre`);
+                inputCantidad.setAttribute('name', `ingredientes[${i}].cantidad`);
+                selectUnidad.setAttribute('name', `ingredientes[${i}].unidad_de_medida`);
+                selectTipo.setAttribute('name', `ingredientes[${i}].tipo`);
 
-            inputNombre.setAttribute('id', `ingredienteNombre${i}`);
-            inputCantidad.setAttribute('id', `ingredienteCantidad${i}`);
-            selectUnidad.setAttribute('id', `unidadDeMedida${i}`);
-            selectTipo.setAttribute('id', `tipoDeIngrediente${i}`);
+                inputNombre.setAttribute('id', `ingredienteNombre${i}`);
+                inputCantidad.setAttribute('id', `ingredienteCantidad${i}`);
+                selectUnidad.setAttribute('id', `unidadDeMedida${i}`);
+                selectTipo.setAttribute('id', `tipoDeIngrediente${i}`);
+            }
         }
-    }
 
     document.querySelectorAll('.eliminarIngrediente').forEach(function(button) {
         button.addEventListener('click', function() {
@@ -291,5 +344,6 @@
         });
     });
   </script>
+
   </body>
 </html>

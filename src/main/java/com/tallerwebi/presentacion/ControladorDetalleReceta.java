@@ -65,13 +65,11 @@ public class ControladorDetalleReceta {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioActual");
         ModelMap modelo = new ModelMap();
 
-        boolean esProfesionalOPremium = usuario != null &&
-                (usuario.getRol().equals(Rol.PROFESIONAL) ||
-                        usuario.getRol().equals(Rol.USUARIO_PREMIUM));
-        modelo.put("esProfesionalOPremium", Optional.of(esProfesionalOPremium));
+        boolean esProfesional = usuario != null && usuario.getRol().equals(Rol.PROFESIONAL);
+        modelo.put("esProfesional", Optional.of(esProfesional));
 
-        if (!esProfesionalOPremium) {
-            modelo.put("mensajeError", "No tienes permisos para eliminar recetas.");
+        if (!esProfesional) {
+            modelo.put("mensajeError", "Solo los usuarios con rol PROFESIONAL pueden eliminar recetas.");
             modelo.put("unaReceta", receta);
             return new ModelAndView("detalleReceta", modelo);
         }
@@ -80,6 +78,7 @@ public class ControladorDetalleReceta {
         return new ModelAndView("redirect:/vista-receta");
     }
 
+
     @PostMapping("/modificarReceta")
     public ModelAndView modificarReceta(@ModelAttribute Receta receta,
                                         @RequestParam(value = "imagenArchivo", required = false) MultipartFile imagenArchivo,
@@ -87,13 +86,11 @@ public class ControladorDetalleReceta {
         Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioActual");
         ModelMap modelo = new ModelMap();
 
-        boolean esProfesionalOPremium = usuario != null &&
-                (usuario.getRol().equals(Rol.PROFESIONAL) ||
-                        usuario.getRol().equals(Rol.USUARIO_PREMIUM));
-        modelo.put("esProfesionalOPremium", Optional.of(esProfesionalOPremium));
+        boolean esProfesional = usuario != null && usuario.getRol().equals(Rol.PROFESIONAL);
+        modelo.put("esProfesional", Optional.of(esProfesional));
 
-        if (!esProfesionalOPremium) {
-            modelo.put("mensajeError", "No tienes permisos para modificar recetas.");
+        if (!esProfesional) {
+            modelo.put("mensajeError", "Solo los usuarios con rol PROFESIONAL pueden modificar recetas.");
             modelo.put("unaReceta", receta);
             return new ModelAndView("detalleReceta", modelo);
         }
@@ -130,6 +127,7 @@ public class ControladorDetalleReceta {
 
         return new ModelAndView("redirect:/detalleReceta?id=" + receta.getId());
     }
+
 
 
 }

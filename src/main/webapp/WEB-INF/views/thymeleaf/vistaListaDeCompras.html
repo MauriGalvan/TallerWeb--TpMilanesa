@@ -57,6 +57,14 @@
                 </div>
             </header>
 
+            <!-- Mostrar Acceso Denegado si corresponde -->
+            <div th:if="${accesoDenegado}" class="alert alert-danger mt-3 text-center">
+                <h1>Acceso Denegado</h1>
+                <p>No tienes permiso para acceder a esta página. Por favor, adquiere una cuenta premium para continuar.</p>
+                <a th:href="@{/vista-receta}" class="btn btn-primary">Volver a Recetas</a>
+            </div>
+
+
             <main class="main-contenido">
                 <section class="semana">
                     <div class="dia-div" th:each="dia : ${dias}">

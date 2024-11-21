@@ -28,11 +28,17 @@ public class ServicioLoginImpl implements ServicioLogin {
 
     @Override
     public void registrar(Usuario usuario) throws UsuarioExistente {
-        Usuario usuarioEncontrado = repositorioUsuario.buscarUsuario(usuario.getEmail(), usuario.getPassword());
-        if(usuarioEncontrado != null){
-            throw new UsuarioExistente();
+        // Utiliza el método buscar para validar si el email ya existe
+        if (repositorioUsuario.buscar(usuario.getEmail()) != null) {
+            throw new UsuarioExistente(); // Lanza excepción si ya existe un usuario con ese email
         }
-        repositorioUsuario.guardar(usuario);
+        repositorioUsuario.guardar(usuario); // Guarda el usuario si no existe
+    }
+
+
+    @Override
+    public boolean existeEmail(String email) {
+        return repositorioUsuario.buscar(email) != null; // Reutiliza el método buscar del repositorio
     }
 
     @Override

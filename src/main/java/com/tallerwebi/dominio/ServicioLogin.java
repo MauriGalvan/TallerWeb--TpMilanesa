@@ -12,4 +12,5 @@ public interface ServicioLogin {
 
     void actualizarUsuario(Usuario usuario);
 
+    boolean existeEmail(String email);
 }
