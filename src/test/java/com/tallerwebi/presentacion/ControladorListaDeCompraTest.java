@@ -120,4 +120,71 @@ public class ControladorListaDeCompraTest {
                 )))
         ));
     }
+
+    @Test
+    public void debeDenegarAccesoSiNoTieneRol() {
+        // Dado
+        String rol = null; // Usuario no tiene rol asignado
+
+        // Cuando
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rol);
+
+        // Entonces
+        Boolean accesoDenegado = (Boolean) modelAndView.getModel().get("accesoDenegado");
+        assertThat(accesoDenegado, equalTo(true));
+        assertThat(modelAndView.getViewName(), equalTo("vistaPlanificador"));
+    }
+
+    @Test
+    public void debeDenegarAccesoSiElRolEsInvalido() {
+        // Dado
+        String rolInvalido = "ADMIN";
+
+        // Cuando
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolInvalido);
+
+        // Entonces
+        Boolean accesoDenegado = (Boolean) modelAndView.getModel().get("accesoDenegado");
+        assertThat(accesoDenegado, equalTo(true));
+        assertThat(modelAndView.getViewName(), equalTo("vistaPlanificador"));
+    }
+
+    @Test
+    public void debePermitirAccesoAUsuarioPremiumYMostrarListaDeCompras() {
+        // Dado
+        String rolPremium = "USUARIO_PREMIUM";
+
+        // Detalles del planificador simulados
+        Receta receta = new Receta("Pizza", TiempoDePreparacion.TREINTA_MIN, Categoria.ALMUERZO_CENA, null, null, "", "");
+        List<DetallePlanificador> detallesPlanificador = Arrays.asList(
+                new DetallePlanificador(Dia.LUNES, Categoria.ALMUERZO_CENA, receta, "Cena")
+        );
+        List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo");
+
+        // Configuración del mock
+        when(servicioPlanificador.obtenerDetallesDelPlanificador()).thenReturn(detallesPlanificador);
+
+        // Cuando
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium);
+
+        // Entonces
+        // Verificar que el acceso no sea denegado
+        Boolean accesoDenegado = (Boolean) modelAndView.getModel().get("accesoDenegado");
+        assertThat(accesoDenegado, equalTo(false));
+
+        // Verificar que la vista es la correcta
+        assertThat(modelAndView.getViewName(), equalTo("vistaListaDeCompras"));
+
+        // Verificar que los días de la semana están presentes en el modelo
+        List<String> diasEnModelo = (List<String>) modelAndView.getModel().get("dias");
+        assertThat(diasEnModelo, equalTo(dias));
+
+        // Verificar que los detalles del planificador se cargaron correctamente
+        List<DetallePlanificador> detallesEnModelo = (List<DetallePlanificador>) modelAndView.getModel().get("detalles");
+        assertThat(detallesEnModelo, hasSize(1));
+        assertThat(detallesEnModelo.get(0).getDia(), equalTo(Dia.LUNES));
+
+    }
+
+
 }

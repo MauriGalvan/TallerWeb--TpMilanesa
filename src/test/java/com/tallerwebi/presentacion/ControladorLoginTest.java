@@ -145,6 +145,66 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Mail ya registrado, intente ingresando uno nuevo."));
 	}
 
+	@Test
+	public void noDeberiaPermitirRegistrarUsuarioConEmailExistente() throws UsuarioExistente {
+		// Preparación
+		doThrow(UsuarioExistente.class).when(servicioLoginMock).registrar(usuarioMock);
+
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.registrarme(usuarioMock);
+
+		// Validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Mail ya registrado, intente ingresando uno nuevo."));
+		assertThat(modelAndView.getModel().get("usuario"), is(usuarioMock));
+		assertThat(modelAndView.getModel().get("roles"), is(Rol.values()));
+
+		// Verificación
+		verify(servicioLoginMock, times(1)).registrar(usuarioMock);
+	}
+
+	@Test
+	public void loginConEmailIncorrectoDeberiaMostrarError() {
+		// Preparación
+		DatosLogin datosLogin = new DatosLogin("noexiste@correo.com", "123");
+		when(servicioLoginMock.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword())).thenReturn(null);
+
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLogin, requestMock);
+
+		// Validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
+	}
+
+	@Test
+	public void loginConPasswordIncorrectoDeberiaMostrarError() {
+		// Preparación
+		DatosLogin datosLogin = new DatosLogin("dami@unlam.com", "incorrecta");
+		when(servicioLoginMock.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword())).thenReturn(null);
+
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLogin, requestMock);
+
+		// Validación
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("login"));
+		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
+	}
+
+	@Test
+	public void logoutDeberiaInvalidarSesionCorrectamente() {
+		// Preparación
+		when(requestMock.getSession()).thenReturn(sessionMock);
+
+		// Ejecución
+		String resultado = controladorLogin.logout(requestMock);
+
+		// Validación
+		verify(sessionMock, times(1)).invalidate();
+		assertThat(resultado, equalToIgnoringCase("redirect:/login"));
+	}
+
+
 
 
 }

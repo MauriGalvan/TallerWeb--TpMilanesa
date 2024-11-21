@@ -286,11 +286,11 @@ public class ControladorRecetaTest {
         String categoria = "ALMUERZO_CENA";
         String tiempo = "UNA_HORA";
 
-        // Mockear HttpServletRequest y HttpSession
+
         HttpServletRequest requestMock = mock(HttpServletRequest.class);
         HttpSession sessionMock = mock(HttpSession.class);
 
-        // Configurar el valor que retorna el atributo "ROL" en la sesión
+
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ROL")).thenReturn(Rol.USUARIO);
 
@@ -301,6 +301,90 @@ public class ControladorRecetaTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaReceta"));
         assertThat(modelAndView.getModel().get("esProfesionalOPremium"), is(false));
         assertThat(modelAndView.getModel().containsKey("todasLasRecetas"), is(true));
+    }
+
+    @Test
+    public void QueUsuarioPremiumPuedaCargarReceta() throws IOException {
+        // Dado
+        String titulo = "Tarta de manzana";
+        String pasos = "1. Mezclar ingredientes\n2. Hornear";
+        TiempoDePreparacion tiempoPreparacion = TiempoDePreparacion.TREINTA_MIN;
+        Categoria categoria = Categoria.ALMUERZO_CENA;
+        String descripcion = "Una deliciosa tarta de manzana casera.";
+
+
+        byte[] imagenBytes = new byte[]{0, 1, 2};
+        MultipartFile imagenMock = new MockMultipartFile("imagen", "tarta.jpg", "image/jpeg", imagenBytes);
+
+
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("ROL")).thenReturn(Rol.USUARIO_PREMIUM);
+        when(requestMock.getParameter("ingredientes[0].nombre")).thenReturn("Manzana");
+        when(requestMock.getParameter("ingredientes[0].cantidad")).thenReturn("3");
+        when(requestMock.getParameter("ingredientes[0].unidad_de_medida")).thenReturn("UNIDAD");
+        when(requestMock.getParameter("ingredientes[0].tipo")).thenReturn("FRUTA");
+        when(requestMock.getParameter("ingredientes[1].nombre")).thenReturn(null);
+
+        // Cuando
+        ModelAndView modelAndView = controladorReceta.guardarReceta(
+                titulo,
+                pasos,
+                tiempoPreparacion,
+                categoria,
+                descripcion,
+                imagenMock,
+                requestMock
+        );
+
+        // Entonces
+        verify(servicioRecetaMock, times(1)).guardarReceta(any(Receta.class), eq(imagenMock));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/vista-receta"));
+    }
+
+    @Test
+    public void QueUsuarioProfesionalPuedaCargarReceta() throws IOException {
+        // Dado
+        String titulo = "Tarta de frutillas";
+        String pasos = "1. Preparar masa\n2. Agregar frutillas y crema";
+        TiempoDePreparacion tiempoPreparacion = TiempoDePreparacion.TREINTA_MIN;
+        Categoria categoria = Categoria.ALMUERZO_CENA;
+        String descripcion = "Una tarta fresca y deliciosa.";
+
+
+        byte[] imagenBytes = new byte[]{1, 2, 3};
+        MultipartFile imagenMock = new MockMultipartFile("imagen", "tarta.jpg", "image/jpeg", imagenBytes);
+
+
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("ROL")).thenReturn(Rol.PROFESIONAL);
+        when(requestMock.getParameter("ingredientes[0].nombre")).thenReturn("Frutilla");
+        when(requestMock.getParameter("ingredientes[0].cantidad")).thenReturn("200");
+        when(requestMock.getParameter("ingredientes[0].unidad_de_medida")).thenReturn("GRAMOS");
+        when(requestMock.getParameter("ingredientes[0].tipo")).thenReturn("FRUTA");
+        when(requestMock.getParameter("ingredientes[1].nombre")).thenReturn(null);
+
+        // Cuando
+        ModelAndView modelAndView = controladorReceta.guardarReceta(
+                titulo,
+                pasos,
+                tiempoPreparacion,
+                categoria,
+                descripcion,
+                imagenMock,
+                requestMock
+        );
+
+        // Entonces
+        verify(servicioRecetaMock, times(1)).guardarReceta(any(Receta.class), eq(imagenMock));
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/vista-receta"));
     }
 
 }

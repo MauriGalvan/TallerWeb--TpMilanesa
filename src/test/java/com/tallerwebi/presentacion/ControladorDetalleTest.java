@@ -116,6 +116,80 @@ public class ControladorDetalleTest {
         assertThat(modelAndView.getModel().get("mensajeError"), equalTo("La receta no fue modificada, verifique que los campos no estén vacíos."));
     }
 
+    @Test
+    public void QueUnProfesionalPuedaModificarReceta() {
+        // DADO
+        Receta recetaMock = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        recetaMock.setId(1);
+
+        Usuario usuarioMock = new Usuario();
+        usuarioMock.setRol(Rol.PROFESIONAL);
+
+        MultipartFile imagenMock = mock(MultipartFile.class);
+
+        // Mock de HttpServletRequest y HttpSession
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("usuarioActual")).thenReturn(usuarioMock);
+
+        // CUANDO
+        ModelAndView modelAndView = controlador.modificarReceta(recetaMock, imagenMock, request);
+
+        // ENTONCES
+        verify(servicioRecetaMock, times(1)).actualizarReceta(recetaMock);
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/detalleReceta?id=1"));
+    }
+
+
+    @Test
+    public void QueUnProfesionalPuedaEliminarReceta() {
+        // DADO
+        Receta recetaMock = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        recetaMock.setId(1);
+
+        Usuario usuarioMock = new Usuario();
+        usuarioMock.setRol(Rol.PROFESIONAL);
+
+        // Mock de HttpServletRequest y HttpSession
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("usuarioActual")).thenReturn(usuarioMock);
+
+        // CUANDO
+        ModelAndView modelAndView = controlador.eliminarReceta(recetaMock, request);
+
+        // ENTONCES
+        verify(servicioRecetaMock, times(1)).eliminarReceta(recetaMock);
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/vista-receta"));
+    }
+
+    @Test
+    public void QueUnUsuarioPremiumNoPuedaEliminarReceta() {
+        // DADO
+        Receta recetaMock = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+        recetaMock.setId(1);
+
+        Usuario usuarioMock = new Usuario();
+        usuarioMock.setRol(Rol.USUARIO_PREMIUM);
+
+        // Mock de HttpServletRequest y HttpSession
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("usuarioActual")).thenReturn(usuarioMock);
+
+        // CUANDO
+        ModelAndView modelAndView = controlador.eliminarReceta(recetaMock, request);
+
+        // ENTONCES
+        verify(servicioRecetaMock, times(0)).eliminarReceta(recetaMock);
+        assertThat(modelAndView.getViewName(), equalTo("detalleReceta"));
+        assertThat(modelAndView.getModel().get("mensajeError"), equalTo("Solo los usuarios con rol PROFESIONAL pueden eliminar recetas."));
+    }
+
+
 //    @Test
 //    public void DebeEliminarRecetaYRedirigirAVistaCorrecta() {
 //        //DADO
