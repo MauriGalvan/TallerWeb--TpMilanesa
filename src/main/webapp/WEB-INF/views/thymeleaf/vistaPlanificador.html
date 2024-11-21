@@ -88,7 +88,6 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" th:text="'Recetas para ' + ${categoria} + ' - ' + ${dia}"></h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <th:block th:each="receta : ${recetas}">
@@ -100,7 +99,6 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                <button type="button" class="btn btn-primary" onclick="agregarReceta(${categoria}, ${dia})">Agregar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -132,22 +130,6 @@
         alert("Funcionalidad en desarrollo!");
     }
 
-    function agregarReceta(categoria, dia) {
-        const recetasSeleccionadas = [];
-        const checkboxes = document.querySelectorAll(`input[name="recetasSeleccionadas"]:checked`);
-        checkboxes.forEach(checkbox => {
-            recetasSeleccionadas.push(checkbox.value);
-        });
-
-        // Guardar las recetas seleccionadas y el día/categoría
-        document.getElementById('recetasSeleccionadas').value = recetasSeleccionadas.join(',');
-        document.getElementById('diasSeleccionados').value = categoria + ' ' + dia;
-
-        // Cerrar el modal
-        const modal = document.getElementById(`modal${categoria}${dia}`);
-        const bootstrapModal = bootstrap.Modal.getInstance(modal);
-        bootstrapModal.hide();
-    }
 </script>
 <script src="js/modalRecetas.js"></script>
 <script src="js/sidebar.js"></script>

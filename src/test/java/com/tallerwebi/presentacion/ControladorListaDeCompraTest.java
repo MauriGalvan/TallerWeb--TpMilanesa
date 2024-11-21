@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.ServicioPlanificador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -9,14 +10,17 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.mock;
 
 public class ControladorListaDeCompraTest {
 
     private ControladorListaDeCompra controladorListaDeCompra;
+    private ServicioPlanificador servicioPlanificador;
 
     @BeforeEach
     public void  setUp(){
-        this.controladorListaDeCompra = new ControladorListaDeCompra();
+        servicioPlanificador = mock(ServicioPlanificador.class);
+        this.controladorListaDeCompra = new ControladorListaDeCompra(servicioPlanificador);
     }
     @Test
     public void debeRetornarLaPaginaListaDeComprasCuandoSeSeleccionaListaDeComprasEnElMenu(){

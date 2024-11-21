@@ -31,9 +31,10 @@
 }
 
 .titulo-receta {
-    padding: 12px;
+    padding: 14px;
     font-weight: bold;
     color: #333;
+    text-align: center;
 }
 
 .lista-ingredientes {

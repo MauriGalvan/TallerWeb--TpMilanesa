@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 
+import java.util.List;
+
 public interface ServicioPlanificador {
 
     Planificador obtenerPlanificador();
@@ -11,4 +13,6 @@ public interface ServicioPlanificador {
     void actualizar(Planificador planificador);
 
     void agregarDetalle(Planificador planificador, DetallePlanificador detalle);
+
+    List<DetallePlanificador> obtenerDetallesDelPlanificador();
 }

@@ -41,4 +41,13 @@ public class RepositorioPlanificadorImpl implements RepositorioPlanificador {
     public void actualizar(Planificador planificador) {
         this.sessionFactory.getCurrentSession().update(planificador);
     }
+
+    @Override
+    public List<DetallePlanificador> obtenerDetallesDelPlanificador() {
+        String hql = "SELECT dp FROM Planificador p JOIN p.detallesPlanificador dp";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        List<DetallePlanificador> detalles = query.getResultList();
+
+        return detalles;
+    }
 }

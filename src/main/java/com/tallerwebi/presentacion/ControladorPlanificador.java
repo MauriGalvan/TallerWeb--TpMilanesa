@@ -24,8 +24,8 @@ public class ControladorPlanificador {
     public ControladorPlanificador(ServicioReceta servicioReceta, ServicioPlanificador servicioPlanificador) {
         this.servicioReceta = servicioReceta;
         this.servicioPlanificador = servicioPlanificador;
-
     }
+
     @RequestMapping("/vista-planificador")
     public ModelAndView irAPlanificador() {
         List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" , "Domingo");

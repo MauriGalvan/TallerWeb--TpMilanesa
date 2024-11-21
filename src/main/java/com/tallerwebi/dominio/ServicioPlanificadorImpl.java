@@ -48,4 +48,9 @@ public class ServicioPlanificadorImpl implements ServicioPlanificador{
         planificador.agregarDetalle(detalle);
     }
 
+    @Override
+    public List<DetallePlanificador> obtenerDetallesDelPlanificador() {
+        return this.repositorioPlanificador.obtenerDetallesDelPlanificador();
+    }
+
 }
