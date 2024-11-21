@@ -1,6 +1,8 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,17 +23,19 @@ public class Receta {
     @Transient
     private String imagenBase64;
 
+    @OneToMany (mappedBy = "receta", fetch = FetchType.EAGER, cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<Ingrediente> ingredientes = new ArrayList<>();
+
     private String titulo;
-    private String ingredientes;
     private String descripcion;
     private String pasos;
     private int contador_visitas;
 
     public Receta() {
-    }
 
+    }
     public Receta(String titulo, TiempoDePreparacion tiempo_preparacion, Categoria categoria, byte[] imagen,
-                  String ingredientes, String descripcion, String pasos){
+                  List<Ingrediente> ingredientes, String descripcion, String pasos){
         this.titulo = titulo;
         this.tiempo_preparacion = tiempo_preparacion;
         this.categoria = categoria;
@@ -40,6 +44,7 @@ public class Receta {
         this.descripcion = descripcion;
         this.pasos = pasos;
         this.contador_visitas = 0;
+
     }
 
     public String getTitulo() {
@@ -82,12 +87,20 @@ public class Receta {
         this.imagen = imagen;
     }
 
-    public String getIngredientes() {
+    public List<Ingrediente> getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(String ingredientes) {
-        this.ingredientes = ingredientes;
+    public void addIngrediente(Ingrediente ingrediente) {
+        ingrediente.setReceta(this);
+        this.ingredientes.add(ingrediente);
+    }
+
+    public void setIngredientes(List<Ingrediente> ingredientes) {
+        this.ingredientes.clear();
+        if (ingredientes != null) {
+            ingredientes.forEach(this::addIngrediente);
+        }
     }
 
     public String getDescripcion() {

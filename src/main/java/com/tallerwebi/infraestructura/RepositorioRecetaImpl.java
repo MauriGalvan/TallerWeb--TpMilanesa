@@ -1,9 +1,6 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Receta;
-import com.tallerwebi.dominio.RepositorioReceta;
-import com.tallerwebi.dominio.TiempoDePreparacion;
+import com.tallerwebi.dominio.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,7 +25,7 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         sessionFactory.getCurrentSession().save(receta);
     }
 
-
+    @Transactional
     @Override
     public void eliminar(Receta receta) {
         sessionFactory.getCurrentSession().delete(receta);
@@ -50,13 +47,10 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
     @Transactional
     @Override
     public Receta getRecetaPorId(int id) {
-        List<Receta> recetas = getRecetas();
-        for (Receta receta : recetas){
-            if (id == receta.getId()){
-                return receta;
-            }
-        }
-        return null;
+        String hql = "FROM Receta r WHERE r.id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return (Receta)query.getSingleResult();
     }
 
     @Override
@@ -120,6 +114,13 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         return query.getResultList();
     }
 
+    @Override
+    public List<Ingrediente> getIngredientesDeRecetaPorId(int id) {
+        String hql = "SELECT r.ingredientes FROM Receta r WHERE r.id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
 
 
 }

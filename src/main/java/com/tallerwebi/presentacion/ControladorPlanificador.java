@@ -1,12 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Categoria;
-import com.tallerwebi.dominio.Receta;
-import com.tallerwebi.dominio.ServicioReceta;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,18 +18,28 @@ public class ControladorPlanificador {
 
 
     private final ServicioReceta servicioReceta;
+    private ServicioPlanificador servicioPlanificador;
 
     @Autowired
-    public ControladorPlanificador(ServicioReceta servicioReceta) {
+    public ControladorPlanificador(ServicioReceta servicioReceta, ServicioPlanificador servicioPlanificador) {
         this.servicioReceta = servicioReceta;
+        this.servicioPlanificador = servicioPlanificador;
+
     }
     @RequestMapping("/vista-planificador")
     public ModelAndView irAPlanificador() {
-        List<String> dias = Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" , "Domingo");
+        List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" , "Domingo");
         List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
+
+        Planificador planificador = servicioPlanificador.obtenerPlanificador();
+        List<DetallePlanificador> detalles = planificador.obtenerDetalles();
+
         ModelMap modelo = new ModelMap();
         modelo.put("dias", dias);
         modelo.put("categorias", categorias);
+        modelo.put("planificador", planificador);
+        modelo.put("detalles", detalles);
+
         return new ModelAndView("vistaPlanificador", modelo);
     }
 
@@ -48,9 +57,6 @@ public class ControladorPlanificador {
             case "ALMUERZO":
             case "CENA":
                 categoriaEnum = Categoria.ALMUERZO_CENA;
-                break;
-            case "POSTRE":
-                categoriaEnum = Categoria.POSTRE;
                 break;
             default:
                 throw new IllegalArgumentException("Categoría no válida: " + categoria);
@@ -72,13 +78,33 @@ public class ControladorPlanificador {
         return new ModelAndView("recetasModal", modelo);
     }
 
+    @RequestMapping("/vista-lista-compra")
+    public ModelAndView irAListaCompra() {
+        return new ModelAndView("vistaLista");
+    }
 
+    @RequestMapping(value = "/guardarPlanificador", method = RequestMethod.POST)
+    public ModelAndView guardarPlanificador(@RequestParam("dias") String diasStr, @RequestParam("recetas") String recetasStr, @RequestParam("categorias") String categoriasStr) {
+        List<String> dias = Arrays.asList(diasStr.split(","));
+        List<String> recetas = Arrays.asList(recetasStr.split(","));
+        List<String> categorias = Arrays.asList(categoriasStr.split(","));
 
+        Planificador planificador = servicioPlanificador.obtenerPlanificador();
 
+        for (int i = 0; i < dias.size(); i++) {
+            Dia diaEnum = Dia.valueOf(dias.get(i).toUpperCase().trim());
+            int recetaId = Integer.parseInt(recetas.get(i));;
+            String categoriaDelPlanificador = categorias.get(i);
 
+            Receta receta = servicioReceta.getUnaRecetaPorId(recetaId);
 
+            DetallePlanificador nuevoDetalle = new DetallePlanificador(diaEnum, receta.getCategoria(), receta, categoriaDelPlanificador);
+            servicioPlanificador.agregarDetalle(planificador, nuevoDetalle);
+        }
 
+        servicioPlanificador.actualizar(planificador);
 
-
+        return new ModelAndView("redirect:vista-planificador");
+    }
 
 }
