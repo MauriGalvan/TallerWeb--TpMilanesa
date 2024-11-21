@@ -34,7 +34,7 @@ public class ControladorPlanificadorTest {
         this.controladorReceta = new ControladorReceta(servicioRecetaMock);
     }
 
-    private List<Ingrediente> unosIngredientes(){
+    private List<Ingrediente> unosIngredientes() {
         return Arrays.asList(
                 new Ingrediente("Carne", 1, Unidad_De_Medida.KILOGRAMOS, Tipo_Ingrediente.PROTEINA_ANIMAL),
                 new Ingrediente("Huevo", 2, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.PROTEINA_ANIMAL),
@@ -42,9 +42,10 @@ public class ControladorPlanificadorTest {
                 new Ingrediente("Pan rallado", 200, Unidad_De_Medida.GRAMOS, Tipo_Ingrediente.CEREAL_O_GRANO)
         );
     }
-    private Planificador planificadorCreado(){
+
+    private Planificador planificadorCreado() {
         byte[] imagen = new byte[]{0, 1};
-        Receta receta1 = new Receta ("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
+        Receta receta1 = new Receta("Café cortado con tostadas", TiempoDePreparacion.DIEZ_MIN, Categoria.DESAYUNO_MERIENDA,
                 imagen, this.unosIngredientes(), "Un clásico de las mañanas.", ".");
         DetallePlanificador detalle1 = new DetallePlanificador(Dia.MARTES, Categoria.DESAYUNO_MERIENDA, receta1, "Desayuno");
         Receta receta2 = new Receta("Tarta de jamón y queso", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
@@ -101,10 +102,10 @@ public class ControladorPlanificadorTest {
     }
 
     @Test
-    public void queSeActualiceElPlanificadorCuandoQueSeGuardaUnaReceta(){
+    public void queSeActualiceElPlanificadorCuandoQueSeGuardaUnaReceta() {
         Planificador planificador = this.planificadorCreado();
         byte[] imagen = new byte[]{0, 1};
-        Receta receta = new Receta ("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
+        Receta receta = new Receta("Milanesa con papas fritas", TiempoDePreparacion.VEINTE_MIN, Categoria.ALMUERZO_CENA,
                 imagen, this.unosIngredientes(), "Milanesa con guarnición de papas fritas", ".");
         Dia dia = Dia.SABADO;
         Categoria categoria = Categoria.ALMUERZO_CENA;
@@ -119,5 +120,40 @@ public class ControladorPlanificadorTest {
         verify(servicioPlanificadorMock, times(1)).agregarDetalle(any(Planificador.class), any(DetallePlanificador.class));
         verify(servicioPlanificadorMock, times(1)).actualizar(planificador);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:vista-planificador"));
+    }
+
+    @Test
+    public void quePermitaAccesoAlPlanificadorSoloSiElUsuarioEsPremium() {
+        // Dado
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.getSession().setAttribute("ROL", "USUARIO_PREMIUM");
+
+        Planificador planificador = new Planificador();
+        when(servicioPlanificadorMock.obtenerPlanificador()).thenReturn(planificador);
+
+        // Cuando
+        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString());
+
+        // Entonces
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
+        assertThat(modelAndView.getModel().get("accesoDenegado"), equalTo(false));
+        assertThat(modelAndView.getModel().get("planificador"), equalTo(planificador));
+    }
+
+    @Test
+    public void queBloqueeAccesoAlPlanificadorSiElUsuarioNoEsPremium() {
+        // Dado
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.getSession().setAttribute("ROL", "USUARIO");
+
+        // Cuando
+        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString());
+
+        // Entonces
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
+        assertThat(modelAndView.getModel().get("accesoDenegado"), equalTo(true));
+        assertThat(modelAndView.getModel().get("planificador"), equalTo(null));
+
+
     }
 }
