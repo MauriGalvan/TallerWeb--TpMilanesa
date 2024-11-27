@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.Base64;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 import java.util.List;
@@ -35,9 +36,13 @@ public class ControladorDetalleReceta {
 
 
     @RequestMapping("/detalleReceta")
-    public ModelAndView mostrarDetalleReceta(Integer id) {
+    public ModelAndView mostrarDetalleReceta(Integer id, HttpServletRequest request) {
         ModelMap modelo = new ModelMap();
         Receta receta = servicioReceta.getUnaRecetaPorId(id);
+
+        // Obtener el usuarioNombre desde la sesión
+        HttpSession session = request.getSession();
+        String usuarioNombre = (String) session.getAttribute("usuarioNombre");
 
         //cuenta las visitas
         servicioReceta.actualizarVisitasDeReceta(receta);
@@ -46,7 +51,7 @@ public class ControladorDetalleReceta {
             String imagenBase64 = Base64.getEncoder().encodeToString(receta.getImagen());
             receta.setImagenBase64(imagenBase64);
         }
-
+        modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("unaReceta", receta);
         return new ModelAndView("detalleReceta", modelo);
     }

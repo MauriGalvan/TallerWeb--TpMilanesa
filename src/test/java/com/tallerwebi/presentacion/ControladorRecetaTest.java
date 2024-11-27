@@ -83,9 +83,14 @@ public class ControladorRecetaTest {
     public void QueRetorneLaVistaDetalleRecetaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
         //Dado
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         //Cuando
         when(servicioRecetaMock.getUnaRecetaPorId(receta.getId())).thenReturn(receta);
-        ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(Integer.valueOf(receta.getId()));
+        ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(Integer.valueOf(receta.getId()), requestMock);
         //Entonces
         verify(servicioRecetaMock, times(1)).getUnaRecetaPorId(receta.getId());
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("detalleReceta"));
