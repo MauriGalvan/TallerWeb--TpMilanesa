@@ -32,15 +32,25 @@ public class ControladorListaDeCompra {
     public ModelAndView irAListaDeCompras(@SessionAttribute(value = "ROL", required = false) String rol, HttpServletRequest request) {
 
         ModelMap modelo = new ModelMap();
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioActual");
+
+
+
+        if (usuario == null) {
+            usuario = new Usuario();
+            usuario.setUsername("Invitado");
+        }
+
+        modelo.put("usuario", usuario);
+
 
         if (rol == null || !rol.equals("USUARIO_PREMIUM")) {
-            modelo.put("accesoDenegado", true); // Flag para indicar acceso denegado
+            modelo.put("accesoDenegado", true);
             return new ModelAndView("vistaPlanificador", modelo);
         }
 
         List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" , "Domingo");
         List<DetallePlanificador> detalles = servicioPlanificador.obtenerDetallesDelPlanificador();
-        // Obtener el usuarioNombre desde la sesión
         HttpSession session = request.getSession();
         String usuarioNombre = (String) session.getAttribute("usuarioNombre");
         modelo.put("usuarioNombre", usuarioNombre);

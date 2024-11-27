@@ -29,27 +29,30 @@ public class ControladorPlanificador {
         this.servicioPlanificador = servicioPlanificador;
     }
 
+
     @RequestMapping("/vista-planificador")
     public ModelAndView irAPlanificador(@SessionAttribute(value = "ROL", required = false) String rol, HttpServletRequest request) {
 
         ModelMap modelo = new ModelMap();
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioActual");
 
-        if (rol == null || !rol.equals("USUARIO_PREMIUM")) {
-            modelo.put("accesoDenegado", true); // Flag para indicar acceso denegado
-            return new ModelAndView("vistaPlanificador", modelo);
+        if (usuario == null) {
+            usuario = new Usuario();
+            usuario.setUsername("Invitado");
         }
 
 
-        List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" , "Domingo");
+        if (rol == null || !rol.equals("USUARIO_PREMIUM")) {
+            modelo.put("accesoDenegado", true);
+            return new ModelAndView("vistaPlanificador", modelo);
+        }
+
+        List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo");
         List<String> categorias = Arrays.asList("Desayuno", "Almuerzo", "Merienda", "Cena");
 
         Planificador planificador = servicioPlanificador.obtenerPlanificador();
         List<DetallePlanificador> detalles = planificador.obtenerDetalles();
-        // Obtener el usuarioNombre desde la sesión
-        HttpSession session = request.getSession();
-        String usuarioNombre = (String) session.getAttribute("usuarioNombre");
 
-        modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("dias", dias);
         modelo.put("categorias", categorias);
         modelo.put("accesoDenegado", false);
@@ -59,11 +62,11 @@ public class ControladorPlanificador {
         return new ModelAndView("vistaPlanificador", modelo);
     }
 
+
     @RequestMapping("/recetasModal")
     public ModelAndView obtenerRecetasPorCategoria(@RequestParam("categoria") String categoria, @RequestParam("dia") String dia) {
         ModelMap modelo = new ModelMap();
 
-        // Lógica de mapeo para convertir la categoría a un valor del enum
         Categoria categoriaEnum;
         switch (categoria.toUpperCase()) {
             case "DESAYUNO":
