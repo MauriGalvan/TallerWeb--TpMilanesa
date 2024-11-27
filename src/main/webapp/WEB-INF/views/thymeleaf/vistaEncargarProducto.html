@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title th:text="${titulo}">Vista Encargar Producto</title>
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!--CSS-->
+    <link rel="stylesheet" th:href="@{/css/vistaReceta.css}">
+    <link rel="stylesheet" th:href="@{/css/planificador.css}">
+    <link rel="stylesheet" th:href="@{/css/listaCompra.css}">
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <aside id="sidebar" class="sidebar fondo-verde">
+        <div class="sidebar-content">
+          <a href="#" class="logo-link">
+            <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" alt="Logo de la Web" class="logo">
+          </a>
+          <nav>
+            <ul>
+              <li><a th:href="@{/vista-receta}" class="nav-link"><i class="fa-solid fa-utensils"></i> Recetas</a></li>
+              <li><a th:href="@{/vista-planificador}" class="nav-link"><i class="fas fa-calendar-alt"></i> Planificador</a></li>
+              <li><a th:href="@{/listaCompras}" class="nav-link"><i class="fas fa-shopping-cart" ></i> Lista de compras</a></li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+
+      <div class="contenido-general">
+        <button class="btn fondo-verde d-lg-none btn-nav" type="button" id="sidebarToggle" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+        <header>
+          <div class="header-container">
+            <h1 class="titulo-header">Confirmar Productos</h1>
+            <div class="user-menu">
+              <div class="dropdown">
+                <a href="#" id="dropdownUser" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png" alt="usuario" class="user-avatar">
+                  <span>usuario</span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a th:href="@{/perfil}" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a href="#" class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket"></i>Salir</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <main>
+          <div>
+            <ul>
+              <li th:each="ingrediente : ${ingredientes}" th:text="${ingrediente.nombre}">
+              </li>
+            </ul>
+          </div>
+        </main>
+
+        <footer>
+          <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

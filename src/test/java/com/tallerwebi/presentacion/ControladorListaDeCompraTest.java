@@ -5,22 +5,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class ControladorListaDeCompraTest {
 
     private ControladorListaDeCompra controladorListaDeCompra;
     private ServicioPlanificador servicioPlanificador;
+    private ServicioIngrediente servicioIngrediente;
 
     @BeforeEach
     public void setUp() {
         servicioPlanificador = mock(ServicioPlanificador.class);
-        controladorListaDeCompra = new ControladorListaDeCompra(servicioPlanificador);
+        servicioIngrediente = mock(ServicioIngrediente.class);
+        controladorListaDeCompra = new ControladorListaDeCompra(servicioPlanificador, servicioIngrediente);
     }
 
     @Test
@@ -186,5 +190,33 @@ public class ControladorListaDeCompraTest {
 
     }
 
+    @Test
+    public void debeIrAEncargarProducto() {
+        String ingredientesStr = "1,2,3";
+        Ingrediente ingrediente1 = new Ingrediente("Carne", 1, Unidad_De_Medida.KILOGRAMOS, Tipo_Ingrediente.PROTEINA_ANIMAL);
+        Ingrediente ingrediente2 = new Ingrediente("Huevo", 2, Unidad_De_Medida.UNIDAD,Tipo_Ingrediente.PROTEINA_ANIMAL);
+        Ingrediente ingrediente3 = new Ingrediente("Papas", 10, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.VERDURA);
+        List<Ingrediente> ingredientes = new ArrayList<>();
+        ingredientes.add(ingrediente1);
+        ingredientes.add(ingrediente2);
+        ingredientes.add(ingrediente3);
+
+        when(servicioIngrediente.getIngredientePorId(1)).thenReturn(ingrediente1);
+        when(servicioIngrediente.getIngredientePorId(2)).thenReturn(ingrediente2);
+        when(servicioIngrediente.getIngredientePorId(3)).thenReturn(ingrediente3);
+
+        ModelAndView modelAndView = controladorListaDeCompra.irAEncargarProducto(ingredientesStr);
+
+        assertEquals("vistaEncargarProducto", modelAndView.getViewName());
+
+        assertEquals(3, ingredientes.size());
+        assertEquals(ingrediente1, ingredientes.get(0));
+        assertEquals(ingrediente2, ingredientes.get(1));
+        assertEquals(ingrediente3, ingredientes.get(2));
+
+        verify(servicioIngrediente, times(1)).getIngredientePorId(1);
+        verify(servicioIngrediente, times(1)).getIngredientePorId(2);
+        verify(servicioIngrediente, times(1)).getIngredientePorId(3);
+    }
 
 }

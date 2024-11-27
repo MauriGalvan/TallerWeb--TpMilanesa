@@ -84,4 +84,18 @@ public class RepositorioIngredienteImplTest {
         assertThat(ingredientesObtenidos2, not(hasItem(ingrediente1)));
         assertThat(ingredientesObtenidos2, hasItem(ingrediente2));
     }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueSeGuardaUnIngredienteCuandoConsultoPorSuIdEntoncesObtengoElIngrediente(){
+        Ingrediente ingrediente = new Ingrediente();
+
+        this.sessionFactory.getCurrentSession().save(ingrediente);
+        int idBuscado = ingrediente.getId();
+
+        Ingrediente ingredienteBuscado = this.repositorioIngrediente.getIngredientePorId(idBuscado);
+
+        assertEquals(ingrediente, ingredienteBuscado);
+    }
 }

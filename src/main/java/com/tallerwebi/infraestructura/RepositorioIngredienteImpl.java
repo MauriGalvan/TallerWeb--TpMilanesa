@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 @Repository
 public class RepositorioIngredienteImpl implements RepositorioIngrediente {
@@ -27,5 +28,14 @@ public class RepositorioIngredienteImpl implements RepositorioIngrediente {
     @Override
     public void guardar(Ingrediente ingrediente) {
         this.sessionFactory.getCurrentSession().save(ingrediente);
+    }
+
+    @Transactional
+    @Override
+    public Ingrediente getIngredientePorId(int id) {
+        String hql = "FROM Ingrediente i WHERE i.id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return (Ingrediente)query.getSingleResult();
     }
 }
