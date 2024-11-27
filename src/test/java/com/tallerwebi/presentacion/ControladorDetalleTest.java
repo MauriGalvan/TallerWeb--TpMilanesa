@@ -51,10 +51,13 @@ public class ControladorDetalleTest {
         int id = 1;
         Receta recetaMock = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
         recetaMock.setId(id);
-
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         //CUANDO
         when(servicioRecetaMock.getUnaRecetaPorId(id)).thenReturn(recetaMock);
-        ModelAndView modelAndView = controlador.mostrarDetalleReceta(Integer.valueOf(recetaMock.getId()));
+        ModelAndView modelAndView = controlador.mostrarDetalleReceta(Integer.valueOf(recetaMock.getId()),requestMock);
         //ENTONCES
         Receta recetaDelModelo = (Receta) modelAndView.getModel().get("unaReceta");
         assertThat(recetaDelModelo.getTitulo(), equalTo(recetaMock.getTitulo()));

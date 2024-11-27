@@ -30,7 +30,7 @@ public class Receta {
     private String descripcion;
     private String pasos;
     private int contador_visitas;
-
+    private String autor;
     public Receta() {
 
     }
@@ -45,6 +45,26 @@ public class Receta {
         this.pasos = pasos;
         this.contador_visitas = 0;
 
+    }
+    public Receta(String titulo, TiempoDePreparacion tiempo_preparacion, Categoria categoria, byte[] imagen,
+                  List<Ingrediente> ingredientes, String descripcion, String pasos,String autor){
+        this.titulo = titulo;
+        this.tiempo_preparacion = tiempo_preparacion;
+        this.categoria = categoria;
+        this.imagen = imagen;
+        this.ingredientes = ingredientes;
+        this.descripcion = descripcion;
+        this.pasos = pasos;
+        this.contador_visitas = 0;
+        this.autor = autor;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
     }
 
     public String getTitulo() {

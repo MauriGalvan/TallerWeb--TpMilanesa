@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -68,8 +70,14 @@ public class ControladorPlanificadorTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.getSession().setAttribute("ROL", "USUARIO_PREMIUM");
 
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString());
+        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString(),requestMock);
 
         // Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
@@ -130,9 +138,15 @@ public class ControladorPlanificadorTest {
 
         Planificador planificador = new Planificador();
         when(servicioPlanificadorMock.obtenerPlanificador()).thenReturn(planificador);
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
 
         // Cuando
-        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString());
+        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString(),requestMock);
 
         // Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));
@@ -145,9 +159,14 @@ public class ControladorPlanificadorTest {
         // Dado
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.getSession().setAttribute("ROL", "USUARIO");
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString());
+        ModelAndView modelAndView = controladorPlanificador.irAPlanificador(request.getSession().getAttribute("ROL").toString(),requestMock);
 
         // Entonces
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vistaPlanificador"));

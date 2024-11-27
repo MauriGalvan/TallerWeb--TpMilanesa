@@ -121,6 +121,14 @@ public class RepositorioRecetaImpl implements RepositorioReceta {
         query.setParameter("id", id);
         return query.getResultList();
     }
+    @Transactional
+    @Override
+    public List<Receta> buscarPorAutor(String autor) {
+        String hql = "FROM Receta where autor = :autor";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("autor", autor);
+        return query.getResultList();
+    }
 
 
 }

@@ -155,6 +155,7 @@ public class ControladorReceta {
             @RequestParam("tiempoPreparacion") TiempoDePreparacion tiempoPreparacion,
             @RequestParam("categoria") Categoria categoria,
             @RequestParam("descripcion") String descripcion,
+            @RequestParam("autor") String autor,
             @RequestParam("imagen") MultipartFile imagen,
             HttpServletRequest request) { //se pasan los ingredientes por este parámetro, porque hay errores con el List<>
 
@@ -179,6 +180,7 @@ public class ControladorReceta {
                 imagenBytes = imagen.getBytes();
             }
             Receta nuevaReceta = new Receta(titulo, tiempoPreparacion, categoria, imagenBytes, ingredientes, descripcion, pasos);
+            nuevaReceta.setAutor(autor);
             servicioReceta.guardarReceta(nuevaReceta, imagen);
 
             return new ModelAndView("redirect:/vista-receta");

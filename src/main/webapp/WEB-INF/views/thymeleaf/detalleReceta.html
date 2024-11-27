@@ -20,7 +20,7 @@
     <div class="row">
       <aside id="sidebar" class="sidebar fondo-verde" th:fragment="aside">
         <div class="sidebar-content">
-          <a href="#" class="logo-link">
+          <a href="http://localhost:8080/spring/vista-receta" class="logo-link">
             <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" alt="Logo de la Web" class="logo">
           </a>
           <nav>
@@ -96,7 +96,12 @@
                     <h5 class="intrucciones">Preparación:</h5>
                     <p th:text="${unaReceta.pasos}"></p>
                   </div>
-
+                    <!-- autor-->
+                    <div class="mt-2">
+                        <h6 class="autor">Creado por:
+                            <a th:href="@{/profesionales/{nombre}(nombre=${unaReceta.autor})}" th:text="${unaReceta.autor}">Nombre del Autor</a>
+                        </h6>
+                    </div>
 <!--                  &lt;!&ndash; Botones de eliminar y modificar &ndash;&gt;-->
 <!--                  <div class="mt-4">-->
 <!--                    <button class="btn btn-danger" onclick="document.getElementById('modalEliminar').checked=true;">Eliminar </button>-->

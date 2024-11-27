@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.lang.model.type.DeclaredType;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +29,7 @@ public class ControladorListaDeCompra {
     }
 
     @GetMapping("/listaCompras")
-    public ModelAndView irAListaDeCompras(@SessionAttribute(value = "ROL", required = false) String rol) {
+    public ModelAndView irAListaDeCompras(@SessionAttribute(value = "ROL", required = false) String rol, HttpServletRequest request) {
 
         ModelMap modelo = new ModelMap();
 
@@ -38,7 +40,10 @@ public class ControladorListaDeCompra {
 
         List<String> dias = Arrays.asList("Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado" , "Domingo");
         List<DetallePlanificador> detalles = servicioPlanificador.obtenerDetallesDelPlanificador();
-
+        // Obtener el usuarioNombre desde la sesión
+        HttpSession session = request.getSession();
+        String usuarioNombre = (String) session.getAttribute("usuarioNombre");
+        modelo.put("usuarioNombre", usuarioNombre);
 
         modelo.put("dias", dias);
         modelo.put("detalles", detalles);

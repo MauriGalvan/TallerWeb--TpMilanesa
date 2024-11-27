@@ -444,7 +444,38 @@ public class RepositorioRecetaImplTest {
         assertThat(recetasFiltradas, not(hasItem(hasProperty("categoria", equalTo(Categoria.DESAYUNO_MERIENDA)))));
     }
 
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenRecetasCuandoBuscoPorAutorEntoncesObtengoRecetasCuyoAutorCoincide() {
 
+        Receta receta1 = new Receta();
+        receta1.setAutor("mauri");
+        receta1.setTitulo("Milanesa napolitana");
+
+        Receta receta2 = new Receta();
+        receta2.setAutor("juan");
+        receta2.setTitulo("Tortilla de papas");
+
+        Receta receta3 = new Receta();
+        receta3.setAutor("mauri");
+        receta3.setTitulo("Milanesa con papas fritas");
+        this.sessionFactory.getCurrentSession().save(receta1);
+        this.sessionFactory.getCurrentSession().save(receta2);
+        this.sessionFactory.getCurrentSession().save(receta3);
+
+        List<Receta> recetasFiltradas = this.repositorioReceta.buscarPorAutor("mauri");
+
+        assertThat(recetasFiltradas.size(), equalTo(2));
+
+        assertThat(recetasFiltradas, hasItem(receta1));
+        assertThat(recetasFiltradas, hasItem(receta3));
+
+        assertThat(recetasFiltradas, not(hasItem(receta2)));
+
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa napolitana"))));
+        assertThat(recetasFiltradas, hasItem(hasProperty("titulo", equalTo("Milanesa con papas fritas"))));
+    }
 
 }
 

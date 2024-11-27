@@ -18,7 +18,7 @@
             <div class="row">
                 <aside id="sidebar" class="sidebar fondo-verde" >
                     <div class="sidebar-content">
-                        <a href="#" class="logo-link">
+                        <a href="http://localhost:8080/spring/vista-receta" class="logo-link">
                             <img src="https://i.postimg.cc/WzB31sKN/milanesa-logo.png" alt="Logo de la Web" class="logo">
                         </a>
                         <nav>
@@ -81,6 +81,12 @@
                                                 <div class="mb-3">
                                                     <label for="descripcion" class="col-form-label">Descripción:</label>
                                                     <textarea id="descripcion" name="descripcion" class="form-control" required></textarea>
+                                                </div>
+                                                <!-- autor-->
+                                                <div class="mb-3">
+                                                    <label for="autor" class="col-form-label">Autor:</label>
+                                                    <input type="text" id="autor" name="autor" class="form-control"
+                                                           th:value="${usuarioNombre}" placeholder="Nombre del autor" required />
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="tiempoPreparacion" class="col-form-label">Tiempo de preparación:</label>

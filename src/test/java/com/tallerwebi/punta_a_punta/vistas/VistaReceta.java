@@ -45,9 +45,10 @@ public class VistaReceta extends VistaWeb {
         return this.obtenerTextoDelElemento("#modalRecetaLabel").equals("Cargar nueva receta");
     }
 
-    public void completarFormularioReceta(String titulo, String descripcion, String tiempoPreparacion, String categoria, String ingrediente, String cantidad, String nombreArchivo) {
+    public void completarFormularioReceta(String titulo, String descripcion,String autor ,String tiempoPreparacion, String categoria, String ingrediente, String cantidad, String nombreArchivo) {
         this.escribirEnElElemento("#titulo", titulo);
         this.escribirEnElElemento("#descripcion", descripcion);
+        this.escribirEnElElemento("#autor", autor);
         this.seleccionarOpcion("#tiempoPreparacion", tiempoPreparacion);
         this.seleccionarOpcion("#categoria", categoria);
         this.page.locator("button:has-text('Añadir Ingrediente')").click();

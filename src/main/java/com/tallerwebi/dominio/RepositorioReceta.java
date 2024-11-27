@@ -30,5 +30,6 @@ public interface RepositorioReceta {
 
     List<Ingrediente> getIngredientesDeRecetaPorId(int id);
 
+    List<Receta> buscarPorAutor(String autor);
 
 }

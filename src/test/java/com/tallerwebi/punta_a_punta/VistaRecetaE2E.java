@@ -71,6 +71,7 @@ public class VistaRecetaE2E {
         vistaReceta.completarFormularioReceta(
                 "Receta Test con Imagen",
                 "Descripción de prueba con imagen",
+                "martitegui",
                 "DIEZ_MIN",
                 "ALMUERZO_CENA",
                 "Ingrediente 1",

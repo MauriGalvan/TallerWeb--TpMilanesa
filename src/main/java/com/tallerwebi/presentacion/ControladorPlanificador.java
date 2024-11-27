@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -28,7 +30,7 @@ public class ControladorPlanificador {
     }
 
     @RequestMapping("/vista-planificador")
-    public ModelAndView irAPlanificador(@SessionAttribute(value = "ROL", required = false) String rol) {
+    public ModelAndView irAPlanificador(@SessionAttribute(value = "ROL", required = false) String rol, HttpServletRequest request) {
 
         ModelMap modelo = new ModelMap();
 
@@ -43,8 +45,11 @@ public class ControladorPlanificador {
 
         Planificador planificador = servicioPlanificador.obtenerPlanificador();
         List<DetallePlanificador> detalles = planificador.obtenerDetalles();
+        // Obtener el usuarioNombre desde la sesión
+        HttpSession session = request.getSession();
+        String usuarioNombre = (String) session.getAttribute("usuarioNombre");
 
-
+        modelo.put("usuarioNombre", usuarioNombre);
         modelo.put("dias", dias);
         modelo.put("categorias", categorias);
         modelo.put("accesoDenegado", false);

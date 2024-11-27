@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,8 +31,14 @@ public class ControladorListaDeCompraTest {
         String rolNoPremium = "USUARIO_REGULAR";
         when(servicioPlanificador.obtenerDetallesDelPlanificador()).thenReturn(Arrays.asList());
 
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolNoPremium);
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolNoPremium, requestMock);
 
         // Entonces
         Boolean accesoDenegado = (Boolean) modelAndView.getModel().get("accesoDenegado");
@@ -49,9 +57,14 @@ public class ControladorListaDeCompraTest {
                 new DetallePlanificador(Dia.LUNES, Categoria.ALMUERZO_CENA, receta, "Cena")
         );
         when(servicioPlanificador.obtenerDetallesDelPlanificador()).thenReturn(detallesPlanificador);
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium);
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium,requestMock);
 
         // Entonces
         List<DetallePlanificador> detalles = (List<DetallePlanificador>) modelAndView.getModel().get("detalles");
@@ -70,9 +83,14 @@ public class ControladorListaDeCompraTest {
                 new DetallePlanificador(Dia.MARTES, Categoria.DESAYUNO_MERIENDA, receta, "Desayuno")
         );
         when(servicioPlanificador.obtenerDetallesDelPlanificador()).thenReturn(detallesPlanificador);
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium);
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium,requestMock);
 
         // Entonces
         List<String> diasSemana = (List<String>) modelAndView.getModel().get("dias");
@@ -97,9 +115,14 @@ public class ControladorListaDeCompraTest {
                 new DetallePlanificador(Dia.LUNES, Categoria.DESAYUNO_MERIENDA, receta1, "Desayuno")
         );
         when(servicioPlanificador.obtenerDetallesDelPlanificador()).thenReturn(detallesPlanificador);
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium);
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium,requestMock);
 
         // Entonces
         List<DetallePlanificador> detalles = (List<DetallePlanificador>) modelAndView.getModel().get("detalles");
@@ -125,9 +148,14 @@ public class ControladorListaDeCompraTest {
     public void debeDenegarAccesoSiNoTieneRol() {
         // Dado
         String rol = null; // Usuario no tiene rol asignado
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rol);
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rol,requestMock);
 
         // Entonces
         Boolean accesoDenegado = (Boolean) modelAndView.getModel().get("accesoDenegado");
@@ -139,9 +167,14 @@ public class ControladorListaDeCompraTest {
     public void debeDenegarAccesoSiElRolEsInvalido() {
         // Dado
         String rolInvalido = "ADMIN";
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolInvalido);
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolInvalido,requestMock);
 
         // Entonces
         Boolean accesoDenegado = (Boolean) modelAndView.getModel().get("accesoDenegado");
@@ -163,9 +196,14 @@ public class ControladorListaDeCompraTest {
 
         // Configuración del mock
         when(servicioPlanificador.obtenerDetallesDelPlanificador()).thenReturn(detallesPlanificador);
+        // Crear un HttpServletRequest simulado
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
 
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         // Cuando
-        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium);
+        ModelAndView modelAndView = controladorListaDeCompra.irAListaDeCompras(rolPremium,requestMock);
 
         // Entonces
         // Verificar que el acceso no sea denegado

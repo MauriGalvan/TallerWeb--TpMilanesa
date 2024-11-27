@@ -189,5 +189,8 @@ public class ServicioRecetaImpl implements ServicioReceta {
     public List<Ingrediente> getIngredientesDeRecetaPorId(int id) {
         return repositorioReceta.getIngredientesDeRecetaPorId(id);
     }
-
+    @Override
+    public List<Receta> buscarRecetaPorAutor(String autor) {
+        return repositorioReceta.buscarPorAutor(autor);
+    }
 }

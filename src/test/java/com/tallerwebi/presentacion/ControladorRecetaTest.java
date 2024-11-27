@@ -83,9 +83,14 @@ public class ControladorRecetaTest {
     public void QueRetorneLaVistaDetalleRecetaCuandoSeEjecutaElMetodoMostrarDetalleReceta(){
         //Dado
         Receta receta = this.recetaMilanesaNapolitanaDeTreintaMinCreada();
+
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        when(sessionMock.getAttribute("usuarioNombre")).thenReturn("UsuarioMock");
         //Cuando
         when(servicioRecetaMock.getUnaRecetaPorId(receta.getId())).thenReturn(receta);
-        ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(Integer.valueOf(receta.getId()));
+        ModelAndView modelAndView = controladorDetalleReceta.mostrarDetalleReceta(Integer.valueOf(receta.getId()), requestMock);
         //Entonces
         verify(servicioRecetaMock, times(1)).getUnaRecetaPorId(receta.getId());
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("detalleReceta"));
@@ -114,6 +119,7 @@ public class ControladorRecetaTest {
     @Test
     public void QueSePuedaCargarUnaReceta(){
         String titulo = "Milanesa napolitana";
+        String autor = "UsuarioMock";
         TiempoDePreparacion tiempo = TiempoDePreparacion.TREINTA_MIN;
         Categoria categoria = Categoria.ALMUERZO_CENA;
         MockMultipartFile imagen = new MockMultipartFile(
@@ -126,8 +132,9 @@ public class ControladorRecetaTest {
         String pasos = ".";
 
         HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getParameter("autor")).thenReturn(autor);
+        ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, descripcion, autor,imagen,request);
 
-        ModelAndView modelAndView = controladorReceta.guardarReceta(titulo, pasos, tiempo, categoria, descripcion, imagen, request);
 
 //        verify(servicioRecetaMock, times(1)).guardarReceta(any(Receta.class));
 
@@ -320,6 +327,8 @@ public class ControladorRecetaTest {
         HttpServletRequest requestMock = mock(HttpServletRequest.class);
         HttpSession sessionMock = mock(HttpSession.class);
 
+        String autor = "usuarioPremium123"; // Define un autor válido
+
 
         when(requestMock.getSession()).thenReturn(sessionMock);
         when(sessionMock.getAttribute("ROL")).thenReturn(Rol.USUARIO_PREMIUM);
@@ -336,6 +345,7 @@ public class ControladorRecetaTest {
                 tiempoPreparacion,
                 categoria,
                 descripcion,
+                autor,
                 imagenMock,
                 requestMock
         );
@@ -370,6 +380,7 @@ public class ControladorRecetaTest {
         when(requestMock.getParameter("ingredientes[0].unidad_de_medida")).thenReturn("GRAMOS");
         when(requestMock.getParameter("ingredientes[0].tipo")).thenReturn("FRUTA");
         when(requestMock.getParameter("ingredientes[1].nombre")).thenReturn(null);
+        String autor = "usuarioPremium123"; // Define un autor válido
 
         // Cuando
         ModelAndView modelAndView = controladorReceta.guardarReceta(
@@ -378,6 +389,7 @@ public class ControladorRecetaTest {
                 tiempoPreparacion,
                 categoria,
                 descripcion,
+                autor,
                 imagenMock,
                 requestMock
         );
