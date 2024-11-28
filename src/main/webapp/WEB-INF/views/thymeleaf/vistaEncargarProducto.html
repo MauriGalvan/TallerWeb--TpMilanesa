@@ -63,7 +63,7 @@
                       <li th:each="ingrediente : ${ingredientes}" th:text="${ingrediente.nombre}">
                       </li>
                     </ul>
-                    <h3 class="total">Total ---> $ 40.000</h3>
+                    <h3 class="total">Total ---> $ 20.000</h3>
 
                     <form class="formEncargarProductos" method="GET" th:action="@{/pago-compra}">
                       <button class="buttonEncargar" type="submit" id="encargarProductosBtn">Encargar Productos</button>

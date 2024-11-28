@@ -41,9 +41,9 @@ function seleccionarReceta(titulo, modalId, categoria, dia, recetaId) {
     const nombreRecetaSeleccionada = document.getElementById(`nombreRecetaSeleccionada${categoria}${dia}`);
     const spanReceta = document.querySelector(`.receta-${categoria}-${dia}`);
     if (nombreRecetaSeleccionada) {
-    if (spanReceta){
-    spanReceta.innerText = "";
-    }
+        if (spanReceta){
+            spanReceta.innerText = "";
+        }
         nombreRecetaSeleccionada.innerText = titulo;
     }
 
@@ -64,7 +64,7 @@ function seleccionarReceta(titulo, modalId, categoria, dia, recetaId) {
         recetasInput.value = recetas.join(',');
         categoriasInput.value = categorias.join(',');
     }
-    }
+}
 
 const form = document.getElementById('formPlanificador');
 
