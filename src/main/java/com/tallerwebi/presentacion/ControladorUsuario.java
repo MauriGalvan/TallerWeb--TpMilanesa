@@ -86,6 +86,54 @@ public class ControladorUsuario {
         }
     }
 
+    @RequestMapping("/pago-compra")
+    public ModelAndView mostrarPagoCompra(HttpServletRequest request) {
+        ModelMap modelo = new ModelMap();
+
+
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioActual");
+
+        if (usuario != null) {
+            modelo.put("usuario", usuario);
+            return new ModelAndView("pago-compra", modelo);
+        } else {
+            return new ModelAndView("redirect:/login");
+        }
+    }
+
+    @RequestMapping(value = "/pago-compra", method = RequestMethod.POST)
+    public ModelAndView procesarPagoCompra(
+            @ModelAttribute("metodoPago") String metodoPago,
+            @ModelAttribute("numeroTarjeta") String numeroTarjeta,
+            @ModelAttribute("fechaExpiracion") String fechaExpiracion,
+            @ModelAttribute("cvv") String cvv,
+            HttpServletRequest request) {
+        ModelMap modelo = new ModelMap();
+
+
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuarioActual");
+
+        if (usuario != null) {
+            // Simular validación de pago
+            boolean pagoExitoso = validarPago(metodoPago, numeroTarjeta, fechaExpiracion, cvv);
+
+            if (pagoExitoso) {
+                usuario.setRol(Rol.USUARIO_PREMIUM);
+                servicioLogin.actualizarUsuario(usuario);
+                request.getSession().setAttribute("ROL", Rol.USUARIO_PREMIUM);
+                modelo.put("mensaje", "¡Pago realizado exitosamente! Recibirás el detalle de tu compra por mail.");
+                modelo.put("usuario", usuario);
+                request.getSession().setAttribute("usuarioActual", usuario);
+            } else {
+                modelo.put("mensaje", "Error en el pago. Verifica tus datos e intenta nuevamente.");
+            }
+
+            return new ModelAndView("pago-compra", modelo);
+        } else {
+            return new ModelAndView("redirect:/login");
+        }
+    }
+
 
     @RequestMapping(value = "/baja-premium", method = RequestMethod.POST)
     public ModelAndView darDeBajaPremium(HttpServletRequest request) {

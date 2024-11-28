@@ -55,15 +55,24 @@
         </header>
 
         <main>
-          <div>
-            <ul>
-              <li th:each="ingrediente : ${ingredientes}" th:text="${ingrediente.nombre}">
-              </li>
-            </ul>
-          </div>
+          <section class="semana">
+            <div class="resumen">
+              <h3 class="nombreDia">Resumen de la compra</h3>
+
+                    <ul class="listaResumen">
+                      <li th:each="ingrediente : ${ingredientes}" th:text="${ingrediente.nombre}">
+                      </li>
+                    </ul>
+                    <h3 class="total">Total ---> $ 40.000</h3>
+
+                    <form class="formEncargarProductos" method="GET" th:action="@{/pago-compra}">
+                      <button class="buttonEncargar" type="submit" id="encargarProductosBtn">Encargar Productos</button>
+                    </form>
+            </div>
+          </section>
         </main>
 
-        <footer>
+        <footer class="footerEncargar">
           <p>&copy; 2024 Team Milanesa - Todos los derechos reservados</p>
         </footer>
       </div>
