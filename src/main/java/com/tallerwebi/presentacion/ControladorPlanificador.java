@@ -41,6 +41,7 @@ public class ControladorPlanificador {
             usuario.setUsername("Invitado");
         }
 
+        modelo.put("usuario", usuario);
 
         if (rol == null || !rol.equals("USUARIO_PREMIUM")) {
             modelo.put("accesoDenegado", true);
