@@ -190,10 +190,6 @@ public class ControladorReceta {
         }
     }
 
-    @RequestMapping(path = "/", method = RequestMethod.GET)
-    public ModelAndView inicio() {
-        return new ModelAndView("redirect:/vista-receta");
-    }
 
 
 }
