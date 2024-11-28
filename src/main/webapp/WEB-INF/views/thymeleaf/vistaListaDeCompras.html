@@ -95,12 +95,19 @@
                                     <ul class="lista-ingredientes">
                                         <li th:each="ingrediente, status : ${detalle.receta.ingredientes}">
                                             <p class="item-lista">
-                                                <input type="checkbox" th:id="'ingrediente-' + ${status.index}" class="check-circle" onclick="toggleCheck(this)">
+                                                <input type="checkbox" th:id="'ingrediente-' + ${status.index}" class="check-circle"
+                                                       th:data-receta-id="${detalle.receta.id}"
+                                                       th:data-ingrediente-id="${ingrediente.id}"
+                                                       onclick="toggleCheck(this); actualizarIngredientesNoSeleccionados();">
                                                 <label th:for="'ingrediente-' + ${status.index}" th:text="${ingrediente.nombre}">Ingrediente</label>
                                                 <span class="cantidad" th:text="${ingrediente.cantidad} + ${ingrediente.unidad_de_medida.abreviatura}"></span>
                                             </p>
                                         </li>
                                     </ul>
+                                    <form class="formEncargarProductos" th:data-receta-id="${detalle.receta.id}" method="POST" th:action="@{/encargarProductos}">
+                                        <input type="hidden" th:id="'ingredientesElegidos-' + ${detalle.receta.id}" name="ingredientes" />
+                                        <button type="submit" id="encargarProductosBtn">Encargar Productos</button>
+                                    </form>
                                 </div>
                             </li>
                         </ul>
@@ -148,6 +155,30 @@
     });
 });
 </script>
-</body>
+<script>
+    document.querySelectorAll('.formEncargarProductos').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const recetaId = form.getAttribute('data-receta-id');
+            const ingredientesNoSeleccionados = [];
+
+            document.querySelectorAll(`.check-circle[data-receta-id="${recetaId}"]:not(:checked)`).forEach(checkbox => {
+                const ingredienteId = checkbox.getAttribute('data-ingrediente-id');
+                ingredientesNoSeleccionados.push(ingredienteId);
+            });
+
+            const ingredientesInput = form.querySelector(`#ingredientesElegidos-${recetaId}`);
+            if (ingredientesInput){
+
+                ingredientesInput.value = ingredientesNoSeleccionados.join(',');
+
+                console.log(`Ingredientes para receta ${recetaId}:`, ingredientesNoSeleccionados);
+                console.log(ingredientesInput.value);
+                form.submit();
+            }
+        });
+    });
+</script>
 </body>
 </html>

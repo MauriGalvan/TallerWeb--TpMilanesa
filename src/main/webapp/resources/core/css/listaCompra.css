@@ -90,3 +90,33 @@
     text-decoration: line-through;
     color: #808080;
 }
+.resumen {
+    margin: auto;
+    min-width: 40%;
+    background-color: white;
+}
+.listaResumen {
+    margin-top: 20px;
+    margin-bottom: 1.5rem;
+    margin-left: 15%;
+}
+.formEncargarProductos {
+    display: grid;
+}
+.buttonEncargar {
+    margin: auto;
+    margin-bottom: 3%;
+}
+.footerEncargar {
+    margin-top: 20%;
+}
+.total {
+    background-color: #ffb68e;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 10px;
+}

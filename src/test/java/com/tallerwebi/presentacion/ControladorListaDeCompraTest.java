@@ -3,26 +3,32 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class ControladorListaDeCompraTest {
 
     private ControladorListaDeCompra controladorListaDeCompra;
     private ServicioPlanificador servicioPlanificador;
+    private ServicioIngrediente servicioIngrediente;
 
     @BeforeEach
     public void setUp() {
         servicioPlanificador = mock(ServicioPlanificador.class);
-        controladorListaDeCompra = new ControladorListaDeCompra(servicioPlanificador);
+        servicioIngrediente = mock(ServicioIngrediente.class);
+        controladorListaDeCompra = new ControladorListaDeCompra(servicioPlanificador, servicioIngrediente);
     }
 
     @Test
@@ -222,6 +228,58 @@ public class ControladorListaDeCompraTest {
         assertThat(detallesEnModelo, hasSize(1));
         assertThat(detallesEnModelo.get(0).getDia(), equalTo(Dia.LUNES));
 
+    }
+
+    @Test
+    public void debeIrAEncargarProducto() {
+        // Configuración de datos de prueba
+        String ingredientesStr = "1,2,3";
+        Ingrediente ingrediente1 = new Ingrediente("Carne", 1, Unidad_De_Medida.KILOGRAMOS, Tipo_Ingrediente.PROTEINA_ANIMAL);
+        Ingrediente ingrediente2 = new Ingrediente("Huevo", 2, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.PROTEINA_ANIMAL);
+        Ingrediente ingrediente3 = new Ingrediente("Papas", 10, Unidad_De_Medida.UNIDAD, Tipo_Ingrediente.VERDURA);
+
+        // Mockear servicio y request
+        when(servicioIngrediente.getIngredientePorId(1)).thenReturn(ingrediente1);
+        when(servicioIngrediente.getIngredientePorId(2)).thenReturn(ingrediente2);
+        when(servicioIngrediente.getIngredientePorId(3)).thenReturn(ingrediente3);
+
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        HttpSession sessionMock = mock(HttpSession.class);
+
+        // Simular sesión y usuario
+        when(requestMock.getSession()).thenReturn(sessionMock);
+        Usuario usuarioMock = new Usuario();
+        usuarioMock.setUsername("Invitado");
+        when(sessionMock.getAttribute("usuarioActual")).thenReturn(usuarioMock);
+
+        // Ejecutar el método
+        ModelAndView modelAndView = controladorListaDeCompra.irAEncargarProducto(
+                ingredientesStr,
+                "Usuario",
+                requestMock
+        );
+
+        // Verificaciones
+        assertEquals("vistaEncargarProducto", modelAndView.getViewName());
+
+        // Validar el modelo
+        ModelMap modelo = modelAndView.getModelMap();
+        List<Ingrediente> ingredientesEnModelo = (List<Ingrediente>) modelo.get("ingredientes");
+        Usuario usuarioEnModelo = (Usuario) modelo.get("usuario");
+
+        assertNotNull(ingredientesEnModelo);
+        assertEquals(3, ingredientesEnModelo.size());
+        assertEquals(ingrediente1, ingredientesEnModelo.get(0));
+        assertEquals(ingrediente2, ingredientesEnModelo.get(1));
+        assertEquals(ingrediente3, ingredientesEnModelo.get(2));
+
+        assertNotNull(usuarioEnModelo);
+        assertEquals("Invitado", usuarioEnModelo.getUsername());
+
+        // Verificar que el servicio fue llamado con los IDs correctos
+        verify(servicioIngrediente, times(1)).getIngredientePorId(1);
+        verify(servicioIngrediente, times(1)).getIngredientePorId(2);
+        verify(servicioIngrediente, times(1)).getIngredientePorId(3);
     }
 
 

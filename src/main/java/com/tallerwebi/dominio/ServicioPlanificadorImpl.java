@@ -16,7 +16,6 @@ public class ServicioPlanificadorImpl implements ServicioPlanificador{
     @Autowired
     public ServicioPlanificadorImpl(RepositorioPlanificador repositorioPlanificador) {this.repositorioPlanificador = repositorioPlanificador;}
 
-
     @Transactional
     @Override
     public Planificador obtenerPlanificador() {
