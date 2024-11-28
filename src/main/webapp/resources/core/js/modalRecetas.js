@@ -64,6 +64,12 @@ function seleccionarReceta(titulo, modalId, categoria, dia, recetaId) {
         recetasInput.value = recetas.join(',');
         categoriasInput.value = categorias.join(',');
     }
-
-    form.submit();
     }
+
+const form = document.getElementById('formPlanificador');
+
+form.addEventListener('submit', function (event) {
+    if (detallePlanificadorData.length === 0) {
+        event.preventDefault();
+    }
+});
